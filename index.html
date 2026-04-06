@@ -1,0 +1,2473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MapleStory Classic World — The Parallel Blueprint</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --maple-orange: #FF6600;
+      --maple-orange-dim: #CC5200;
+      --maple-gold: #FFD060;
+      --maple-gold-dim: #B89030;
+      --maple-red: #CC2200;
+      --bg-void: #05050a;
+      --bg-deep: #0a0a12;
+      --bg-card: #10101c;
+      --bg-card-hover: #16162a;
+      --bg-section: #0d0d1a;
+      --border-orange: rgba(255, 102, 0, 0.25);
+      --border-gold: rgba(255, 208, 96, 0.2);
+      --text-primary: #f0e8d8;
+      --text-secondary: #b8a890;
+      --text-dim: #7a6a58;
+      --glow-orange: 0 0 20px rgba(255, 102, 0, 0.4);
+      --glow-gold: 0 0 15px rgba(255, 208, 96, 0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg-void);
+      color: var(--text-primary);
+      font-family: 'Crimson Text', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.35;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-void); }
+    ::-webkit-scrollbar-thumb { background: var(--maple-orange-dim); border-radius: 3px; }
+
+    /* ══════════════════════════════════
+       NAVIGATION
+    ══════════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: linear-gradient(180deg, rgba(5,5,10,0.98) 0%, rgba(5,5,10,0.88) 100%);
+      border-bottom: 1px solid var(--border-orange);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: var(--maple-orange);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      text-shadow: var(--glow-orange);
+    }
+
+    .nav-logo span { color: var(--maple-gold); }
+
+    .nav-links {
+      display: flex;
+      gap: 0.2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.5rem 0.8rem;
+      border-radius: 3px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--maple-orange);
+      background: rgba(255,102,0,0.08);
+    }
+
+    /* ══════════════════════════════════
+       HERO
+    ══════════════════════════════════ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding-top: 64px;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 60% 50%, rgba(255,102,0,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 80% at 10% 80%, rgba(255,208,96,0.04) 0%, transparent 60%),
+        linear-gradient(180deg, #05050a 0%, #0a0a12 50%, #08081a 100%);
+    }
+
+    /* Decorative maple grid lines */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,102,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,102,0,0.04) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 40%, transparent 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .hero-text { }
+
+    .hero-eyebrow {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--maple-orange);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 32px;
+      height: 1px;
+      background: var(--maple-orange);
+    }
+
+    .hero-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.4rem;
+    }
+
+    .hero-title .line1 { color: var(--text-primary); display: block; }
+    .hero-title .line2 { color: var(--maple-orange); display: block; text-shadow: var(--glow-orange); }
+    .hero-title .line3 { color: var(--maple-gold); display: block; font-size: 0.65em; letter-spacing: 0.05em; margin-top: 0.3em; }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      margin: 1.6rem 0 2.2rem;
+      max-width: 480px;
+      line-height: 1.8;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      border: 1px solid var(--border-orange);
+      border-radius: 2px;
+      color: var(--maple-orange);
+      background: rgba(255,102,0,0.06);
+    }
+
+    .tag.gold {
+      border-color: var(--border-gold);
+      color: var(--maple-gold);
+      background: rgba(255,208,96,0.05);
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .btn-primary {
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.85rem 2rem;
+      background: var(--maple-orange);
+      color: #fff;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+      box-shadow: 0 0 24px rgba(255,102,0,0.3);
+    }
+
+    .btn-primary:hover {
+      background: #FF7722;
+      box-shadow: 0 0 36px rgba(255,102,0,0.5);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.85rem 2rem;
+      background: transparent;
+      color: var(--maple-gold);
+      border: 1px solid var(--border-gold);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,208,96,0.08);
+      border-color: var(--maple-gold-dim);
+    }
+
+    .hero-visual {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .hero-img-main {
+      width: 100%;
+      border-radius: 4px;
+      border: 1px solid var(--border-orange);
+      box-shadow: 0 0 60px rgba(255,102,0,0.15), 0 20px 60px rgba(0,0,0,0.6);
+      display: block;
+    }
+
+    .hero-img-char {
+      width: 65%;
+      margin: 0 auto;
+      display: block;
+      border-radius: 4px;
+      border: 1px solid var(--border-gold);
+      box-shadow: var(--glow-gold), 0 20px 40px rgba(0,0,0,0.5);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .hero-stamp {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.55rem;
+      color: var(--maple-orange);
+      border: 1px solid var(--maple-orange);
+      padding: 0.3rem 0.6rem;
+      letter-spacing: 0.1em;
+      opacity: 0.6;
+      transform: rotate(3deg);
+    }
+
+    /* ══════════════════════════════════
+       SECTION COMMON
+    ══════════════════════════════════ */
+    section {
+      padding: 6rem 2rem;
+    }
+
+    .section-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--maple-orange);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--maple-orange-dim), transparent);
+      max-width: 200px;
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .section-title em {
+      font-style: normal;
+      color: var(--maple-orange);
+    }
+
+    .section-title .gold { color: var(--maple-gold); }
+
+    .section-desc {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 680px;
+      line-height: 1.85;
+      margin-bottom: 3rem;
+    }
+
+    /* Ornament divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin: 5rem 0;
+      opacity: 0.4;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--maple-orange-dim), transparent);
+    }
+    .divider-icon {
+      font-size: 1.2rem;
+      color: var(--maple-orange);
+    }
+
+    /* ══════════════════════════════════
+       VISION / PHILOSOPHY
+    ══════════════════════════════════ */
+    #vision { background: var(--bg-section); }
+
+    .vision-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .vision-body p {
+      margin-bottom: 1.4rem;
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+    }
+
+    .vision-body p strong {
+      color: var(--maple-orange);
+      font-weight: 600;
+    }
+
+    .vision-quote {
+      margin: 2rem 0;
+      padding: 1.5rem 2rem;
+      border-left: 3px solid var(--maple-orange);
+      background: rgba(255,102,0,0.05);
+      border-radius: 0 4px 4px 0;
+    }
+
+    .vision-quote p {
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--text-primary) !important;
+      margin: 0 0 0.5rem !important;
+    }
+
+    .vision-quote cite {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--maple-orange);
+      letter-spacing: 0.1em;
+      font-style: normal;
+    }
+
+    .vision-img {
+      width: 100%;
+      border-radius: 4px;
+      border: 1px solid var(--border-gold);
+      box-shadow: var(--glow-gold), 0 20px 50px rgba(0,0,0,0.5);
+      margin-bottom: 1.5rem;
+    }
+
+    .vision-stat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-orange);
+      border-radius: 4px;
+      padding: 1.2rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .stat-card:hover {
+      border-color: var(--maple-orange);
+      background: var(--bg-card-hover);
+    }
+
+    .stat-num {
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--maple-orange);
+      display: block;
+    }
+
+    .stat-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    /* ══════════════════════════════════
+       BLUEPRINT SLIDES
+    ══════════════════════════════════ */
+    #blueprint { background: var(--bg-deep); }
+
+    .slides-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      margin-bottom: 4rem;
+    }
+
+    .slides-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+
+    .slide-card {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid var(--border-orange);
+      cursor: pointer;
+      background: var(--bg-card);
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      aspect-ratio: 16/9;
+    }
+
+    .slide-card:hover {
+      border-color: var(--maple-orange);
+      transform: translateY(-3px) scale(1.01);
+      box-shadow: var(--glow-orange), 0 16px 40px rgba(0,0,0,0.5);
+    }
+
+    .slide-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: opacity 0.2s;
+    }
+
+    .slide-card:hover img { opacity: 0.9; }
+
+    .slide-num {
+      position: absolute;
+      top: 0.5rem;
+      left: 0.5rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--maple-orange);
+      background: rgba(0,0,0,0.7);
+      padding: 0.2rem 0.45rem;
+      border-radius: 2px;
+    }
+
+    .slide-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, transparent 100%);
+      padding: 1.2rem 0.8rem 0.6rem;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      transform: translateY(100%);
+      transition: transform 0.2s;
+    }
+
+    .slide-card:hover .slide-caption { transform: translateY(0); }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      background: rgba(0,0,0,0.94);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: 88vh;
+      object-fit: contain;
+      border: 1px solid var(--border-orange);
+      box-shadow: var(--glow-orange);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1.2rem;
+      color: var(--maple-orange);
+      cursor: pointer;
+      background: none;
+      border: none;
+      line-height: 1;
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      color: var(--maple-orange);
+      cursor: pointer;
+      background: rgba(0,0,0,0.5);
+      border: none;
+      padding: 1rem 0.8rem;
+      transition: background 0.2s;
+    }
+
+    .lightbox-nav:hover { background: rgba(255,102,0,0.2); }
+    .lightbox-nav.prev { left: 1rem; }
+    .lightbox-nav.next { right: 1rem; }
+
+    /* ══════════════════════════════════
+       MECHANICS
+    ══════════════════════════════════ */
+    #mechanics { background: var(--bg-section); }
+
+    .mechanics-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+
+    .mechanic-group {
+      margin-bottom: 2.5rem;
+    }
+
+    .mechanic-group-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--maple-gold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border-gold);
+    }
+
+    .mechanic-item {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding: 1rem 1.2rem;
+      background: var(--bg-card);
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.04);
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .mechanic-item:hover {
+      border-color: var(--border-orange);
+      background: var(--bg-card-hover);
+    }
+
+    .mechanic-icon {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .mechanic-content { }
+
+    .mechanic-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .mechanic-desc {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .mechanic-desc .nerf { color: #FF4444; font-weight: 600; }
+    .mechanic-desc .buff { color: #44FF88; font-weight: 600; }
+    .mechanic-desc .new { color: var(--maple-gold); font-weight: 600; }
+    .mechanic-desc .rework { color: #44CCFF; font-weight: 600; }
+
+    /* Weapon table */
+    .weapon-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.9rem;
+    }
+
+    .weapon-table th {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--maple-gold);
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-gold);
+    }
+
+    .weapon-table td {
+      padding: 0.55rem 0.8rem;
+      color: var(--text-secondary);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .weapon-table tr:hover td { color: var(--text-primary); background: rgba(255,255,255,0.02); }
+
+    .weapon-table .old { color: #FF5555; text-decoration: line-through; opacity: 0.7; font-size: 0.85em; }
+    .weapon-table .new-val { color: #55FF88; font-weight: 600; }
+
+    /* Slide feature */
+    .mechanic-slide {
+      width: 100%;
+      border-radius: 4px;
+      border: 1px solid var(--border-orange);
+      box-shadow: var(--glow-orange), 0 10px 30px rgba(0,0,0,0.4);
+      margin: 1.5rem 0;
+      cursor: pointer;
+      transition: box-shadow 0.2s;
+    }
+
+    .mechanic-slide:hover {
+      box-shadow: 0 0 30px rgba(255,102,0,0.5), 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    /* ══════════════════════════════════
+       CLASS BREAKDOWN
+    ══════════════════════════════════ */
+    #classes { background: var(--bg-deep); }
+
+    .class-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .class-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 6px;
+      padding: 1.8rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .class-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+    }
+
+    .class-card.warrior::before { background: linear-gradient(90deg, #CC4400, #FF6600); }
+    .class-card.magician::before { background: linear-gradient(90deg, #4400CC, #8844FF); }
+    .class-card.bowman::before { background: linear-gradient(90deg, #006633, #00CC66); }
+    .class-card.thief::before { background: linear-gradient(90deg, #441144, #9922AA); }
+
+    .class-card:hover { border-color: var(--border-orange); box-shadow: var(--glow-orange); }
+
+    .class-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .class-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .class-card.warrior .class-icon { background: rgba(255,102,0,0.15); border: 1px solid rgba(255,102,0,0.3); }
+    .class-card.magician .class-icon { background: rgba(136,68,255,0.15); border: 1px solid rgba(136,68,255,0.3); }
+    .class-card.bowman .class-icon { background: rgba(0,204,102,0.12); border: 1px solid rgba(0,204,102,0.3); }
+    .class-card.thief .class-icon { background: rgba(153,34,170,0.15); border: 1px solid rgba(153,34,170,0.3); }
+
+    .class-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .class-jobs {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      margin-top: 0.2rem;
+    }
+
+    .class-changes {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .class-changes li {
+      display: flex;
+      gap: 0.8rem;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .change-badge {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.06em;
+      padding: 0.18rem 0.4rem;
+      border-radius: 2px;
+      flex-shrink: 0;
+      margin-top: 0.2rem;
+      height: fit-content;
+    }
+
+    .badge-nerf { background: rgba(255,44,44,0.15); color: #FF5555; border: 1px solid rgba(255,44,44,0.25); }
+    .badge-buff { background: rgba(44,255,100,0.12); color: #44FF88; border: 1px solid rgba(44,255,100,0.25); }
+    .badge-new { background: rgba(255,208,96,0.12); color: var(--maple-gold); border: 1px solid rgba(255,208,96,0.25); }
+    .badge-rework { background: rgba(68,200,255,0.12); color: #44CCFF; border: 1px solid rgba(68,200,255,0.25); }
+
+    .class-slide-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    /* ══════════════════════════════════
+       ECONOMY & QoL
+    ══════════════════════════════════ */
+    #economy { background: var(--bg-section); }
+
+    .economy-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+
+    .econ-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-orange);
+      border-radius: 4px;
+      padding: 1.5rem;
+      margin-bottom: 1.2rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .econ-card:hover {
+      border-color: var(--maple-orange);
+      background: var(--bg-card-hover);
+    }
+
+    .econ-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--maple-gold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    .econ-body {
+      font-size: 0.97rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    .econ-body strong { color: var(--maple-orange); }
+
+    .comparison-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      margin: 0.4rem 0;
+      font-size: 0.9rem;
+    }
+
+    .compare-old {
+      color: #FF5555;
+      text-decoration: line-through;
+      opacity: 0.7;
+    }
+
+    .compare-arrow { color: var(--text-dim); }
+
+    .compare-new { color: #55FF88; font-weight: 600; }
+
+    /* ══════════════════════════════════
+       PROGRESSION
+    ══════════════════════════════════ */
+    #progression { background: var(--bg-deep); }
+
+    .progression-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .rule-card {
+      background: var(--bg-card);
+      border-left: 3px solid var(--maple-orange);
+      padding: 1.4rem 1.6rem;
+      border-radius: 0 4px 4px 0;
+      margin-bottom: 1.2rem;
+    }
+
+    .rule-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--maple-orange);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+    }
+
+    .rule-body {
+      font-size: 0.97rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    .rule-body strong { color: var(--text-primary); }
+
+    .party-bonuses {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.8rem;
+      margin: 1.5rem 0;
+    }
+
+    .party-bonus-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: 4px;
+      padding: 1rem;
+      text-align: center;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .party-bonus-card:hover {
+      border-color: var(--maple-gold);
+      box-shadow: var(--glow-gold);
+    }
+
+    .party-num {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--maple-gold);
+      display: block;
+    }
+
+    .party-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: block;
+      margin-top: 0.2rem;
+    }
+
+    /* ══════════════════════════════════
+       DEVELOPER INTERVIEW
+    ══════════════════════════════════ */
+    #interview { background: var(--bg-section); }
+
+    .interview-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 4rem;
+    }
+
+    .interview-questions { }
+
+    .qa-block {
+      margin-bottom: 2rem;
+      padding: 1.4rem 1.6rem;
+      background: var(--bg-card);
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.04);
+      transition: border-color 0.2s;
+    }
+
+    .qa-block:hover { border-color: var(--border-orange); }
+
+    .qa-q {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--maple-orange);
+      margin-bottom: 0.6rem;
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .qa-q::before {
+      content: 'Q';
+      font-size: 0.8rem;
+      background: var(--maple-orange);
+      color: #fff;
+      width: 1.4rem;
+      height: 1.4rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .qa-a {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      padding-left: 2rem;
+    }
+
+    .qa-a strong { color: var(--maple-gold); }
+
+    .inkwell-profile {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: 6px;
+      padding: 2rem;
+    }
+
+    .inkwell-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .inkwell-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255,102,0,0.3), rgba(255,208,96,0.2));
+      border: 2px solid var(--maple-gold-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+
+    .inkwell-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--maple-gold);
+    }
+
+    .inkwell-title {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      margin-top: 0.3rem;
+    }
+
+    .inkwell-facts {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .inkwell-fact {
+      display: flex;
+      gap: 0.8rem;
+      font-size: 0.97rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    .fact-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--maple-gold);
+      flex-shrink: 0;
+      margin-top: 0.55rem;
+    }
+
+    /* ══════════════════════════════════
+       COMMUNITY VOICE
+    ══════════════════════════════════ */
+    #community { background: var(--bg-deep); }
+
+    .community-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 4rem;
+    }
+
+    .consensus-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .consensus-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 1.2rem;
+      align-items: start;
+      padding: 1.2rem 1.4rem;
+      background: var(--bg-card);
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.04);
+      transition: border-color 0.2s;
+    }
+
+    .consensus-item:hover { border-color: var(--border-orange); }
+
+    .consensus-num {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--maple-orange);
+      opacity: 0.5;
+      line-height: 1;
+    }
+
+    .consensus-text {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .consensus-text strong { color: var(--text-primary); }
+
+    .sentiment-badge {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .positive { background: rgba(44,255,100,0.12); color: #44FF88; border: 1px solid rgba(44,255,100,0.2); }
+    .negative { background: rgba(255,44,44,0.12); color: #FF5555; border: 1px solid rgba(255,44,44,0.2); }
+    .neutral { background: rgba(255,208,96,0.1); color: var(--maple-gold); border: 1px solid rgba(255,208,96,0.2); }
+    .mixed { background: rgba(68,200,255,0.1); color: #44CCFF; border: 1px solid rgba(68,200,255,0.2); }
+
+    .anxiety-chart {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: 6px;
+      padding: 2rem;
+    }
+
+    .anxiety-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--maple-gold);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .gauge-row {
+      margin-bottom: 1.5rem;
+    }
+
+    .gauge-label {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.07em;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .gauge-bar {
+      height: 8px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+
+    .gauge-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 1.5s ease;
+    }
+
+    .gauge-fill.positive-fill { background: linear-gradient(90deg, #44FF88, #00CC44); }
+    .gauge-fill.negative-fill { background: linear-gradient(90deg, #FF5555, #CC2222); }
+    .gauge-fill.neutral-fill { background: linear-gradient(90deg, var(--maple-gold), var(--maple-orange)); }
+
+    /* ══════════════════════════════════
+       WORLD MAP
+    ══════════════════════════════════ */
+    #world { background: var(--bg-section); }
+
+    .world-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .location-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .location-card {
+      background: var(--bg-card);
+      border-radius: 4px;
+      padding: 1.2rem;
+      position: relative;
+      border: 1px solid rgba(255,255,255,0.04);
+      transition: border-color 0.2s;
+    }
+
+    .location-card:hover { border-color: var(--border-orange); }
+
+    .location-card.new-map { border-color: rgba(255,208,96,0.3); }
+    .location-card.removed { opacity: 0.5; }
+    .location-card.removed::after {
+      content: 'REMOVED';
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.5rem;
+      color: #FF5555;
+      letter-spacing: 0.1em;
+    }
+
+    .location-card.new-map::after {
+      content: 'NEW';
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.5rem;
+      color: var(--maple-gold);
+      letter-spacing: 0.1em;
+    }
+
+    .location-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.3rem;
+    }
+
+    .location-desc {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+
+    /* ══════════════════════════════════
+       FOOTER
+    ══════════════════════════════════ */
+    footer {
+      background: var(--bg-void);
+      border-top: 1px solid var(--border-orange);
+      padding: 3rem 2rem;
+    }
+
+    .footer-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .footer-brand {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: var(--maple-orange);
+      margin-bottom: 0.8rem;
+    }
+
+    .footer-desc {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+      max-width: 360px;
+    }
+
+    .footer-col-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--maple-gold);
+      margin-bottom: 1rem;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .footer-links a {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--maple-orange); }
+
+    .footer-bottom {
+      max-width: 1400px;
+      margin: 2rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+    }
+
+    .source-note {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+    }
+
+    /* ══════════════════════════════════
+       ANIMATIONS
+    ══════════════════════════════════ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-up {
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .fade-up-delay-1 { animation-delay: 0.1s; }
+    .fade-up-delay-2 { animation-delay: 0.2s; }
+    .fade-up-delay-3 { animation-delay: 0.3s; }
+    .fade-up-delay-4 { animation-delay: 0.4s; }
+
+    /* ══════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .hero-content,
+      .vision-grid,
+      .slides-intro,
+      .mechanics-layout,
+      .class-grid,
+      .economy-layout,
+      .progression-layout,
+      .interview-layout,
+      .community-layout,
+      .world-layout,
+      .footer-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+
+      .slides-gallery { grid-template-columns: repeat(2, 1fr); }
+      .nav-links { display: none; }
+      .hero-img-char { width: 85%; }
+    }
+
+    @media (max-width: 640px) {
+      .slides-gallery { grid-template-columns: 1fr; }
+      .class-grid { grid-template-columns: 1fr; }
+      .vision-stat-row,
+      .party-bonuses,
+      .class-slide-row,
+      .location-grid { grid-template-columns: 1fr; }
+      section { padding: 4rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAVIGATION ── -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">Maple<span>Classic</span></a>
+    <ul class="nav-links">
+      <li><a href="#vision">Vision</a></li>
+      <li><a href="#blueprint">Blueprint</a></li>
+      <li><a href="#mechanics">Mechanics</a></li>
+      <li><a href="#classes">Classes</a></li>
+      <li><a href="#economy">Economy</a></li>
+      <li><a href="#progression">Progression</a></li>
+      <li><a href="#interview">Interview</a></li>
+      <li><a href="#community">Community</a></li>
+      <li><a href="#world">World</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-eyebrow fade-up">Project P-001-CW · Classified Developer Draft</div>
+      <h1 class="hero-title fade-up fade-up-delay-1">
+        <span class="line1">MapleStory</span>
+        <span class="line2">Classic World</span>
+        <span class="line3">The Parallel Blueprint</span>
+      </h1>
+      <p class="hero-subtitle fade-up fade-up-delay-2">
+        An in-depth analysis of the modernised pre-Big Bang experience — the combat rewiring, progression overhaul, economic restructuring, and developer philosophy behind the parallel timeline.
+      </p>
+      <div class="hero-tags fade-up fade-up-delay-3">
+        <span class="tag">Pre-Big Bang</span>
+        <span class="tag">GMS Playtest</span>
+        <span class="tag gold">15 Blueprint Slides</span>
+        <span class="tag">Developer Interview</span>
+        <span class="tag gold">Community Analysis</span>
+      </div>
+      <div class="hero-cta fade-up fade-up-delay-4">
+        <a href="#vision" class="btn-primary">Read the Blueprint</a>
+        <a href="#blueprint" class="btn-secondary">View Slides</a>
+      </div>
+    </div>
+    <div class="hero-visual fade-up fade-up-delay-2">
+      <img src="./assets/image1.png" alt="Engineering the Parallel MapleStory Timeline — Blueprint Cover" class="hero-img-main" onclick="openLightbox(0)" />
+      <div class="hero-stamp">COORDINATE: 0127.2003</div>
+      <img src="./assets/unnamed.png" alt="MapleStory Character Illustration" class="hero-img-char" />
+    </div>
+  </div>
+</section>
+
+<!-- ── VISION ── -->
+<section id="vision">
+  <div class="section-inner">
+    <div class="section-label">Design Philosophy</div>
+    <h2 class="section-title">What If The <em>Big Bang</em><br/>Never Happened?</h2>
+    <div class="vision-grid">
+      <div class="vision-body">
+        <p>
+          <strong>Lead developer Inkwell (Han Bil O)</strong>, Head of Western Development at Nexon, conceived Classic World nearly a decade ago around the time of the original Big Bang update. After years of pitching, the project finally entered active development 2–3 years ago.
+        </p>
+        <p>
+          His core thesis: GMS has become too modernised. The learning curve for new players is overwhelming. Classic World exists to strip back that complexity while preserving what made old MapleStory special — community, progression satisfaction, and a slower, more intentional pace.
+        </p>
+
+        <div class="vision-quote">
+          <p>"If you want to play MapleStory Classic World right now, you already can. The reason I wanted to make an official Classic World was because GMS is too modernised and the learning curve for new players is way too large."</p>
+          <cite>— Inkwell (Han Bil O), Head of Western Development, Nexon · Maple Con 2025</cite>
+        </div>
+
+        <p>
+          The design philosophy is <strong>Modernised Classic</strong> — not a pixel-perfect recreation of 2003 Maple, but a parallel timeline that asks the question: <em>what would the game have become if the Big Bang never happened?</em> A world where Inkwell and his team can still tell the stories of NPC Mani, Chief Stan, and expand lore that was left unexplored.
+        </p>
+
+        <div class="vision-quote">
+          <p>"Classic World is a parallel MapleStory — like Spider-Verse. What if the Black Mage didn't die? It's going to take a different path."</p>
+          <cite>— Inkwell, on the divergent content timeline · Maple Con 2025</cite>
+        </div>
+
+        <p>
+          The parallel framework also means content won't follow the original GMS release timeline. Ludibrium and El Nath are in development — but when and how they arrive is driven by player feedback, not historical order.
+        </p>
+      </div>
+      <div>
+        <img src="./assets/image2.png" alt="Timeline Fork Diagram: 2003-2010 Legacy → Classic World instead of Big Bang" class="vision-img" onclick="openLightbox(1)" />
+        <div class="vision-stat-row">
+          <div class="stat-card">
+            <span class="stat-num">10yrs</span>
+            <span class="stat-label">Since idea conception</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">2–3yrs</span>
+            <span class="stat-label">Active development</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">2025</span>
+            <span class="stat-label">Maple Con 20th Anniversary</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num">Pre-BB</span>
+            <span class="stat-label">Core design target</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BLUEPRINT SLIDES ── -->
+<section id="blueprint">
+  <div class="section-inner">
+    <div class="section-label">Engineering Documents</div>
+    <div class="slides-intro">
+      <div>
+        <h2 class="section-title">The <em>Blueprint</em><br/>Slides</h2>
+        <p class="section-desc">
+          15 classified engineering documents detailing every mechanical decision behind Classic World — from weapon multiplier rewiring to the decoupling of Attack Power and Weapon Attack, the eradication of HP Washing, and the charting of an unexplored chronological timeline.
+        </p>
+      </div>
+      <div class="vision-stat-row">
+        <div class="stat-card">
+          <span class="stat-num">15</span>
+          <span class="stat-label">Blueprint sheets</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">4</span>
+          <span class="stat-label">Class systems redesigned</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">100%</span>
+          <span class="stat-label">Mastery cap (was 60%)</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">0</span>
+          <span class="stat-label">HP Washing allowed</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="slides-gallery">
+      <div class="slide-card" onclick="openLightbox(0)">
+        <img src="./assets/image1.png" alt="Blueprint Slide 1" />
+        <span class="slide-num">01</span>
+        <div class="slide-caption">Engineering the Parallel MapleStory Timeline — Cover</div>
+      </div>
+      <div class="slide-card" onclick="openLightbox(1)">
+        <img src="./assets/image2.png" alt="Blueprint Slide 2" />
+        <span class="slide-num">02</span>
+        <div class="slide-caption">What If The Big Bang Never Happened? — Timeline Fork</div>
+      </div>
+      <div class="slide-card" onclick="openLightbox(2)">
+        <img src="./assets/image3.png" alt="Blueprint Slide 3" />
+        <span class="slide-num">03</span>
+        <div class="slide-caption">Rewiring the Foundational Physics of Combat</div>
+      </div>
+      <div class="slide-card" onclick="openLightbox(3)">
+        <img src="./assets/image4.png" alt="Blueprint Slide 4" />
+        <span class="slide-num">04</span>
+        <div class="slide-caption">The Absolute Decoupling of Attack Power and Weapon Attack</div>
+      </div>
+      <div class="slide-card" onclick="openLightbox(4)">
+        <img src="./assets/image5.png" alt="Blueprint Slide 5" />
+        <span class="slide-num">05</span>
+        <div class="slide-caption">Class Equilibrium — Fundamental Rebalancing of Legacy Roles</div>
+      </div>
+      <div class="slide-card" onclick="openLightbox(5)">
+        <img src="./assets/image6.png" alt="Blueprint Slide 6" />
+        <span class="slide-num">06</span>
+        <div class="slide-caption">Warriors: Passive RNG to Active Tactical Charging</div>
+      </div>
+      <div class="slide-card" onclick="openLightbox(6)">
+        <img src="./assets/image7.png" alt="Blueprint Slide 7" />
+        <span class="slide-num">07</span>
+        <div class="slide-caption">Magicians: Infinite Healing Sustain to Multi-Target Lethality</div>
+      </div>
+      <div class="slide-card" onclick="openLightbox(7)">
+        <img src="./assets/image8.png" alt="Blueprint Slide 8" />
+        <span class="slide-num">08</span>
+        <div class="slide-caption">Bowmen & Thieves: Positional Combat Rewrite</div>
+      </div>
+      <div class="slide-card" onclick="openLightbox(8)">
+        <img src="./assets/image9.png" alt="Blueprint Slide 9" />
+        <span class="slide-num">09</span>
+        <div class="slide-caption">Deliberately Breaking Degenerate Legacy Progression Loops</div>
+      </div>
+      <div class="slide-card" onclick="openLightbox(9)">
+        <img src="./assets/image10.png" alt="Blueprint Slide 10" />
+        <span class="slide-num">10</span>
+        <div class="slide-caption">Eradicating Passive Leeching with the 10-Second Activity Rule</div>
+      </div>
+      <div class="slide-card" onclick="openLightbox(10)">
+        <img src="./assets/image11.png" alt="Blueprint Slide 11" />
+        <span class="slide-num">11</span>
+        <div class="slide-caption">Establishing a Predictable Economic Foundation</div>
+      </div>
+      <div class="slide-card" onclick="openLightbox(11)">
+        <img src="./assets/image12.png" alt="Blueprint Slide 12" />
+        <span class="slide-num">12</span>
+        <div class="slide-caption">Eliminating Friction: QoL Upgrades for the Modern Veteran</div>
+      </div>
+      <div class="slide-card" onclick="openLightbox(12)">
+        <img src="./assets/image13.png" alt="Blueprint Slide 13" />
+        <span class="slide-num">13</span>
+        <div class="slide-caption">The Synthesis: Lowered Multipliers, Infinite Consistency</div>
+      </div>
+      <div class="slide-card" onclick="openLightbox(13)">
+        <img src="./assets/image14.png" alt="Blueprint Slide 14" />
+        <span class="slide-num">14</span>
+        <div class="slide-caption">Community Telemetry: Approval & Anxiety</div>
+      </div>
+      <div class="slide-card" onclick="openLightbox(14)">
+        <img src="./assets/image15.png" alt="Blueprint Slide 15" />
+        <span class="slide-num">15</span>
+        <div class="slide-caption">Charting an Entirely Unexplored Chronological Timeline</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MECHANICS ── -->
+<section id="mechanics">
+  <div class="section-inner">
+    <div class="section-label">Combat Systems</div>
+    <h2 class="section-title">Rewiring the <em>Physics</em><br/>of Combat</h2>
+    <p class="section-desc">Every damage formula, weapon multiplier, stat conversion, and critical system has been rebuilt from first principles for Classic World.</p>
+
+    <div class="mechanics-layout">
+      <div>
+        <div class="mechanic-group">
+          <div class="mechanic-group-title">Damage Formula</div>
+          <div class="mechanic-item">
+            <div class="mechanic-icon">⚔️</div>
+            <div class="mechanic-content">
+              <div class="mechanic-name">Base Damage Applied to Both Min & Max</div>
+              <div class="mechanic-desc"><span class="buff">BUFF</span> — 100 base damage is now applied to both minimum and maximum attack, improving the overall attack range formula for all classes.</div>
+            </div>
+          </div>
+          <div class="mechanic-item">
+            <div class="mechanic-icon">🗡️</div>
+            <div class="mechanic-content">
+              <div class="mechanic-name">Attack Power (AP) vs Weapon Attack (WA)</div>
+              <div class="mechanic-desc"><span class="new">NEW</span> — Two distinct offensive stats. <strong>Weapon Attack</strong> comes from buffs and potions (e.g., Rage, Power Elixir). <strong>Attack Power</strong> is drawn from weapons themselves. Ratio: <strong>35 WA = 4 AP</strong>.</div>
+            </div>
+          </div>
+          <div class="mechanic-item">
+            <div class="mechanic-icon">⚡</div>
+            <div class="mechanic-content">
+              <div class="mechanic-name">Weapon Mastery Overhaul</div>
+              <div class="mechanic-desc">Starts lower at <span class="nerf">10%</span> (was 15%) at level 1, but now reaches <span class="buff">100%</span> at max level 20 (up from 60%). More consistent, higher damage across the board.</div>
+            </div>
+          </div>
+          <div class="mechanic-item">
+            <div class="mechanic-icon">💥</div>
+            <div class="mechanic-content">
+              <div class="mechanic-name">Universal Base Criticals</div>
+              <div class="mechanic-desc"><span class="new">NEW</span> — Every character has a <strong>5% base crit chance</strong> and <strong>20% crit damage</strong>. Bleed, poison, and burn DoT effects can now also crit.</div>
+            </div>
+          </div>
+          <div class="mechanic-item">
+            <div class="mechanic-icon">🔥</div>
+            <div class="mechanic-content">
+              <div class="mechanic-name">Elemental Weakness Reduction</div>
+              <div class="mechanic-desc">Counter-element bonus damage reduced to <span class="nerf">25%</span> (down from 50%), bringing elemental interactions into tighter balance.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mechanic-group">
+          <div class="mechanic-group-title">Secondary Stat Conversions</div>
+          <div class="mechanic-item">
+            <div class="mechanic-icon">📊</div>
+            <div class="mechanic-content">
+              <div class="mechanic-name">INT / DEX / LUK to Secondary Stats</div>
+              <div class="mechanic-desc">
+                <strong>2 INT</strong> → 1 Magic Attack + 4 Weapon Defense<br/>
+                <strong>4 DEX</strong> → 3 Accuracy + 1 Weapon Defense<br/>
+                <strong>3 LUK</strong> → 1 Avoidability
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <img src="./assets/image3.png" alt="Weapon Multipliers Blueprint" class="mechanic-slide" onclick="openLightbox(2)" />
+        <img src="./assets/image4.png" alt="Attack Power vs Weapon Attack Blueprint" class="mechanic-slide" onclick="openLightbox(3)" />
+
+        <div class="mechanic-group" style="margin-top:2rem">
+          <div class="mechanic-group-title">Weapon Multiplier Changes</div>
+          <table class="weapon-table">
+            <thead>
+              <tr>
+                <th>Weapon</th>
+                <th>Old</th>
+                <th>New (Classic)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1H Sword</td>
+                <td><span class="old">4.0</span></td>
+                <td><span class="new-val">1.5</span></td>
+              </tr>
+              <tr>
+                <td>2H Sword</td>
+                <td><span class="old">4.6</span></td>
+                <td><span class="new-val">2.5</span></td>
+              </tr>
+              <tr>
+                <td>Spear (swing/stab)</td>
+                <td><span class="old">3.0 / 5.0</span></td>
+                <td><span class="new-val">1.5 / 3.5</span></td>
+              </tr>
+              <tr>
+                <td>Polearm (swing/stab)</td>
+                <td><span class="old">5.0 / 3.0</span></td>
+                <td><span class="new-val">3.5 / 1.5</span></td>
+              </tr>
+              <tr>
+                <td>Bow / Crossbow</td>
+                <td><span class="old">3.4 / 3.6</span></td>
+                <td><span class="new-val">2.5 / 2.5</span></td>
+              </tr>
+              <tr>
+                <td>Claw</td>
+                <td><span class="old">3.6</span></td>
+                <td><span class="new-val">2.5</span></td>
+              </tr>
+              <tr>
+                <td>Dagger (swing/stab)</td>
+                <td><span class="old">3.6 / 3.6</span></td>
+                <td><span class="new-val">1.0 / 2.0</span></td>
+              </tr>
+              <tr>
+                <td>1H Axe/Blunt (swing/stab)</td>
+                <td><span class="old">4.4 / 3.2</span></td>
+                <td><span class="new-val">2.0 / 1.0</span></td>
+              </tr>
+              <tr>
+                <td>2H Axe/Blunt (swing/stab)</td>
+                <td><span class="old">4.8 / 3.4</span></td>
+                <td><span class="new-val">3.0 / 2.0</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CLASSES ── -->
+<section id="classes">
+  <div class="section-inner">
+    <div class="section-label">Class Rebalancing</div>
+    <h2 class="section-title">Class <em>Equilibrium</em><br/>Requires Fundamental Rethinking</h2>
+    <p class="section-desc">Each archetype undergoes targeted nerfs, buffs, and mechanical reworks designed to increase tactical depth and reduce reliance on passive or degenerate systems.</p>
+
+    <img src="./assets/image5.png" alt="Class Equilibrium Quadrant Chart" class="mechanic-slide" onclick="openLightbox(4)" style="max-width:700px; margin: 0 auto 3rem; display:block" />
+
+    <div class="class-grid">
+      <!-- WARRIOR -->
+      <div class="class-card warrior">
+        <div class="class-header">
+          <div class="class-icon">⚔️</div>
+          <div>
+            <div class="class-name">Warrior</div>
+            <div class="class-jobs">Fighter · Page · Spearman</div>
+          </div>
+        </div>
+        <ul class="class-changes">
+          <li>
+            <span class="change-badge badge-rework">REWORK</span>
+            <span><strong>Final Attack</strong> — No longer random animation lock. Generates a "charge" that must be manually activated via a dedicated key. Single-target only.</span>
+          </li>
+          <li>
+            <span class="change-badge badge-nerf">NERF</span>
+            <span><strong>Hyper Body</strong> — Reduced to 30% HP bonus only (was 60% HP/MP). No more MP boost.</span>
+          </li>
+          <li>
+            <span class="change-badge badge-new">NEW</span>
+            <span><strong>Axe Mastery</strong> — Axes apply a <em>bleed effect</em>. Blunt weapons now apply a <em>stun chance</em>.</span>
+          </li>
+          <li>
+            <span class="change-badge badge-buff">BUFF</span>
+            <span><strong>Threaten</strong> (Page/White Knight) — Extended range; can now slow and stun enemies, especially effective with blunt weapons.</span>
+          </li>
+          <li>
+            <span class="change-badge badge-buff">BUFF</span>
+            <span><strong>Iron Body + Iron Will</strong> — These buffs now stack with each other.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- MAGICIAN -->
+      <div class="class-card magician">
+        <div class="class-header">
+          <div class="class-icon">🔮</div>
+          <div>
+            <div class="class-name">Magician</div>
+            <div class="class-jobs">Fire/Ice/Lightning · Cleric</div>
+          </div>
+        </div>
+        <ul class="class-changes">
+          <li>
+            <span class="change-badge badge-rework">CHANGE</span>
+            <span><strong>First Job Advancement</strong> — Now at Level 10 (was Level 8). Confirmed via KPQ in-game question.</span>
+          </li>
+          <li>
+            <span class="change-badge badge-nerf">NERF</span>
+            <span><strong>Heal</strong> — Range significantly shorter (both H and V). HP recovery reduced to 100% (was 300%). No longer a sustain machine.</span>
+          </li>
+          <li>
+            <span class="change-badge badge-buff">BUFF</span>
+            <span><strong>Fire Arrow / Holy Arrow</strong> — Now hits up to 3 targets. Projectile redirects to nearby mobs if the first target dies.</span>
+          </li>
+          <li>
+            <span class="change-badge badge-buff">BUFF</span>
+            <span><strong>Poison</strong> — Can now kill monsters instead of leaving them at 1 HP. A fundamental shift for Fire/Poison viability.</span>
+          </li>
+          <li>
+            <span class="change-badge badge-new">NEW</span>
+            <span><strong>Thunderbolt</strong> — Now includes a stun chance on hit.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- BOWMAN -->
+      <div class="class-card bowman">
+        <div class="class-header">
+          <div class="class-icon">🏹</div>
+          <div>
+            <div class="class-name">Bowman</div>
+            <div class="class-jobs">Hunter · Crossbowman</div>
+          </div>
+        </div>
+        <ul class="class-changes">
+          <li>
+            <span class="change-badge badge-buff">BUFF</span>
+            <span><strong>Double Shot</strong> — Now targets multiple enemies by default. Splits damage across nearby mobs.</span>
+          </li>
+          <li>
+            <span class="change-badge badge-buff">BUFF</span>
+            <span><strong>Power Knockback</strong> — Near 100% knockback chance at max level. Transformed into a reliable utility skill.</span>
+          </li>
+          <li>
+            <span class="change-badge badge-buff">BUFF</span>
+            <span><strong>Melee Range Shooting</strong> — Mastery now allows firing arrows even when monsters are at melee range. No more "whacking" animation.</span>
+          </li>
+          <li>
+            <span class="change-badge badge-nerf">NERF</span>
+            <span><strong>Jump Shot</strong> — Traditional jump shot mechanic removed or non-functional. Positional freedom reduced.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- THIEF -->
+      <div class="class-card thief">
+        <div class="class-header">
+          <div class="class-icon">🗡️</div>
+          <div>
+            <div class="class-name">Thief</div>
+            <div class="class-jobs">Assassin · Bandit</div>
+          </div>
+        </div>
+        <ul class="class-changes">
+          <li>
+            <span class="change-badge badge-rework">REWORK</span>
+            <span><strong>Dark Sight</strong> — Converted from timed buff to permanent toggle skill. Significant QoL improvement for positioning.</span>
+          </li>
+          <li>
+            <span class="change-badge badge-buff">BUFF</span>
+            <span><strong>Drain (Assassin)</strong> — Deals surprisingly high damage, sometimes rivalling or exceeding Lucky Seven, while simultaneously healing the caster.</span>
+          </li>
+          <li>
+            <span class="change-badge badge-buff">SPECULATED</span>
+            <span><strong>Bandit / Savage Blow</strong> — Community and playtesters speculate Bandits are among the strongest classes due to Savage Blow's positioning and high multiplier output.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="class-slide-row">
+      <img src="./assets/image6.png" alt="Warriors: Active Tactical Charging" class="mechanic-slide" onclick="openLightbox(5)" style="margin:0" />
+      <img src="./assets/image7.png" alt="Magicians: Multi-Target Lethality" class="mechanic-slide" onclick="openLightbox(6)" style="margin:0" />
+      <img src="./assets/image8.png" alt="Bowmen & Thieves Combat Rewrite" class="mechanic-slide" onclick="openLightbox(7)" style="margin:0" />
+    </div>
+  </div>
+</section>
+
+<!-- ── ECONOMY ── -->
+<section id="economy">
+  <div class="section-inner">
+    <div class="section-label">Economic Architecture</div>
+    <h2 class="section-title">A Predictable, <em>Controlled</em><br/>Economic Foundation</h2>
+    <p class="section-desc">Trade taxes, NPC prices, drop tables, and scroll availability have all been restructured to establish a healthier meso ecosystem from the ground up.</p>
+
+    <div class="economy-layout">
+      <div>
+        <div class="econ-card">
+          <div class="econ-title">Flat Trade Tax</div>
+          <div class="econ-body">
+            All player-to-player trades now carry a <strong>flat 5% tax</strong>, regardless of the amount transferred. The old scaling system (e.g., 4% on 100M = 4M taken out) has been removed for predictability.
+          </div>
+        </div>
+
+        <div class="econ-card">
+          <div class="econ-title">NPC Economy Restructure</div>
+          <div class="econ-body">
+            Equipment <strong>sell prices drastically reduced</strong> to prevent meso flooding — e.g., Purple Goon Shoes: <span class="compare-old">50,000 mesos</span> → <span class="compare-new">6,600 mesos</span>. However, equipment is <strong>cheaper to buy</strong> from shops — Fusion Mace: <span class="compare-old">22,000</span> → <span class="compare-new">13,500 mesos</span>.
+            <br/><br/>
+            NPCs now have a <strong>Buyback tab</strong> for accidentally sold items. Potions remain at similar costs.
+          </div>
+        </div>
+
+        <div class="econ-card">
+          <div class="econ-title">Scroll Availability</div>
+          <div class="econ-body">
+            NPC shops (Ellinia & El Nath) now sell <strong>100% Weapon Attack scrolls for weapons only</strong> — priced at <span class="compare-old">70,000</span> → <span class="compare-new">35,000 mesos</span>.
+            <br/><br/>
+            <strong>Removed:</strong> 100% scrolls for helmet defense, topwear/bottomwear defense, shoe DEX, or earring INT from NPC shops.
+            <br/><br/>
+            <strong>New scrolls added:</strong> Iron for STR 60% — obtainable as a KPQ run reward.
+          </div>
+        </div>
+
+        <div class="econ-card">
+          <div class="econ-title">Monster HP & Drop Tables</div>
+          <div class="econ-body">
+            Mobs (excluding low-level ones) have roughly <strong>50% less HP</strong> across the board. Drop tables have been fully reshuffled — equipment drops adjusted, ore drops unchanged.
+            <br/><br/>
+            XP rebalancing: Level 9–32 mobs grant <em>more</em> XP; Level 33–60 mobs grant <em>less</em>; Level 61–75 mobs grant <em>much less</em>.
+          </div>
+        </div>
+      </div>
+      <div>
+        <img src="./assets/image11.png" alt="Economic Foundation Blueprint" class="mechanic-slide" onclick="openLightbox(10)" />
+
+        <div class="econ-card" style="margin-top:1.5rem">
+          <div class="econ-title">Storage Expansion</div>
+          <div class="econ-body">
+            Default storage expanded to <strong>48 slots</strong> — a massive quality of life improvement from the original 4-slot default.
+          </div>
+        </div>
+
+        <div class="econ-card">
+          <div class="econ-title">Beginners & Travel</div>
+          <div class="econ-body">
+            Beginners retain the <strong>90% meso discount</strong> from NPCs.
+            <br/><br/>
+            Victoria Island cabs now offer <strong>two-way travel to Sleepywood</strong>, eliminating the old "noob trap" where players could get stranded.
+          </div>
+        </div>
+
+        <div class="econ-card">
+          <div class="econ-title">Monetisation Philosophy</div>
+          <div class="econ-body">
+            Inkwell confirmed: <strong>no Cubes planned</strong>. Gachapon is still being discussed — specifically whether obtainable items (like Stormcaster Gloves, Face Stompers) constitute pay-to-win. NX is permanent with no expiry.
+            <br/><br/>
+            Monetisation targets pre-Big Bang era models.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROGRESSION ── -->
+<section id="progression">
+  <div class="section-inner">
+    <div class="section-label">Systemic Overhaul</div>
+    <h2 class="section-title">Eradicating <em>Degenerate</em><br/>Legacy Loops</h2>
+    <p class="section-desc">HP Washing, passive leeching, and statless builds — the three pillars of old Maple's broken meta — have been systematically removed or made obsolete.</p>
+
+    <div class="progression-layout">
+      <div>
+        <div class="rule-card">
+          <div class="rule-title">HP Washing — Completely Removed</div>
+          <div class="rule-body">
+            Inkwell explicitly stated: <strong>"HP Washing was more of a bug back in the day than a feature."</strong> It has been entirely removed from Classic World. This was one of the most community-requested changes and one of the least controversial developer decisions.
+          </div>
+        </div>
+
+        <div class="rule-card">
+          <div class="rule-title">Statless Builds — Effectively Dead</div>
+          <div class="rule-body">
+            Dexless / Lukless / Strless builds no longer function as viable meta paths. Equipment requirements and stat distributions have been shuffled to reward normal stat investment and gear progression.
+          </div>
+        </div>
+
+        <div class="rule-card">
+          <div class="rule-title">Character Creation — No More Dice</div>
+          <div class="rule-body">
+            The creation stat dice roll is removed. Stats are automatically assigned from Level 1–10, then reset on first job advancement. Players can allocate AP in <strong>bulk amounts</strong> rather than one click at a time.
+          </div>
+        </div>
+
+        <div class="rule-card">
+          <div class="rule-title">Song of Solomon — Alt Progression</div>
+          <div class="rule-body">
+            New consumable items granting <strong>500 XP each</strong> — obtainable from quests (e.g., Olaf's Job Advancement gives 10 Songs of Solomon). These can be transferred through storage to level alt characters.
+          </div>
+        </div>
+
+        <img src="./assets/image9.png" alt="Breaking Degenerate Loops Blueprint" class="mechanic-slide" onclick="openLightbox(8)" style="margin-top:1.5rem" />
+      </div>
+
+      <div>
+        <div class="rule-card">
+          <div class="rule-title">The 10-Second Activity Rule</div>
+          <div class="rule-body">
+            Players receive <strong>zero party XP</strong> if they have not performed an action (attacking a monster or using a skill) in the last 10 seconds. A mage teleporting was still considered active. Leeching as a dominant playstyle is effectively eradicated.
+          </div>
+        </div>
+
+        <div style="margin: 1.5rem 0 0.5rem">
+          <div class="mechanic-group-title" style="font-family:'Cinzel',serif;font-size:0.9rem;color:var(--maple-gold);letter-spacing:0.08em;text-transform:uppercase;padding-bottom:0.5rem;border-bottom:1px solid var(--border-gold)">Party Bonus XP — Massively Buffed</div>
+        </div>
+        <div class="party-bonuses">
+          <div class="party-bonus-card">
+            <span class="party-num">+25%</span>
+            <span class="party-label">2 Players<br/>(was +10%)</span>
+          </div>
+          <div class="party-bonus-card">
+            <span class="party-num">+55%</span>
+            <span class="party-label">3 Players<br/>(was +15%)</span>
+          </div>
+          <div class="party-bonus-card">
+            <span class="party-num">+90%</span>
+            <span class="party-label">4 Players<br/>(was +20%)</span>
+          </div>
+        </div>
+
+        <img src="./assets/image10.png" alt="Anti-Leeching Activity Rule Blueprint" class="mechanic-slide" onclick="openLightbox(9)" />
+        <img src="./assets/image12.png" alt="QoL Upgrades Blueprint" class="mechanic-slide" onclick="openLightbox(11)" />
+        <img src="./assets/image13.png" alt="The Synthesis Blueprint" class="mechanic-slide" onclick="openLightbox(12)" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── INTERVIEW ── -->
+<section id="interview">
+  <div class="section-inner">
+    <div class="section-label">Developer Insights</div>
+    <h2 class="section-title"><em>Inkwell</em> Speaks —<br/>Maple Con 2025</h2>
+    <p class="section-desc">Dino Fry (YouTube) sat down with Han Bil O (Inkwell), Head of Western Development at Nexon, for a 30-minute exclusive interview at the MapleStory 20th Anniversary celebration.</p>
+
+    <div class="interview-layout">
+      <div class="interview-questions">
+        <div class="qa-block">
+          <div class="qa-q">On the origin of Classic World</div>
+          <div class="qa-a">Inkwell said the idea came to him <strong>around the time of the Big Bang update</strong> — about 10 years before the project entered active development. He brought it to Nexon then, but they weren't interested. He brought it up again ~4 years ago, development started 2–3 years ago.</div>
+        </div>
+        <div class="qa-block">
+          <div class="qa-q">Why not just play private servers?</div>
+          <div class="qa-a">"If you want to play MapleStory Classic World right now, you already can" — Inkwell acknowledged private servers exist. The official version's goal is to add QoL that modern players expect <em>while still keeping it classic</em> — not just a raw replication.</div>
+        </div>
+        <div class="qa-block">
+          <div class="qa-q">On HP Washing</div>
+          <div class="qa-a">Inkwell brought up HP Washing unprompted, saying: <strong>"HP Washing was more of a bug back in the day than a feature."</strong> He made clear it will not be in Classic World and that the monetisation model won't depend on it.</div>
+        </div>
+        <div class="qa-block">
+          <div class="qa-q">On cubes and gachapon</div>
+          <div class="qa-a"><strong>No plans for Cubes.</strong> Gachapon is still being discussed — Inkwell compared it to PSSB (cosmetics-only loot boxes in modern GMS) and was careful to note it depends on <em>what items</em> gachapon would contain. He wants to avoid pay-to-win by definition.</div>
+        </div>
+        <div class="qa-block">
+          <div class="qa-q">On the content timeline and what comes after launch</div>
+          <div class="qa-a">Ludibrium and El Nath are <strong>already in development or nearly complete</strong>. But the timeline won't follow original GMS order. Like Spider-Verse: Classic World will diverge. "What if the Black Mage didn't die?" Future content tracks what players ask for — not what the original game did.</div>
+        </div>
+        <div class="qa-block">
+          <div class="qa-q">On new classes</div>
+          <div class="qa-a">The possibility is open. Inkwell's answer: <strong>"What do the players want?"</strong> If there's demand, he'll consider it. Player feedback is the north star for every major content decision.</div>
+        </div>
+      </div>
+
+      <div class="inkwell-profile">
+        <div class="inkwell-header">
+          <div class="inkwell-avatar">🍁</div>
+          <div>
+            <div class="inkwell-name">Inkwell</div>
+            <div class="inkwell-title">Han Bil O · Head of Western Development, Nexon<br/>Interview: October 25, 2025 · Maple Con</div>
+          </div>
+        </div>
+        <div class="inkwell-facts">
+          <div class="inkwell-fact">
+            <div class="fact-dot"></div>
+            <span>Started playing MapleStory in <strong>2003–2004</strong> during the open beta. Was ranked in the top 60 Warriors on the Zenith server in Korean MapleStory.</span>
+          </div>
+          <div class="inkwell-fact">
+            <div class="fact-dot"></div>
+            <span>Played a <strong>Fighter with a two-handed sword</strong> — before third job was even released.</span>
+          </div>
+          <div class="inkwell-fact">
+            <div class="fact-dot"></div>
+            <span>Conceived Classic World <strong>around the time of the Big Bang update</strong> — approximately a decade before active development began.</span>
+          </div>
+          <div class="inkwell-fact">
+            <div class="fact-dot"></div>
+            <span>Philosophy: <strong>"We're not reviving old school Maple Story. It's a modernised classic"</strong> — accessible to ages 20s through 40s.</span>
+          </div>
+          <div class="inkwell-fact">
+            <div class="fact-dot"></div>
+            <span>Feels MapleStory's unique appeal is <strong>pixel art</strong> — timeless aesthetic that transcends generations of players.</span>
+          </div>
+          <div class="inkwell-fact">
+            <div class="fact-dot"></div>
+            <span>Confirmed: <strong>"We're ready to release Classic World right now"</strong> — playtests first, feedback shapes what comes next.</span>
+          </div>
+          <div class="inkwell-fact">
+            <div class="fact-dot"></div>
+            <span>On unfinished lore: <strong>"We never got to tell Mani's story. What happened to Chief Stan in Henesys?"</strong> Classic World will revisit and expand unexplored narratives.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── COMMUNITY ── -->
+<section id="community">
+  <div class="section-inner">
+    <div class="section-label">Community Telemetry</div>
+    <h2 class="section-title">High Approval for <em>Meta Shifts</em>,<br/>High Anxiety over <span class="gold">Inflation</span></h2>
+    <p class="section-desc">Reddit (r/MSClassicWorld, r/Maplestory) consensus, synthesised from community discussions ahead of and during the LA playtest period.</p>
+
+    <div class="community-layout">
+      <div class="consensus-list">
+        <div class="consensus-item">
+          <div class="consensus-num">01</div>
+          <div class="consensus-text"><strong>Do not preserve HP Washing.</strong> The community is overwhelmingly positive about its removal. Seen as a legacy bug, a monetisation-driven mistake, and fundamentally unfair. Multiple r/Maplestory threads cite it as a dealbreaker for return players.</div>
+          <span class="sentiment-badge positive">STRONG +</span>
+        </div>
+        <div class="consensus-item">
+          <div class="consensus-num">02</div>
+          <div class="consensus-text"><strong>Leeching removal is welcomed.</strong> The 10-second activity rule gets strong support. Community consensus: leeching was dominant and "degenerate" — it should not be preserved for authenticity's sake.</div>
+          <span class="sentiment-badge positive">STRONG +</span>
+        </div>
+        <div class="consensus-item">
+          <div class="consensus-num">03</div>
+          <div class="consensus-text"><strong>Statless builds are dead — mostly OK.</strong> Some players mourn the loss of Dexless/Lukless build identity. Others are relieved that character progression will be more diverse and less gear-path-converging.</div>
+          <span class="sentiment-badge mixed">MIXED</span>
+        </div>
+        <div class="consensus-item">
+          <div class="consensus-num">04</div>
+          <div class="consensus-text"><strong>Attack Power vs Weapon Attack confusion.</strong> Multiple Reddit threads argue the naming is backwards — community intuition says WA should come from weapons, not buffs. The renaming has generated significant discussion.</div>
+          <span class="sentiment-badge neutral">CONCERN</span>
+        </div>
+        <div class="consensus-item">
+          <div class="consensus-num">05</div>
+          <div class="consensus-text"><strong>Economy & inflation anxiety.</strong> The most persistent long-term worry: meso generation outpacing meaningful sinks. "If mesos stop mattering, trading breaks." Stronger meso sinks are frequently requested.</div>
+          <span class="sentiment-badge negative">HIGH ANXIETY</span>
+        </div>
+        <div class="consensus-item">
+          <div class="consensus-num">06</div>
+          <div class="consensus-text"><strong>Bandit/Shadower speculation.</strong> Reddit class theory suggests Bandits may be strong under the new math due to Savage Blow's positioning and multiplier. But the community acknowledges old intuitions may not transfer cleanly.</div>
+          <span class="sentiment-badge mixed">THEORY</span>
+        </div>
+        <div class="consensus-item">
+          <div class="consensus-num">07</div>
+          <div class="consensus-text"><strong>Power creep at low levels.</strong> Concern that overpowered early-game items could trivialise progression — the same mistake that eroded early-game satisfaction in original GMS.</div>
+          <span class="sentiment-badge negative">CONCERN</span>
+        </div>
+        <div class="consensus-item">
+          <div class="consensus-num">08</div>
+          <div class="consensus-text"><strong>Community wants "classic feeling," not "classic inconvenience."</strong> The strongest meta-consensus: QoL is welcome. But the game should preserve the pacing, exploration, and social texture of old Maple — not the grind frustration.</div>
+          <span class="sentiment-badge positive">CONSENSUS</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="anxiety-chart">
+          <div class="anxiety-title">Community Sentiment Gauges</div>
+
+          <div class="gauge-row">
+            <div class="gauge-label">
+              <span>HP Washing Removal</span>
+              <span style="color:#44FF88">92%</span>
+            </div>
+            <div class="gauge-bar">
+              <div class="gauge-fill positive-fill" style="width:92%"></div>
+            </div>
+          </div>
+
+          <div class="gauge-row">
+            <div class="gauge-label">
+              <span>Anti-Leech Rule</span>
+              <span style="color:#44FF88">85%</span>
+            </div>
+            <div class="gauge-bar">
+              <div class="gauge-fill positive-fill" style="width:85%"></div>
+            </div>
+          </div>
+
+          <div class="gauge-row">
+            <div class="gauge-label">
+              <span>Statless Build Removal</span>
+              <span style="color:#FFD060">58%</span>
+            </div>
+            <div class="gauge-bar">
+              <div class="gauge-fill neutral-fill" style="width:58%"></div>
+            </div>
+          </div>
+
+          <div class="gauge-row">
+            <div class="gauge-label">
+              <span>Economy Inflation Anxiety</span>
+              <span style="color:#FF5555">78%</span>
+            </div>
+            <div class="gauge-bar">
+              <div class="gauge-fill negative-fill" style="width:78%"></div>
+            </div>
+          </div>
+
+          <div class="gauge-row">
+            <div class="gauge-label">
+              <span>Early-Game Power Creep Fear</span>
+              <span style="color:#FF5555">65%</span>
+            </div>
+            <div class="gauge-bar">
+              <div class="gauge-fill negative-fill" style="width:65%"></div>
+            </div>
+          </div>
+
+          <div class="gauge-row">
+            <div class="gauge-label">
+              <span>Monetisation Confidence</span>
+              <span style="color:#FFD060">55%</span>
+            </div>
+            <div class="gauge-bar">
+              <div class="gauge-fill neutral-fill" style="width:55%"></div>
+            </div>
+          </div>
+        </div>
+
+        <img src="./assets/image14.png" alt="Community Telemetry Blueprint" class="mechanic-slide" onclick="openLightbox(13)" style="margin-top:1.5rem" />
+
+        <div class="econ-card" style="margin-top:1.5rem; border-color: var(--border-gold)">
+          <div class="econ-title">Source Note</div>
+          <div class="econ-body" style="font-size:0.88rem">
+            Reddit data sourced from r/MSClassicWorld and r/Maplestory discussions. Sentiment gauges are community-derived approximations based on thread analysis — not official surveys. Reddit is treated as a <em>sentiment signal</em>, not authoritative documentation.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WORLD ── -->
+<section id="world">
+  <div class="section-inner">
+    <div class="section-label">World & Lore</div>
+    <h2 class="section-title">Charting an <em>Unexplored</em><br/>Chronological Timeline</h2>
+    <p class="section-desc">Victoria Island gets a new zone. Some maps are gone. And a parallel lore framework opens doors that original GMS never walked through.</p>
+
+    <div class="world-layout">
+      <div>
+        <img src="./assets/image15.png" alt="New Zones and World Map Blueprint" class="mechanic-slide" onclick="openLightbox(14)" style="margin-bottom:2rem" />
+
+        <div class="mechanic-group">
+          <div class="mechanic-group-title">Map Changes Summary</div>
+          <div class="location-grid">
+            <div class="location-card new-map">
+              <div class="location-name">Forgotten Hollow</div>
+              <div class="location-desc">Levels 38–50 · Victoria Island<br/>New zone added to Classic World</div>
+            </div>
+            <div class="location-card removed">
+              <div class="location-name">Forest of Golems</div>
+              <div class="location-desc">Absent in all playtests</div>
+            </div>
+            <div class="location-card removed">
+              <div class="location-name">Monkey Forest 2</div>
+              <div class="location-desc">Absent in all playtests</div>
+            </div>
+            <div class="location-card removed">
+              <div class="location-name">Florina Beach</div>
+              <div class="location-desc">Entirety absent from Classic World</div>
+            </div>
+            <div class="location-card">
+              <div class="location-name">Ludibrium</div>
+              <div class="location-desc">In development · Not following original GMS order</div>
+            </div>
+            <div class="location-card">
+              <div class="location-name">El Nath</div>
+              <div class="location-desc">In development · Ready when players want it</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="rule-card">
+          <div class="rule-title">Hidden Streets — No Yellow Glow</div>
+          <div class="rule-body">
+            Hidden Streets will no longer display the yellow portal glow effect, preserving the sense of discovery and mystery that made exploring Victoria Island memorable.
+          </div>
+        </div>
+
+        <div class="rule-card">
+          <div class="rule-title">Player Inspection</div>
+          <div class="rule-body">
+            You can now hover over other players' equipment to see their stats and applied scrolls in a tooltip window. Social and competitive transparency without disrupting gameplay.
+          </div>
+        </div>
+
+        <div class="rule-card">
+          <div class="rule-title">Bob the Snail Returns</div>
+          <div class="rule-body">
+            The legendary Green Snail is back — but without a name tag and unable to spawn other Green Snails. A nod to classic community lore.
+          </div>
+        </div>
+
+        <div class="rule-card">
+          <div class="rule-title">The Parallel Lore Framework</div>
+          <div class="rule-body">
+            Classic World is not just a gameplay server — it's a <strong>narrative fork</strong>. Developers plan to explore stories never told in original GMS:
+            <br/><br/>
+            • <strong>NPC Mani</strong> — Her story was never told. Classic World will give it space.<br/>
+            • <strong>Chief Stan</strong> — What happened in Henesys? A mystery the original game never resolved.<br/>
+            • <strong>The Hero's Gladius</strong> — An artefact with untold lore.<br/>
+            • <strong>The Black Mage</strong> — "What if he didn't die?" A future narrative thread left open.
+          </div>
+        </div>
+
+        <div class="rule-card">
+          <div class="rule-title">Party Quests & Channels</div>
+          <div class="rule-body">
+            Party quests are <strong>instanced</strong>. There may be a channel limit on how many parties can enter simultaneously. A new <strong>Party Search</strong> feature can auto-invite similarly-levelled players. Loot distribution settings are now configurable per party.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">MapleClassic</div>
+      <p class="footer-desc">
+        A comprehensive knowledge base for MapleStory Classic World — compiled from developer interviews, LA playtest footage, Reddit community analysis, and the official engineering blueprint. All content sourced directly from provided materials.
+      </p>
+    </div>
+    <div>
+      <div class="footer-col-title">Sections</div>
+      <ul class="footer-links">
+        <li><a href="#vision">Design Philosophy</a></li>
+        <li><a href="#blueprint">Blueprint Slides</a></li>
+        <li><a href="#mechanics">Combat Mechanics</a></li>
+        <li><a href="#classes">Class Changes</a></li>
+        <li><a href="#economy">Economy & QoL</a></li>
+        <li><a href="#progression">Progression Systems</a></li>
+        <li><a href="#interview">Developer Interview</a></li>
+        <li><a href="#community">Community Voice</a></li>
+        <li><a href="#world">World & Lore</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Sources</div>
+      <ul class="footer-links">
+        <li><a href="#">Dino Fry — LA Playtest Breakdown</a></li>
+        <li><a href="#">Dino Fry × Inkwell — Maple Con 2025</a></li>
+        <li><a href="#">Playtest Class Commentary</a></li>
+        <li><a href="#">r/MSClassicWorld Reddit Notes</a></li>
+        <li><a href="#">MapleStory Parallel Blueprint (PPTX)</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 · MapleStory Classic World Fan Documentation · Not affiliated with Nexon</div>
+    <div class="source-note">All content sourced exclusively from provided materials · Blueprint: P-001-CW</div>
+  </div>
+</footer>
+
+<!-- ── LIGHTBOX ── -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <button class="lightbox-nav prev" onclick="event.stopPropagation(); changeLightbox(-1)">‹</button>
+  <img class="lightbox-img" id="lightbox-img" src="" alt="" />
+  <button class="lightbox-nav next" onclick="event.stopPropagation(); changeLightbox(1)">›</button>
+</div>
+
+<script>
+  const slides = [
+    { src: './assets/image1.png', alt: 'Engineering the Parallel MapleStory Timeline' },
+    { src: './assets/image2.png', alt: 'What If The Big Bang Never Happened? — Timeline Fork' },
+    { src: './assets/image3.png', alt: 'Rewiring the Foundational Physics of Combat' },
+    { src: './assets/image4.png', alt: 'The Absolute Decoupling of Attack Power and Weapon Attack' },
+    { src: './assets/image5.png', alt: 'Class Equilibrium — Rebalancing of Legacy Roles' },
+    { src: './assets/image6.png', alt: 'Warriors: Passive RNG to Active Tactical Charging' },
+    { src: './assets/image7.png', alt: 'Magicians: Infinite Healing to Multi-Target Lethality' },
+    { src: './assets/image8.png', alt: 'Bowmen & Thieves: Positional Combat Rewrite' },
+    { src: './assets/image9.png', alt: 'Breaking Degenerate Legacy Progression Loops' },
+    { src: './assets/image10.png', alt: 'Eradicating Passive Leeching: The 10-Second Rule' },
+    { src: './assets/image11.png', alt: 'Establishing a Predictable Economic Foundation' },
+    { src: './assets/image12.png', alt: 'QoL Upgrades for the Modern Veteran' },
+    { src: './assets/image13.png', alt: 'The Synthesis: Lowered Multipliers, Infinite Consistency' },
+    { src: './assets/image14.png', alt: 'Community Telemetry: Approval & Anxiety Gauges' },
+    { src: './assets/image15.png', alt: 'Charting an Unexplored Chronological Timeline' }
+  ];
+
+  let currentSlide = 0;
+
+  function openLightbox(index) {
+    currentSlide = index;
+    const lb = document.getElementById('lightbox');
+    const img = document.getElementById('lightbox-img');
+    img.src = slides[index].src;
+    img.alt = slides[index].alt;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox(event) {
+    if (event && event.target !== document.getElementById('lightbox') && !event.target.classList.contains('lightbox-close')) return;
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function changeLightbox(dir) {
+    currentSlide = (currentSlide + dir + slides.length) % slides.length;
+    const img = document.getElementById('lightbox-img');
+    img.src = slides[currentSlide].src;
+    img.alt = slides[currentSlide].alt;
+  }
+
+  document.addEventListener('keydown', (e) => {
+    const lb = document.getElementById('lightbox');
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox({ target: lb });
+    if (e.key === 'ArrowLeft') changeLightbox(-1);
+    if (e.key === 'ArrowRight') changeLightbox(1);
+  });
+
+  // Animate gauge bars on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.width = entry.target.dataset.width;
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.gauge-fill').forEach(fill => {
+    const w = fill.style.width;
+    fill.dataset.width = w;
+    fill.style.width = '0%';
+    observer.observe(fill);
+  });
+</script>
+</body>
+</html>
