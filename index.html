@@ -2002,8 +2002,20 @@
         height: 40px;
         font-size: 0.9rem;
       }
-      .flip-prev { left: 0.75rem; }
-      .flip-next { right: 0.75rem; }
+      .flip-prev { left: 0.5rem; }
+      .flip-next { right: 0.5rem; }
+      #book-container {
+        padding-top: 80px !important;
+        align-items: flex-start !important;
+      }
+      .book-page > section {
+        padding: 1.5rem 1rem !important;
+      }
+      .page-indicator {
+        bottom: 1rem;
+        font-size: 0.65rem;
+        padding: 0.3rem 0.8rem;
+      }
     }
   </style>
 </head>
@@ -2027,7 +2039,7 @@
   </div>
 </nav>
 
-<div id="book-container" style="display:flex;justify-content:center;align-items:center;min-height:100vh;padding-top:110px;">
+<div id="book-container" style="display:flex;justify-content:center;align-items:center;min-height:100vh;padding-top:110px;width:100%;">
   <div id="book">
 
     <!-- PAGE 0: Hero + Wiki Banner -->
@@ -3420,16 +3432,21 @@
 
 <!-- ── STPAGEFLIP INIT ── -->
 <script>
+const isMobile = window.innerWidth <= 768;
 const pageFlip = new St.PageFlip(document.getElementById('book'), {
-    width: 1400,
-    height: 900,
+    width: isMobile ? window.innerWidth - 20 : 1200,
+    height: isMobile ? window.innerHeight - 140 : 800,
     size: 'stretch',
-    maxShadowOpacity: 0.5,
+    minWidth: 300,
+    maxWidth: 1400,
+    minHeight: 400,
+    maxHeight: 1000,
+    maxShadowOpacity: 0.4,
     showCover: true,
     mobileScrollSupport: false,
     swipeDistance: 30,
     useMouseEvents: true,
-    flippingTime: 800,
+    flippingTime: 600,
     startPage: 0,
     drawShadow: true,
     autoSize: true,
