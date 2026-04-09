@@ -64,6 +64,304 @@
     /* push content below nav + author banner */
     .hero { padding-top: 110px; }
 
+    /* ── DATA CONFIDENCE BADGES ── */
+    .source-badge {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 2px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      vertical-align: middle;
+      margin-left: 0.4rem;
+    }
+    .source-badge.datamined {
+      background: rgba(0,255,136,0.12);
+      color: #00ff88;
+      border: 1px solid rgba(0,255,136,0.3);
+    }
+    .source-badge.playtest {
+      background: rgba(68,200,255,0.12);
+      color: #44CCFF;
+      border: 1px solid rgba(68,200,255,0.3);
+    }
+    .source-badge.interview {
+      background: rgba(255,208,96,0.12);
+      color: var(--maple-gold);
+      border: 1px solid rgba(255,208,96,0.3);
+    }
+    .source-badge.community {
+      background: rgba(180,80,255,0.12);
+      color: #bb66ff;
+      border: 1px solid rgba(180,80,255,0.3);
+    }
+
+    /* ── DATAMINED INTEL SECTION ── */
+    #datamined { background: var(--bg-deep); }
+
+    .datamined-hero-banner {
+      background: linear-gradient(135deg, rgba(0,255,136,0.06) 0%, rgba(0,180,100,0.03) 50%, transparent 100%);
+      border: 1px solid rgba(0,255,136,0.2);
+      border-radius: 6px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .datamined-hero-banner .banner-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+    .datamined-hero-banner .banner-text {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    .datamined-hero-banner .banner-text strong {
+      color: #00ff88;
+    }
+
+    .scope-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+    .scope-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(0,255,136,0.15);
+      border-radius: 6px;
+      padding: 1.4rem;
+      text-align: center;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .scope-card:hover {
+      border-color: rgba(0,255,136,0.4);
+      background: var(--bg-card-hover);
+    }
+    .scope-num {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #00ff88;
+      display: block;
+    }
+    .scope-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-top: 0.3rem;
+    }
+    .scope-sub {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-top: 0.4rem;
+      line-height: 1.4;
+    }
+
+    .confirmed-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-bottom: 3rem;
+    }
+    .confirmed-card {
+      background: var(--bg-card);
+      border-radius: 4px;
+      padding: 1.2rem 1.4rem;
+      border: 1px solid rgba(255,255,255,0.04);
+      display: flex;
+      gap: 0.8rem;
+      align-items: flex-start;
+      transition: border-color 0.2s;
+    }
+    .confirmed-card:hover { border-color: var(--border-orange); }
+    .confirmed-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .confirmed-card .cc-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+    .confirmed-card .cc-desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 2rem 0;
+      font-size: 0.88rem;
+    }
+    .comparison-table th {
+      font-family: 'Cinzel', serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #00ff88;
+      padding: 0.7rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(0,255,136,0.25);
+    }
+    .comparison-table td {
+      padding: 0.6rem 1rem;
+      color: var(--text-secondary);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .comparison-table tr:hover td { color: var(--text-primary); background: rgba(255,255,255,0.02); }
+    .comparison-table .classic-val { color: #00ff88; font-weight: 600; }
+    .comparison-table .live-val { color: var(--text-dim); }
+
+    /* ── NEW CONTENT SECTION ── */
+    #newcontent { background: var(--bg-section); }
+
+    .passage-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      margin-bottom: 3rem;
+    }
+
+    .passage-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: 6px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .passage-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--maple-gold), var(--maple-orange));
+    }
+    .passage-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--maple-gold);
+      margin-bottom: 0.3rem;
+    }
+    .passage-subtitle {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      margin-bottom: 1.2rem;
+    }
+    .passage-map-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .passage-map-list li {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      padding: 0.4rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .passage-map-list li::before {
+      content: '▸';
+      color: var(--maple-gold);
+      font-size: 0.7rem;
+    }
+
+    .new-monster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.8rem;
+      margin: 2rem 0;
+    }
+    .new-mob-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,208,96,0.15);
+      border-radius: 4px;
+      padding: 0.8rem 1rem;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+    .new-mob-card:hover { border-color: var(--maple-gold); }
+    .new-mob-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .new-mob-id {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.58rem;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+    }
+
+    .scroll-tier-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .scroll-tier-card {
+      background: var(--bg-card);
+      border-radius: 6px;
+      padding: 1.3rem;
+      text-align: center;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .scroll-tier-card:hover { transform: translateY(-2px); }
+    .scroll-tier-card.lesser { border: 1px solid rgba(100,255,100,0.3); }
+    .scroll-tier-card.intermediate { border: 1px solid rgba(68,200,255,0.3); }
+    .scroll-tier-card.greater { border: 1px solid rgba(255,160,40,0.3); }
+    .scroll-tier-card.chaos { border: 1px solid rgba(255,50,50,0.3); }
+    .scroll-tier-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+    .scroll-tier-card.lesser .scroll-tier-name { color: #66ff66; }
+    .scroll-tier-card.intermediate .scroll-tier-name { color: #44CCFF; }
+    .scroll-tier-card.greater .scroll-tier-name { color: #FFA028; }
+    .scroll-tier-card.chaos .scroll-tier-name { color: #FF3333; }
+    .scroll-tier-rate {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1.4rem;
+      font-weight: 700;
+      display: block;
+      margin: 0.3rem 0;
+    }
+    .scroll-tier-card.lesser .scroll-tier-rate { color: #66ff66; }
+    .scroll-tier-card.intermediate .scroll-tier-rate { color: #44CCFF; }
+    .scroll-tier-card.greater .scroll-tier-rate { color: #FFA028; }
+    .scroll-tier-card.chaos .scroll-tier-rate { color: #FF3333; }
+    .scroll-tier-effect {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+    .scroll-tier-note {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--text-dim);
+      margin-top: 0.4rem;
+      letter-spacing: 0.05em;
+    }
+
     /* ── REFERENCE SECTION ── */
     #reference { background: var(--bg-deep); }
 
@@ -1494,10 +1792,12 @@
     <a href="#" class="nav-logo">Maple<span>Classic</span></a>
     <ul class="nav-links">
       <li><a href="#vision">Vision</a></li>
+      <li><a href="#datamined" style="color:#00ff88">Datamined</a></li>
       <li><a href="#blueprint">Blueprint</a></li>
       <li><a href="#mechanics">Mechanics</a></li>
       <li><a href="#classes">Classes</a></li>
       <li><a href="#economy">Economy</a></li>
+      <li><a href="#newcontent" style="color:var(--maple-gold)">New Content</a></li>
       <li><a href="#progression">Progression</a></li>
       <li><a href="#interview">Interview</a></li>
       <li><a href="#community">Community</a></li>
@@ -1518,9 +1818,10 @@
         <span class="line3">The Parallel Blueprint</span>
       </h1>
       <p class="hero-subtitle fade-up fade-up-delay-2">
-        An in-depth analysis of the modernised pre-Big Bang experience — the combat rewiring, progression overhaul, economic restructuring, and developer philosophy behind the parallel timeline.
+        The definitive analysis — now powered by <strong style="color:#00ff88">datamined WZ metadata</strong> from the actual game client (v1.1.0.0, signed April 6 2026), cross-referenced with playtest footage, developer interviews, and community analysis.
       </p>
       <div class="hero-tags fade-up fade-up-delay-3">
+        <span class="tag" style="border-color:rgba(0,255,136,0.4);color:#00ff88;background:rgba(0,255,136,0.08)">WZ Datamine</span>
         <span class="tag">Pre-Big Bang</span>
         <span class="tag">GMS Playtest</span>
         <span class="tag">Developer Interview</span>
@@ -1585,6 +1886,199 @@
             <span class="stat-label">Core design target</span>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DATAMINED INTEL ── -->
+<section id="datamined">
+  <div class="section-inner">
+    <div class="section-label" style="color:#00ff88">Datamined Intelligence</div>
+    <h2 class="section-title">Ground Truth from the <em style="color:#00ff88">Game Files</em></h2>
+    <p class="section-desc">Extracted from 3,859 files across 46 WZ archives (416 MB) and binary analysis of <code style="color:#00ff88">MapleStory_0_zucx.exe</code> v1.1.0.0 (Themida-protected, signed April 6 2026). This is an unreleased Closed Beta / internal QA build.</p>
+
+    <div class="datamined-hero-banner">
+      <div class="banner-icon">&#x1F4E1;</div>
+      <div class="banner-text">
+        <strong>This is dramatically more restrictive than anyone expected.</strong> This is not a "v62" or "v83" recreation. It's closer to Beta MapleStory / GMS v.0.0x-v.28 — the earliest era of the game, rebuilt on the modern engine. Only Victoria Island. Only 2nd job. Only 4 classes. Zero cubes, zero starforce, zero flames.
+      </div>
+    </div>
+
+    <div class="scope-grid">
+      <div class="scope-card">
+        <span class="scope-num">4</span>
+        <span class="scope-label">Classes</span>
+        <div class="scope-sub">Warrior, Magician, Bowman, Thief — no Pirates</div>
+      </div>
+      <div class="scope-card">
+        <span class="scope-num">2nd Job</span>
+        <span class="scope-label">Max Advancement</span>
+        <div class="scope-sub">No 3rd job, no 4th job, no Crusader/Hermit/Ranger/Priest</div>
+      </div>
+      <div class="scope-card">
+        <span class="scope-num">304</span>
+        <span class="scope-label">Total Maps</span>
+        <div class="scope-sub">Victoria Island + Maple Island only — zero Ossyria</div>
+      </div>
+      <div class="scope-card">
+        <span class="scope-num">91</span>
+        <span class="scope-label">Monsters</span>
+        <div class="scope-sub">Including 10 brand-new Classic World exclusives</div>
+      </div>
+    </div>
+
+    <div class="scope-grid">
+      <div class="scope-card">
+        <span class="scope-num">188</span>
+        <span class="scope-label">NPCs</span>
+        <div class="scope-sub">Classic Victoria Island cast + Cave Fairy NPCs</div>
+      </div>
+      <div class="scope-card">
+        <span class="scope-num">216</span>
+        <span class="scope-label">Scroll Types</span>
+        <div class="scope-sub">Redesigned 4-tier system with fusion mechanic</div>
+      </div>
+      <div class="scope-card">
+        <span class="scope-num">~70</span>
+        <span class="scope-label">Total Skills</span>
+        <div class="scope-sub">Beginner through 2nd job advancement only</div>
+      </div>
+      <div class="scope-card">
+        <span class="scope-num">5</span>
+        <span class="scope-label">Field Bosses</span>
+        <div class="scope-sub">Mushmom, Jr. Balrog, Zombie Mushmom, Rotten Mushmom, Mano</div>
+      </div>
+    </div>
+
+    <div class="mechanic-group">
+      <div class="mechanic-group-title" style="color:#00ff88;border-color:rgba(0,255,136,0.3)">Confirmed Present in Game Data</div>
+    </div>
+    <div class="confirmed-grid">
+      <div class="confirmed-card">
+        <div class="confirmed-icon" style="color:#44FF88">&#x2705;</div>
+        <div>
+          <div class="cc-title">Manual AP Allocation</div>
+          <div class="cc-desc">Binary: <code>SID_MSCW_ASK_STATUP_AP_AMOUNT</code> — bulk AP allocation confirmed</div>
+        </div>
+      </div>
+      <div class="confirmed-card">
+        <div class="confirmed-icon" style="color:#44FF88">&#x2705;</div>
+        <div>
+          <div class="cc-title">Free Market</div>
+          <div class="cc-desc">FM Entrance + 11 channels in map data — player-driven economy preserved</div>
+        </div>
+      </div>
+      <div class="confirmed-card">
+        <div class="confirmed-icon" style="color:#44FF88">&#x2705;</div>
+        <div>
+          <div class="cc-title">Kerning PQ</div>
+          <div class="cc-desc">"1st Accompaniment" maps (7 stages) present in data — the #1 community request</div>
+        </div>
+      </div>
+      <div class="confirmed-card">
+        <div class="confirmed-icon" style="color:#44FF88">&#x2705;</div>
+        <div>
+          <div class="cc-title">Classic Training Spots</div>
+          <div class="cc-desc">Pig Beach, Ant Tunnel I-IV, Evil Eye Cave, Sleepywood — all confirmed</div>
+        </div>
+      </div>
+      <div class="confirmed-card">
+        <div class="confirmed-icon" style="color:#44FF88">&#x2705;</div>
+        <div>
+          <div class="cc-title">Anti-Cheat Infrastructure</div>
+          <div class="cc-desc">XignCode3, lie detector, GM stalker mode, anti-macro timers in binary</div>
+        </div>
+      </div>
+      <div class="confirmed-card">
+        <div class="confirmed-icon" style="color:#44FF88">&#x2705;</div>
+        <div>
+          <div class="cc-title">Link Skills / Union Blocked</div>
+          <div class="cc-desc">Binary flags <code>linkSkillBlock</code> and <code>unionBlock</code> active for Classic</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mechanic-group">
+      <div class="mechanic-group-title" style="color:#FF5555;border-color:rgba(255,85,85,0.3)">Confirmed Absent from Game Data</div>
+    </div>
+    <div class="confirmed-grid">
+      <div class="confirmed-card" style="border-color:rgba(255,85,85,0.15)">
+        <div class="confirmed-icon">&#x274C;</div>
+        <div>
+          <div class="cc-title">Zero Cubes</div>
+          <div class="cc-desc">Not a single cube item in the entire consumable database. <code>potentialCostTable.img</code> exists but is a dead remnant from the shared codebase.</div>
+        </div>
+      </div>
+      <div class="confirmed-card" style="border-color:rgba(255,85,85,0.15)">
+        <div class="confirmed-icon">&#x274C;</div>
+        <div>
+          <div class="cc-title">Zero Starforce</div>
+          <div class="cc-desc">No Star Enhancement scrolls or starforce items in any data file</div>
+        </div>
+      </div>
+      <div class="confirmed-card" style="border-color:rgba(255,85,85,0.15)">
+        <div class="confirmed-icon">&#x274C;</div>
+        <div>
+          <div class="cc-title">Zero Flames / Bonus Stats</div>
+          <div class="cc-desc">No flame items found anywhere in the item archives</div>
+        </div>
+      </div>
+      <div class="confirmed-card" style="border-color:rgba(255,85,85,0.15)">
+        <div class="confirmed-icon">&#x274C;</div>
+        <div>
+          <div class="cc-title">No Ossyria / No Zakum</div>
+          <div class="cc-desc">Zero Ossyria maps. Zakum exists in <code>BossParty.img</code> but has no map data — a dead remnant. No Horntail, no Pink Bean.</div>
+        </div>
+      </div>
+      <div class="confirmed-card" style="border-color:rgba(255,85,85,0.15)">
+        <div class="confirmed-icon">&#x274C;</div>
+        <div>
+          <div class="cc-title">No Pirates</div>
+          <div class="cc-desc">No job 500+ skills, no Knuckle or Gun weapon data at all</div>
+        </div>
+      </div>
+      <div class="confirmed-card" style="border-color:rgba(255,85,85,0.15)">
+        <div class="confirmed-icon">&#x274C;</div>
+        <div>
+          <div class="cc-title">No 3rd/4th/5th/6th Job</div>
+          <div class="cc-desc">Zero skill files beyond 2nd job. Binary has 6th job strings but these are engine remnants only.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mechanic-group">
+      <div class="mechanic-group-title">Classic World vs Live MapleStory</div>
+    </div>
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Classic World</th>
+          <th>Live MapleStory</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Classes</td><td class="classic-val">4</td><td class="live-val">50+</td></tr>
+        <tr><td>Job Tiers</td><td class="classic-val">2 (1st + 2nd)</td><td class="live-val">6 (1st through 6th)</td></tr>
+        <tr><td>Total Skills</td><td class="classic-val">~70</td><td class="live-val">Thousands</td></tr>
+        <tr><td>Monsters</td><td class="classic-val">91</td><td class="live-val">10,000+</td></tr>
+        <tr><td>Maps</td><td class="classic-val">304</td><td class="live-val">50,000+</td></tr>
+        <tr><td>NPCs</td><td class="classic-val">188</td><td class="live-val">10,000+</td></tr>
+        <tr><td>Scroll Types</td><td class="classic-val">216</td><td class="live-val">Thousands</td></tr>
+        <tr><td>Bosses</td><td class="classic-val">~5 field bosses</td><td class="live-val">30+ instanced</td></tr>
+        <tr><td>Continents</td><td class="classic-val">1 (Victoria)</td><td class="live-val">10+</td></tr>
+        <tr><td>Cubes</td><td class="classic-val">0</td><td class="live-val">Dozens</td></tr>
+        <tr><td>Starforce</td><td class="classic-val">No</td><td class="live-val">Core system</td></tr>
+        <tr><td>Free Market</td><td class="classic-val">Yes (11 ch)</td><td class="live-val">Removed (Auction House)</td></tr>
+        <tr><td>Potential System</td><td class="classic-val">Disabled</td><td class="live-val">Core progression</td></tr>
+      </tbody>
+    </table>
+
+    <div class="datamined-hero-banner" style="border-color:rgba(255,208,96,0.25);background:linear-gradient(135deg, rgba(255,208,96,0.06) 0%, transparent 100%);">
+      <div class="banner-icon">&#x26A0;&#xFE0F;</div>
+      <div class="banner-text">
+        <strong style="color:var(--maple-gold)">Modern Engine Remnants:</strong> The binary contains the full modern damage formula engine (damR, bossDamR, finalDamR), 36 boss entries in BossParty.img, potential cost tables, Reboot/Burning World definitions, crafting recipes, and RuneStone data. These are <em>not active</em> — they exist because Classic World shares the modern client codebase. The WZ data is stripped to only what Classic World needs.
       </div>
     </div>
   </div>
@@ -1727,7 +2221,7 @@
   <div class="section-inner">
     <div class="section-label">Class Rebalancing</div>
     <h2 class="section-title">Class <em>Equilibrium</em><br/>Requires Fundamental Rethinking</h2>
-    <p class="section-desc">Each archetype undergoes targeted nerfs, buffs, and mechanical reworks designed to increase tactical depth and reduce reliance on passive or degenerate systems.</p>
+    <p class="section-desc">Each archetype undergoes targeted nerfs, buffs, and mechanical reworks. The datamine confirms only 4 Explorer classes with ~70 total skills across Beginner, 1st Job, and 2nd Job. No 3rd/4th job skills exist in any data file. <span class="source-badge datamined">DATAMINED</span></p>
 
     <img src="./assets/image5.png" alt="Class Equilibrium Quadrant Chart" class="mechanic-slide" onclick="openLightbox(4)" style="max-width:700px; margin: 0 auto 3rem; display:block" />
 
@@ -1737,8 +2231,8 @@
         <div class="class-header">
           <div class="class-icon">⚔️</div>
           <div>
-            <div class="class-name">Warrior</div>
-            <div class="class-jobs">Fighter · Page · Spearman</div>
+            <div class="class-name">Warrior <span class="source-badge datamined" style="font-size:0.5rem">SKILLS CONFIRMED</span></div>
+            <div class="class-jobs">Fighter (8 skills) · Page (8 skills) · Spearman (8 skills)</div>
           </div>
         </div>
         <ul class="class-changes">
@@ -1770,8 +2264,8 @@
         <div class="class-header">
           <div class="class-icon">🔮</div>
           <div>
-            <div class="class-name">Magician</div>
-            <div class="class-jobs">Fire/Ice/Lightning · Cleric</div>
+            <div class="class-name">Magician <span class="source-badge datamined" style="font-size:0.5rem">SKILLS CONFIRMED</span></div>
+            <div class="class-jobs">F/P Wizard (6) · I/L Wizard (5) · Cleric (5)</div>
           </div>
         </div>
         <ul class="class-changes">
@@ -1803,8 +2297,8 @@
         <div class="class-header">
           <div class="class-icon">🏹</div>
           <div>
-            <div class="class-name">Bowman</div>
-            <div class="class-jobs">Hunter · Crossbowman</div>
+            <div class="class-name">Bowman <span class="source-badge datamined" style="font-size:0.5rem">SKILLS CONFIRMED</span></div>
+            <div class="class-jobs">Hunter (6 skills) · Crossbowman (5 skills)</div>
           </div>
         </div>
         <ul class="class-changes">
@@ -1832,8 +2326,8 @@
         <div class="class-header">
           <div class="class-icon">🗡️</div>
           <div>
-            <div class="class-name">Thief</div>
-            <div class="class-jobs">Assassin · Bandit</div>
+            <div class="class-name">Thief <span class="source-badge datamined" style="font-size:0.5rem">SKILLS CONFIRMED</span></div>
+            <div class="class-jobs">Assassin (5 skills) · Bandit (6 skills)</div>
           </div>
         </div>
         <ul class="class-changes">
@@ -1886,14 +2380,14 @@
           </div>
         </div>
 
-        <div class="econ-card">
-          <div class="econ-title">Scroll Availability</div>
+        <div class="econ-card" style="border-color:rgba(0,255,136,0.25)">
+          <div class="econ-title">Scroll System — Completely Redesigned <span class="source-badge datamined">DATAMINED</span></div>
           <div class="econ-body">
-            NPC shops (Ellinia & El Nath) now sell <strong>100% Weapon Attack scrolls for weapons only</strong> — priced at <span class="compare-old">70,000</span> → <span class="compare-new">35,000 mesos</span>.
+            The classic 10%/60%/100% scroll system has been <strong>entirely replaced</strong> with a new 4-tier system: <strong style="color:#66ff66">Lesser</strong> (100%, +1 stat) → <strong style="color:#44CCFF">Intermediate</strong> (60%, +2 stat) → <strong style="color:#FFA028">Greater</strong> (10%, +3 stat) → <strong style="color:#FF3333">Chaos</strong> (10%, +5 stat, destroys item on fail).
             <br/><br/>
-            <strong>Removed:</strong> 100% scrolls for helmet defense, topwear/bottomwear defense, shoe DEX, or earring INT from NPC shops.
+            <strong style="color:var(--maple-gold)">Scroll Fusion:</strong> Lesser scrolls link to <code>itemID1/2/3</code> pointing to higher tiers — confirming a <em>scroll upgrade/fusion mechanic</em> where you combine lower scrolls into higher tiers. <strong>216 total scrolls</strong> covering all equipment slots + pet equipment.
             <br/><br/>
-            <strong>New scrolls added:</strong> Iron for STR 60% — obtainable as a KPQ run reward.
+            <span style="font-size:0.85rem;color:var(--text-dim)">Playtest sources also noted NPC-sold 100% weapon scrolls (35k mesos) and KPQ-reward Iron for STR 60% scrolls — these may coexist with the new tier system as "Lesser" equivalents.</span>
           </div>
         </div>
 
@@ -1925,14 +2419,172 @@
           </div>
         </div>
 
-        <div class="econ-card">
-          <div class="econ-title">Monetisation Philosophy</div>
+        <div class="econ-card" style="border-color:rgba(0,255,136,0.25)">
+          <div class="econ-title">Monetisation Philosophy <span class="source-badge datamined">VERIFIED</span></div>
           <div class="econ-body">
-            Inkwell confirmed: <strong>no Cubes planned</strong>. Gachapon is still being discussed — specifically whether obtainable items (like Stormcaster Gloves, Face Stompers) constitute pay-to-win. NX is permanent with no expiry.
+            Inkwell confirmed: <strong>no Cubes planned</strong>. The datamine now <strong style="color:#00ff88">proves this from the game files</strong> — zero cube items exist in the entire consumable database. Zero starforce items. Zero flames. The <code>potentialCostTable.img</code> exists but is a dead remnant.
             <br/><br/>
-            Monetisation targets pre-Big Bang era models.
+            Gachapon is still being discussed — specifically whether obtainable items constitute pay-to-win. NX is permanent with no expiry. Cash Shop item data was not present in the WZ metadata dump. Community's #1 fear remains P2W monetisation.
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NEW CONTENT ── -->
+<section id="newcontent">
+  <div class="section-inner">
+    <div class="section-label" style="color:var(--maple-gold)">Classic World Exclusives <span class="source-badge datamined">DATAMINED</span></div>
+    <h2 class="section-title">"Classic Plus" Is <em>Real</em> —<br/>Brand New Content <span class="gold">Nobody Expected</span></h2>
+    <p class="section-desc">The datamine confirms this is not a museum restoration. 10 new monsters, 17 new maps, a new field boss, and a crafting system that never existed in any prior version of MapleStory.</p>
+
+    <div class="passage-layout">
+      <div class="passage-card">
+        <div class="passage-title">Shallow Passage</div>
+        <div class="passage-subtitle">12 Maps &middot; Accessible from Sleepywood</div>
+        <ul class="passage-map-list">
+          <li><strong>Forgotten Hollow</strong> — hub town with Cave Fairy NPCs</li>
+          <li><strong>Cave Fairy Sanctuary</strong> — services & shops</li>
+          <li><strong>Cave Fairy Department Store</strong></li>
+          <li><strong>Primeval Forest I-III</strong> — field maps</li>
+          <li><strong>Forgotten Entrance I-III</strong> — dungeon maps</li>
+          <li><strong>The End of Fleeting Light</strong> — deep area</li>
+          <li><strong>Forgotten Dungeon Tunnel</strong></li>
+          <li><strong>Forbidden Entrance</strong> — connects to Deep Passage</li>
+        </ul>
+      </div>
+      <div class="passage-card">
+        <div class="passage-title">Deep Passage</div>
+        <div class="passage-subtitle">5 Maps &middot; The "Endgame" Area</div>
+        <ul class="passage-map-list">
+          <li><strong>Perilous Descent I-III</strong> — vertical descent maps</li>
+          <li><strong>Decayed Tunnel I</strong> — tunnel area</li>
+          <li><strong>Bygone Days</strong> — the final map (nostalgia theme)</li>
+        </ul>
+        <div style="margin-top:1.5rem;padding:1rem;background:rgba(255,208,96,0.06);border:1px solid rgba(255,208,96,0.15);border-radius:4px">
+          <div style="font-family:'Cinzel',serif;font-size:0.82rem;font-weight:700;color:var(--maple-gold);margin-bottom:0.4rem">With no Zakum or Horntail maps...</div>
+          <div style="font-size:0.88rem;color:var(--text-secondary)">The highest-tier bosses appear to be <strong style="color:var(--maple-gold)">Rotten Mushmom</strong> (ID 700003) and <strong>Jr. Balrog</strong> (ID 700001). "Bygone Days" may contain an unrevealed endgame boss.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mechanic-group">
+      <div class="mechanic-group-title" style="color:var(--maple-gold)">10 Brand-New Monsters — Never Seen Before</div>
+    </div>
+    <div class="new-monster-grid">
+      <div class="new-mob-card">
+        <div class="new-mob-name">Glowshroom</div>
+        <div class="new-mob-id">ID 54</div>
+      </div>
+      <div class="new-mob-card">
+        <div class="new-mob-name">Raffle</div>
+        <div class="new-mob-id">ID 55</div>
+      </div>
+      <div class="new-mob-card">
+        <div class="new-mob-name">Golden Stirge</div>
+        <div class="new-mob-id">ID 56</div>
+      </div>
+      <div class="new-mob-card">
+        <div class="new-mob-name">Aqumander</div>
+        <div class="new-mob-id">ID 57</div>
+      </div>
+      <div class="new-mob-card">
+        <div class="new-mob-name">Echopus</div>
+        <div class="new-mob-id">ID 58</div>
+      </div>
+      <div class="new-mob-card">
+        <div class="new-mob-name">Rafflesia</div>
+        <div class="new-mob-id">ID 59</div>
+      </div>
+      <div class="new-mob-card">
+        <div class="new-mob-name">Duskmander</div>
+        <div class="new-mob-id">ID 60</div>
+      </div>
+      <div class="new-mob-card">
+        <div class="new-mob-name">Myewood</div>
+        <div class="new-mob-id">ID 61</div>
+      </div>
+      <div class="new-mob-card">
+        <div class="new-mob-name">Rotten Mushroom</div>
+        <div class="new-mob-id">ID 62</div>
+      </div>
+      <div class="new-mob-card">
+        <div class="new-mob-name">Sporewood</div>
+        <div class="new-mob-id">ID 63</div>
+      </div>
+    </div>
+    <p style="font-size:0.88rem;color:var(--text-dim);margin-bottom:3rem">Plus <strong>4 "Super" mobs</strong> (IDs 90-93): Super Jr. Necki, Super Slime, Super Ribbon-Pig, Super Stirge — likely PQ or event variants.</p>
+
+    <div class="mechanic-group">
+      <div class="mechanic-group-title" style="color:var(--maple-gold)">Redesigned Scroll System — 4 Tiers</div>
+    </div>
+    <div class="scroll-tier-grid">
+      <div class="scroll-tier-card lesser">
+        <div class="scroll-tier-name">Lesser</div>
+        <span class="scroll-tier-rate">100%</span>
+        <div class="scroll-tier-effect">+1 stat<br/>Always succeeds</div>
+        <div class="scroll-tier-note">Base tier</div>
+      </div>
+      <div class="scroll-tier-card intermediate">
+        <div class="scroll-tier-name">Intermediate</div>
+        <span class="scroll-tier-rate">60%</span>
+        <div class="scroll-tier-effect">+2 stat<br/>Medium risk</div>
+        <div class="scroll-tier-note">Fuse from Lesser</div>
+      </div>
+      <div class="scroll-tier-card greater">
+        <div class="scroll-tier-name">Greater</div>
+        <span class="scroll-tier-rate">10%</span>
+        <div class="scroll-tier-effect">+3 stat<br/>High risk</div>
+        <div class="scroll-tier-note">Fuse from Intermediate</div>
+      </div>
+      <div class="scroll-tier-card chaos">
+        <div class="scroll-tier-name">Chaos</div>
+        <span class="scroll-tier-rate">10%</span>
+        <div class="scroll-tier-effect">+5 stat<br/>Destroys on fail</div>
+        <div class="scroll-tier-note">cursed: 100</div>
+      </div>
+    </div>
+    <p style="font-size:0.92rem;color:var(--text-secondary);margin-bottom:3rem;max-width:700px">Lesser scrolls link to <code style="color:var(--maple-gold)">itemID1</code>, <code style="color:var(--maple-gold)">itemID2</code>, <code style="color:var(--maple-gold)">itemID3</code> — pointing to Intermediate, Greater, and Chaos versions. This confirms a <strong>scroll fusion/upgrade path</strong> where you combine lower-tier scrolls into higher tiers. 216 total scrolls covering all equipment slots including pet equipment.</p>
+
+    <div class="mechanic-group">
+      <div class="mechanic-group-title" style="color:var(--maple-gold)">Arcforger Crafting System — Brand New</div>
+    </div>
+    <div class="confirmed-grid">
+      <div class="confirmed-card" style="border-color:rgba(255,208,96,0.2)">
+        <div class="confirmed-icon">&#x1F528;</div>
+        <div>
+          <div class="cc-title">Nyroth (Arcforger)</div>
+          <div class="cc-desc">Located in the Shallow Passage / Cave Fairy area — a new crafting NPC with no equivalent in any prior version</div>
+        </div>
+      </div>
+      <div class="confirmed-card" style="border-color:rgba(255,208,96,0.2)">
+        <div class="confirmed-icon">&#x1F528;</div>
+        <div>
+          <div class="cc-title">Chrishrama (Arcforger)</div>
+          <div class="cc-desc">Located in Sleepywood — another crafting NPC, suggesting the system spans multiple areas</div>
+        </div>
+      </div>
+      <div class="confirmed-card" style="border-color:rgba(255,208,96,0.2)">
+        <div class="confirmed-icon">&#x2697;&#xFE0F;</div>
+        <div>
+          <div class="cc-title">Eurek the Alchemist</div>
+          <div class="cc-desc">Sleepywood alchemist NPC — part of the new crafting infrastructure alongside Arcforgers</div>
+        </div>
+      </div>
+      <div class="confirmed-card" style="border-color:rgba(255,208,96,0.2)">
+        <div class="confirmed-icon">&#x1F9DA;</div>
+        <div>
+          <div class="cc-title">Cave Fairy NPCs</div>
+          <div class="cc-desc">Zelya, Myen, Myra, Luma (Grocer), Riel, Roel, Rael (shopkeepers), Pison (Tour Guide), plus Cave Fairy's Storage</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="datamined-hero-banner" style="border-color:rgba(255,208,96,0.25);background:linear-gradient(135deg, rgba(255,208,96,0.06) 0%, transparent 100%);">
+      <div class="banner-icon">&#x1F4A1;</div>
+      <div class="banner-text">
+        <strong style="color:var(--maple-gold)">Nobody asked for any of this — but it extends the endgame.</strong> The Shallow/Deep Passage adds a progression path beyond what early MapleStory ever had. The Arcforger crafting system could fill the gear progression gap left by the absence of Zakum/Horntail drops. Community has been generally open to "tasteful new content" that fits the classic aesthetic.
       </div>
     </div>
   </div>
@@ -2208,10 +2860,21 @@
 
         <img src="./assets/image14.png" alt="Community Telemetry Blueprint" class="mechanic-slide" onclick="openLightbox(13)" style="margin-top:1.5rem" />
 
-        <div class="econ-card" style="margin-top:1.5rem; border-color: var(--border-gold)">
+        <div class="econ-card" style="margin-top:1.5rem; border-color: rgba(0,255,136,0.25)">
+          <div class="econ-title">Datamined Reality Check <span class="source-badge datamined">VERIFIED</span></div>
+          <div class="econ-body" style="font-size:0.88rem">
+            <strong style="color:#00ff88">Community gets what they want:</strong> No cubes, no starforce, no flames, no link skills, no union/legion, Free Market with 11 channels, KPQ confirmed, manual AP allocation — all verified in game data.
+            <br/><br/>
+            <strong style="color:var(--maple-gold)">Modified vs expectations:</strong> Scroll system completely redesigned (not the classic 10%/60%/100%). Cash Shop data not in WZ dump (unknown). Phased content strongly implied — starting at 2nd job is earlier than most expected.
+            <br/><br/>
+            <strong style="color:#FF5555">Missing:</strong> Only 2nd job (community expected at least 3rd). No Zakum/Horntail (no maps). No Ossyria. No Ludibrium/Orbis PQs. Balance changes unknown from metadata alone.
+          </div>
+        </div>
+
+        <div class="econ-card" style="margin-top:1rem; border-color: var(--border-gold)">
           <div class="econ-title">Source Note</div>
           <div class="econ-body" style="font-size:0.88rem">
-            Reddit data sourced from r/MSClassicWorld and r/Maplestory discussions. Sentiment gauges are community-derived approximations based on thread analysis — not official surveys. Reddit is treated as a <em>sentiment signal</em>, not authoritative documentation.
+            Community data from Reddit, Steam, MMOBomb, DigitalTQ, MassivelyOP, maplestoryclassicworld.com, and MapleCon 2025 press. Datamined data from WZ metadata dump (3,859 files, 416 MB). Sentiment gauges are community-derived approximations — not official surveys.
           </div>
         </div>
       </div>
@@ -2224,7 +2887,7 @@
   <div class="section-inner">
     <div class="section-label">World & Lore</div>
     <h2 class="section-title">Charting an <em>Unexplored</em><br/>Chronological Timeline</h2>
-    <p class="section-desc">Victoria Island gets a new zone. Some maps are gone. And a parallel lore framework opens doors that original GMS never walked through.</p>
+    <p class="section-desc">Victoria Island gets new zones. The datamine reveals 304 total maps across Maple Island (25), Victoria Island (240), instances (24), and events (15). A parallel lore framework opens doors that original GMS never walked through.</p>
 
     <div class="world-layout">
       <div>
@@ -2234,8 +2897,16 @@
           <div class="mechanic-group-title">Map Changes Summary</div>
           <div class="location-grid">
             <div class="location-card new-map">
-              <div class="location-name">Forgotten Hollow</div>
-              <div class="location-desc">Levels 38–50 · Victoria Island<br/>New zone added to Classic World</div>
+              <div class="location-name">Shallow Passage <span class="source-badge datamined" style="margin-left:0.3rem">DATAMINED</span></div>
+              <div class="location-desc">12 maps · Forgotten Hollow, Cave Fairy Sanctuary, Primeval Forest I-III, Forbidden Entrance</div>
+            </div>
+            <div class="location-card new-map">
+              <div class="location-name">Deep Passage <span class="source-badge datamined" style="margin-left:0.3rem">DATAMINED</span></div>
+              <div class="location-desc">5 maps · Perilous Descent I-III, Decayed Tunnel, Bygone Days — the endgame area</div>
+            </div>
+            <div class="location-card new-map">
+              <div class="location-name">Florina Road <span class="source-badge datamined" style="margin-left:0.3rem">DATAMINED</span></div>
+              <div class="location-desc">6 maps · Florina Beach, Lorang/Clang area — present in game data despite playtest absence</div>
             </div>
             <div class="location-card removed">
               <div class="location-name">Forest of Golems</div>
@@ -2244,10 +2915,6 @@
             <div class="location-card removed">
               <div class="location-name">Monkey Forest 2</div>
               <div class="location-desc">Absent in all playtests</div>
-            </div>
-            <div class="location-card removed">
-              <div class="location-name">Florina Beach</div>
-              <div class="location-desc">Entirety absent from Classic World</div>
             </div>
             <div class="location-card">
               <div class="location-name">Ludibrium</div>
@@ -2312,17 +2979,19 @@
     <div>
       <div class="footer-brand">MapleClassic</div>
       <p class="footer-desc">
-        A comprehensive knowledge base for MapleStory Classic World — compiled from developer interviews, LA playtest footage, Reddit community analysis, and the official engineering blueprint. All content sourced directly from provided materials.
+        The definitive knowledge base for MapleStory Classic World — now powered by datamined WZ metadata from the actual game client, cross-referenced with developer interviews, LA playtest footage, community analysis, and the engineering blueprint.
       </p>
     </div>
     <div>
       <div class="footer-col-title">Sections</div>
       <ul class="footer-links">
         <li><a href="#vision">Design Philosophy</a></li>
+        <li><a href="#datamined" style="color:#00ff88">Datamined Intel</a></li>
         <li><a href="#blueprint">Blueprint Slides</a></li>
         <li><a href="#mechanics">Combat Mechanics</a></li>
         <li><a href="#classes">Class Changes</a></li>
         <li><a href="#economy">Economy & QoL</a></li>
+        <li><a href="#newcontent" style="color:var(--maple-gold)">New Exclusive Content</a></li>
         <li><a href="#progression">Progression Systems</a></li>
         <li><a href="#interview">Developer Interview</a></li>
         <li><a href="#community">Community Voice</a></li>
@@ -2332,17 +3001,20 @@
     <div>
       <div class="footer-col-title">Sources</div>
       <ul class="footer-links">
+        <li><a href="#datamined" style="color:#00ff88">WZ Datamine — 3,859 files, 46 archives (Primary)</a></li>
+        <li><a href="#datamined" style="color:#00ff88">Binary Analysis — MapleStory_0_zucx.exe v1.1.0.0</a></li>
         <li><a href="#">Dino Fry — LA Playtest Breakdown</a></li>
-        <li><a href="#">Dino Fry × Inkwell — Maple Con 2025</a></li>
+        <li><a href="#">Dino Fry x Inkwell — Maple Con 2025</a></li>
         <li><a href="#">Playtest Class Commentary</a></li>
         <li><a href="#">r/MSClassicWorld Reddit Notes</a></li>
+        <li><a href="#">MMOBomb, DigitalTQ, MassivelyOP, MSCW Community</a></li>
         <li><a href="#">MapleStory Parallel Blueprint (PPTX)</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
     <div class="footer-copy">© 2026 · MapleStory Classic World Fan Documentation · Not affiliated with Nexon</div>
-    <div class="source-note">All content sourced exclusively from provided materials · Blueprint: P-001-CW</div>
+    <div class="source-note">Primary source: WZ Datamine (3,859 files, 416 MB) + Binary Analysis (v1.1.0.0, April 2026) · Cross-referenced with playtests, interviews & community · Blueprint: P-001-CW</div>
   </div>
 </footer>
 
