@@ -217,6 +217,25 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    .desc-cell {
+      max-width: 320px;
+      cursor: pointer;
+      position: relative;
+    }
+    .desc-cell .desc-short {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .desc-cell .desc-full {
+      display: none;
+      white-space: normal;
+      line-height: 1.6;
+      padding: 0.3rem 0;
+    }
+    .desc-cell.expanded .desc-short { display: none; }
+    .desc-cell.expanded .desc-full { display: block; }
+    .desc-cell:hover { color: var(--maple-gold); }
     .mob-thumb { height: 28px; image-rendering: pixelated; vertical-align: middle; }
 
     /* Tier colors */
@@ -710,7 +729,9 @@ function questRow(q) {
   if (q.is_daily) flags += '<span class="badge badge-daily">DAILY</span>';
   if (q.is_weekly) flags += '<span class="badge badge-weekly">WEEKLY</span>';
   if (q.is_repeatable) flags += '<span class="badge badge-repeat">REPEAT</span>';
-  return `<tr><td>${esc(q.region)}</td><td>${esc(q.name)}</td><td class="num">${q.level_min||'\u2014'}</td><td>${esc(q.npc_name)}</td><td class="truncate-lg" title="${esc(q.description)}">${trunc(q.description, 70)}</td><td class="num">${q.rewards_exp ? fmt(q.rewards_exp) : ''}</td><td class="num">${q.rewards_money ? fmt(q.rewards_money) : ''}</td><td>${flags}</td></tr>`;
+  const desc = esc(q.description || '');
+  const short = trunc(q.description, 70);
+  return `<tr><td>${esc(q.region)}</td><td>${esc(q.name)}</td><td class="num">${q.level_min||'\u2014'}</td><td>${esc(q.npc_name)}</td><td class="desc-cell" onclick="this.classList.toggle('expanded')"><div class="desc-short">${short}</div><div class="desc-full">${desc}</div></td><td class="num">${q.rewards_exp ? fmt(q.rewards_exp) : ''}</td><td class="num">${q.rewards_money ? fmt(q.rewards_money) : ''}</td><td>${flags}</td></tr>`;
 }
 
 function getQuestGroups() {
