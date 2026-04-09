@@ -278,7 +278,7 @@
       gap: 0.5rem;
     }
     .passage-map-list li::before {
-      content: '▸';
+      content: '\25B8';
       color: var(--maple-gold);
       font-size: 0.7rem;
     }
@@ -1938,8 +1938,14 @@
       .section-desc { font-size: 1rem; }
       .inkwell-header { flex-direction: column; text-align: center; }
       .qa-a { padding-left: 0; }
+
+      /* ── NEW: TOC & chapter bar mobile ── */
+      .toc-book-card { padding: 1.5rem 1.2rem; }
+      .chapter-bar { font-size: 0.58rem; padding: 0.4rem 1rem; }
+      .toc-entry { padding: 0.5rem 0; }
+      .toc-subs { padding-left: 2rem; }
     }
-  
+
 
     /* ══════════════════════════════════
        PAGE SYSTEM
@@ -1996,7 +2002,7 @@
     }
     .toc-header {
       text-align: center;
-      margin-bottom: 3rem;
+      margin-bottom: 2rem;
     }
     .toc-logo {
       font-family: 'Cinzel Decorative', serif;
@@ -2035,156 +2041,106 @@
       border-color: rgba(0,255,136,0.6);
       box-shadow: 0 4px 20px rgba(0,255,136,0.15);
     }
-    .toc-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.2rem 3rem;
-      max-width: 1000px;
+
+    /* ══════════════════════════════════
+       TOC BOOK CARD
+    ══════════════════════════════════ */
+    .toc-book-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-orange);
+      border-radius: 8px;
+      padding: 2.5rem 3rem;
+      max-width: 800px;
+      margin: 2rem auto;
       width: 100%;
     }
-    .toc-chapter {
-      background: var(--bg-card);
-      border: 1px solid rgba(255,255,255,0.05);
-      border-radius: 6px;
-      padding: 1.4rem 1.6rem;
-      cursor: pointer;
-      transition: border-color 0.25s, background 0.25s, transform 0.2s;
-    }
-    .toc-chapter:hover {
-      border-color: var(--border-orange);
-      background: var(--bg-card-hover);
-      transform: translateY(-2px);
-    }
-    .toc-chapter-num {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      margin-bottom: 0.3rem;
-    }
-    .toc-chapter-title {
+    .toc-book-title {
       font-family: 'Cinzel', serif;
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 0.6rem;
-      cursor: pointer;
+      color: var(--maple-gold);
+      text-align: center;
+      margin-bottom: 2rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
     }
-    .toc-chapter-title:hover { color: var(--maple-orange); }
-    .toc-subtopics {
-      list-style: none;
+    .toc-entry {
       display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
+      align-items: baseline;
+      padding: 0.6rem 0;
+      cursor: pointer;
+      transition: color 0.2s;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
     }
-    .toc-subtopics li {
+    .toc-entry:hover { color: var(--maple-orange); }
+    .toc-entry:hover .toc-name { color: var(--maple-orange); }
+    .toc-num {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--maple-orange);
+      min-width: 3rem;
+    }
+    .toc-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      transition: color 0.2s;
+    }
+    .toc-dots {
+      flex: 1;
+      border-bottom: 1px dotted var(--text-dim);
+      margin: 0 0.8rem;
+      min-width: 2rem;
+      align-self: center;
+      opacity: 0.4;
+    }
+    .toc-page-num {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+    }
+    .toc-subs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 1.2rem;
+      padding: 0.3rem 0 0.8rem 3rem;
       font-family: 'Share Tech Mono', monospace;
       font-size: 0.65rem;
       color: var(--text-dim);
       letter-spacing: 0.05em;
+    }
+    .toc-subs span {
       cursor: pointer;
-      padding: 0.15rem 0;
       transition: color 0.2s;
     }
-    .toc-subtopics li:hover { color: var(--maple-orange); }
-    .toc-subtopics li::before {
-      content: '\25B8 ';
-      color: var(--maple-orange);
-      opacity: 0.5;
-    }
+    .toc-subs span:hover { color: var(--maple-orange); }
 
     /* ══════════════════════════════════
-       CHAPTER COVERS
+       CHAPTER BAR
     ══════════════════════════════════ */
-    .chapter-cover {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+    .chapter-bar {
+      padding: 0.5rem 2rem;
       text-align: center;
-      padding: 4rem 2rem;
-      position: relative;
-      min-height: 100vh;
-    }
-    .chapter-cover-bg {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-    .chapter-cover-inner {
-      position: relative;
-      z-index: 1;
-      max-width: 700px;
-    }
-    .chapter-roman {
-      font-family: 'Cinzel Decorative', serif;
-      font-size: clamp(5rem, 12vw, 10rem);
-      font-weight: 900;
-      color: rgba(255,255,255,0.03);
-      line-height: 1;
-      margin-bottom: -1rem;
-      user-select: none;
-    }
-    .chapter-cover-num {
+      background: rgba(10,10,18,0.9);
+      border-bottom: 1px solid var(--border-orange);
       font-family: 'Share Tech Mono', monospace;
       font-size: 0.68rem;
-      letter-spacing: 0.3em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--text-dim);
-      margin-bottom: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
-    .chapter-cover-title {
-      font-family: 'Cinzel', serif;
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      font-weight: 700;
-      color: var(--text-primary);
-      line-height: 1.2;
-      margin-bottom: 2rem;
+    .chapter-bar-num {
+      color: var(--maple-orange);
+      margin-right: 1rem;
     }
-    .chapter-cover-topics {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      margin-bottom: 2.5rem;
-    }
-    .chapter-cover-topics li {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
+    .chapter-bar-title {
       color: var(--text-secondary);
-      cursor: pointer;
-      padding: 0.4rem 0;
-      transition: color 0.2s;
-    }
-    .chapter-cover-topics li:hover { color: var(--maple-orange); }
-    .chapter-cover-topics li::before {
-      content: '\25B8 ';
-      color: var(--maple-orange);
-      opacity: 0.6;
-    }
-    .chapter-begin-btn {
-      font-family: 'Cinzel', serif;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      text-decoration: none;
-      padding: 0.85rem 2.5rem;
-      background: transparent;
-      color: var(--maple-orange);
-      border: 1px solid var(--border-orange);
-      border-radius: 2px;
-      cursor: pointer;
-      transition: background 0.2s, border-color 0.2s, color 0.2s;
-      display: inline-block;
-    }
-    .chapter-begin-btn:hover {
-      background: rgba(255,102,0,0.1);
-      border-color: var(--maple-orange);
-      color: var(--maple-gold);
     }
 
     /* ══════════════════════════════════
@@ -2222,7 +2178,7 @@
     .page-toc-btn {
       position: fixed;
       top: 14px;
-      right: 80px;
+      right: 140px;
       z-index: 1001;
       font-family: 'Cinzel', serif;
       font-size: 0.65rem;
@@ -2266,10 +2222,6 @@
        PAGE SYSTEM RESPONSIVE
     ══════════════════════════════════ */
     @media (max-width: 768px) {
-      .toc-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
       .page-nav-btn {
         width: 40px;
         height: 40px;
@@ -2280,14 +2232,8 @@
       .toc-page {
         padding: 80px 1.2rem 3rem;
       }
-      .chapter-cover {
-        padding: 3rem 1.2rem;
-      }
-      .chapter-roman {
-        font-size: clamp(3rem, 15vw, 6rem);
-      }
       .page-toc-btn {
-        right: 60px;
+        right: 100px;
         font-size: 0.58rem;
         padding: 0.4rem 0.7rem;
       }
@@ -2306,136 +2252,166 @@
   <div class="nav-inner">
     <a href="javascript:void(0)" class="nav-logo" onclick="goToPage(0)">Maple<span>Classic</span></a>
     <div style="display:flex;align-items:center;gap:0.8rem">
-      <a href="wiki.html" style="font-family:'Cinzel',serif;font-size:0.7rem;font-weight:600;color:#00ff88;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 0.8rem;border-radius:3px;transition:background 0.2s;" onmouseover="this.style.background='rgba(0,255,136,0.08)'" onmouseout="this.style.background='none'">Wiki</a>
       <button class="page-toc-btn" id="pageTocBtn">Contents</button>
+      <a href="wiki.html" style="font-family:'Cinzel',serif;font-size:0.7rem;font-weight:600;color:#00ff88;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 0.8rem;border-radius:3px;transition:background 0.2s;" onmouseover="this.style.background='rgba(0,255,136,0.08)'" onmouseout="this.style.background='none'">Wiki</a>
     </div>
   </div>
 </nav>
 
 <!-- ── PAGES ── -->
 
+<!-- Page 0: TOC -->
 <div class="page toc-page" id="page-0" data-page="0">
   <div class="toc-header">
     <div class="toc-logo">Maple<span>Classic</span></div>
-    <div style="font-family:'Cinzel',serif;font-size:clamp(1rem,2vw,1.4rem);color:var(--text-secondary);font-weight:600;margin-top:0.3rem">The Parallel Blueprint</div>
-    <div class="toc-subtitle">Datamined WZ Metadata + Developer Interviews + Community Analysis</div>
-    <a href="wiki.html" class="toc-wiki-link">
-      <span>&#x1F4D6;</span>
-      <span>Explore the Full Game Wiki &mdash; 85 Monsters, 969 Equipment, 208 Scrolls &rarr;</span>
-    </a>
+    <div class="toc-subtitle">The Parallel Blueprint</div>
   </div>
-  <div class="toc-grid">
-      <div class="toc-chapter" onclick="goToPage(2)">
-        <div class="toc-chapter-num">Chapter I</div>
-        <div class="toc-chapter-title" onclick="event.stopPropagation(); goToPage(3)">Design Philosophy</div>
-        <ul class="toc-subtopics">
-        <li onclick="goToPage(3)">Inkwell's Philosophy</li>
-        <li onclick="goToPage(3)">Modernised Classic</li>
-        <li onclick="goToPage(3)">Parallel Timeline</li>
-        </ul>
-      </div>
-      <div class="toc-chapter" onclick="goToPage(4)">
-        <div class="toc-chapter-num">Chapter II</div>
-        <div class="toc-chapter-title" onclick="event.stopPropagation(); goToPage(5)">Datamined Intelligence</div>
-        <ul class="toc-subtopics">
-        <li onclick="goToPage(5)">Game Scope</li>
-        <li onclick="goToPage(5)">Confirmed Present</li>
-        <li onclick="goToPage(5)">Confirmed Absent</li>
-        <li onclick="goToPage(5)">Classic vs Live Comparison</li>
-        </ul>
-      </div>
-      <div class="toc-chapter" onclick="goToPage(6)">
-        <div class="toc-chapter-num">Chapter III</div>
-        <div class="toc-chapter-title" onclick="event.stopPropagation(); goToPage(7)">Combat Systems</div>
-        <ul class="toc-subtopics">
-        <li onclick="goToPage(7)">Damage Formula</li>
-        <li onclick="goToPage(7)">Secondary Stats</li>
-        <li onclick="goToPage(7)">Weapon Multipliers</li>
-        </ul>
-      </div>
-      <div class="toc-chapter" onclick="goToPage(8)">
-        <div class="toc-chapter-num">Chapter IV</div>
-        <div class="toc-chapter-title" onclick="event.stopPropagation(); goToPage(9)">Class Rebalancing</div>
-        <ul class="toc-subtopics">
-        <li onclick="goToPage(9)">Warrior</li>
-        <li onclick="goToPage(9)">Magician</li>
-        <li onclick="goToPage(9)">Bowman</li>
-        <li onclick="goToPage(9)">Thief</li>
-        </ul>
-      </div>
-      <div class="toc-chapter" onclick="goToPage(10)">
-        <div class="toc-chapter-num">Chapter V</div>
-        <div class="toc-chapter-title" onclick="event.stopPropagation(); goToPage(11)">Economic Architecture</div>
-        <ul class="toc-subtopics">
-        <li onclick="goToPage(11)">Trade Tax</li>
-        <li onclick="goToPage(11)">NPC Economy</li>
-        <li onclick="goToPage(11)">Scroll System</li>
-        <li onclick="goToPage(11)">Monster HP & Drops</li>
-        <li onclick="goToPage(11)">Storage</li>
-        <li onclick="goToPage(11)">Monetisation</li>
-        </ul>
-      </div>
-      <div class="toc-chapter" onclick="goToPage(12)">
-        <div class="toc-chapter-num">Chapter VI</div>
-        <div class="toc-chapter-title" onclick="event.stopPropagation(); goToPage(13)">Classic World Exclusives</div>
-        <ul class="toc-subtopics">
-        <li onclick="goToPage(13)">Shallow Passage</li>
-        <li onclick="goToPage(13)">Deep Passage</li>
-        <li onclick="goToPage(13)">New Monsters</li>
-        <li onclick="goToPage(13)">Scroll Tiers</li>
-        <li onclick="goToPage(13)">Arcforger Crafting</li>
-        </ul>
-      </div>
-      <div class="toc-chapter" onclick="goToPage(14)">
-        <div class="toc-chapter-num">Chapter VII</div>
-        <div class="toc-chapter-title" onclick="event.stopPropagation(); goToPage(15)">Systemic Overhaul</div>
-        <ul class="toc-subtopics">
-        <li onclick="goToPage(15)">HP Washing Removed</li>
-        <li onclick="goToPage(15)">Statless Builds Dead</li>
-        <li onclick="goToPage(15)">Character Creation</li>
-        <li onclick="goToPage(15)">Anti-Leeching Rule</li>
-        <li onclick="goToPage(15)">Party XP Bonuses</li>
-        </ul>
-      </div>
-      <div class="toc-chapter" onclick="goToPage(16)">
-        <div class="toc-chapter-num">Chapter VIII</div>
-        <div class="toc-chapter-title" onclick="event.stopPropagation(); goToPage(17)">Developer Insights</div>
-        <ul class="toc-subtopics">
-        <li onclick="goToPage(17)">Origin</li>
-        <li onclick="goToPage(17)">Private Servers</li>
-        <li onclick="goToPage(17)">HP Washing</li>
-        <li onclick="goToPage(17)">Cubes & Gachapon</li>
-        <li onclick="goToPage(17)">Content Timeline</li>
-        <li onclick="goToPage(17)">New Classes</li>
-        </ul>
-      </div>
-      <div class="toc-chapter" onclick="goToPage(18)">
-        <div class="toc-chapter-num">Chapter IX</div>
-        <div class="toc-chapter-title" onclick="event.stopPropagation(); goToPage(19)">Community Telemetry</div>
-        <ul class="toc-subtopics">
-        <li onclick="goToPage(19)">Sentiment Gauges</li>
-        <li onclick="goToPage(19)">Datamined Reality Check</li>
-        </ul>
-      </div>
-      <div class="toc-chapter" onclick="goToPage(20)">
-        <div class="toc-chapter-num">Chapter X</div>
-        <div class="toc-chapter-title" onclick="event.stopPropagation(); goToPage(21)">World & Lore</div>
-        <ul class="toc-subtopics">
-        <li onclick="goToPage(21)">Map Changes</li>
-        <li onclick="goToPage(21)">Hidden Streets</li>
-        <li onclick="goToPage(21)">Lore Framework</li>
-        <li onclick="goToPage(21)">Party Quests</li>
-        </ul>
-      </div>
+
+  <div class="toc-book-card">
+    <div class="toc-book-title">Table of Contents</div>
+
+    <div class="toc-entry" onclick="goToPage(2)">
+      <span class="toc-num">I</span>
+      <span class="toc-name">Design Philosophy</span>
+      <span class="toc-dots"></span>
+      <span class="toc-page-num">p.2</span>
+    </div>
+    <div class="toc-subs">
+      <span onclick="goToPage(2)">Inkwell's Vision</span>
+      <span onclick="goToPage(2)">Modernised Classic</span>
+      <span onclick="goToPage(2)">Parallel Timeline</span>
+    </div>
+
+    <div class="toc-entry" onclick="goToPage(3)">
+      <span class="toc-num">II</span>
+      <span class="toc-name">Datamined Intelligence</span>
+      <span class="toc-dots"></span>
+      <span class="toc-page-num">p.3</span>
+    </div>
+    <div class="toc-subs">
+      <span onclick="goToPage(3)">Game Scope</span>
+      <span onclick="goToPage(3)">Confirmed Present</span>
+      <span onclick="goToPage(3)">Confirmed Absent</span>
+    </div>
+
+    <div class="toc-entry" onclick="goToPage(4)">
+      <span class="toc-num">III</span>
+      <span class="toc-name">Combat Systems</span>
+      <span class="toc-dots"></span>
+      <span class="toc-page-num">p.4</span>
+    </div>
+    <div class="toc-subs">
+      <span onclick="goToPage(4)">Damage Formula</span>
+      <span onclick="goToPage(4)">Secondary Stats</span>
+      <span onclick="goToPage(4)">Weapon Multipliers</span>
+    </div>
+
+    <div class="toc-entry" onclick="goToPage(5)">
+      <span class="toc-num">IV</span>
+      <span class="toc-name">Class Rebalancing</span>
+      <span class="toc-dots"></span>
+      <span class="toc-page-num">p.5</span>
+    </div>
+    <div class="toc-subs">
+      <span onclick="goToPage(5)">Warrior</span>
+      <span onclick="goToPage(5)">Magician</span>
+      <span onclick="goToPage(5)">Bowman</span>
+      <span onclick="goToPage(5)">Thief</span>
+    </div>
+
+    <div class="toc-entry" onclick="goToPage(6)">
+      <span class="toc-num">V</span>
+      <span class="toc-name">Economic Architecture</span>
+      <span class="toc-dots"></span>
+      <span class="toc-page-num">p.6</span>
+    </div>
+    <div class="toc-subs">
+      <span onclick="goToPage(6)">Trade Tax</span>
+      <span onclick="goToPage(6)">NPC Economy</span>
+      <span onclick="goToPage(6)">Scroll System</span>
+      <span onclick="goToPage(6)">Monster HP &amp; Drops</span>
+      <span onclick="goToPage(6)">Storage</span>
+      <span onclick="goToPage(6)">Monetisation</span>
+    </div>
+
+    <div class="toc-entry" onclick="goToPage(7)">
+      <span class="toc-num">VI</span>
+      <span class="toc-name">Classic World Exclusives</span>
+      <span class="toc-dots"></span>
+      <span class="toc-page-num">p.7</span>
+    </div>
+    <div class="toc-subs">
+      <span onclick="goToPage(7)">Shallow Passage</span>
+      <span onclick="goToPage(7)">Deep Passage</span>
+      <span onclick="goToPage(7)">New Monsters</span>
+      <span onclick="goToPage(7)">Scroll Tiers</span>
+      <span onclick="goToPage(7)">Arcforger Crafting</span>
+    </div>
+
+    <div class="toc-entry" onclick="goToPage(8)">
+      <span class="toc-num">VII</span>
+      <span class="toc-name">Systemic Overhaul</span>
+      <span class="toc-dots"></span>
+      <span class="toc-page-num">p.8</span>
+    </div>
+    <div class="toc-subs">
+      <span onclick="goToPage(8)">HP Washing Removed</span>
+      <span onclick="goToPage(8)">Statless Builds Dead</span>
+      <span onclick="goToPage(8)">Character Creation</span>
+      <span onclick="goToPage(8)">Anti-Leeching Rule</span>
+      <span onclick="goToPage(8)">Party XP Bonuses</span>
+    </div>
+
+    <div class="toc-entry" onclick="goToPage(9)">
+      <span class="toc-num">VIII</span>
+      <span class="toc-name">Developer Insights</span>
+      <span class="toc-dots"></span>
+      <span class="toc-page-num">p.9</span>
+    </div>
+    <div class="toc-subs">
+      <span onclick="goToPage(9)">Origin</span>
+      <span onclick="goToPage(9)">Private Servers</span>
+      <span onclick="goToPage(9)">HP Washing</span>
+      <span onclick="goToPage(9)">Cubes &amp; Gachapon</span>
+      <span onclick="goToPage(9)">Content Timeline</span>
+      <span onclick="goToPage(9)">New Classes</span>
+    </div>
+
+    <div class="toc-entry" onclick="goToPage(10)">
+      <span class="toc-num">IX</span>
+      <span class="toc-name">Community Telemetry</span>
+      <span class="toc-dots"></span>
+      <span class="toc-page-num">p.10</span>
+    </div>
+    <div class="toc-subs">
+      <span onclick="goToPage(10)">Sentiment Gauges</span>
+      <span onclick="goToPage(10)">Datamined Reality Check</span>
+    </div>
+
+    <div class="toc-entry" onclick="goToPage(11)">
+      <span class="toc-num">X</span>
+      <span class="toc-name">World &amp; Lore</span>
+      <span class="toc-dots"></span>
+      <span class="toc-page-num">p.11</span>
+    </div>
+    <div class="toc-subs">
+      <span onclick="goToPage(11)">Map Changes</span>
+      <span onclick="goToPage(11)">Hidden Streets</span>
+      <span onclick="goToPage(11)">Lore Framework</span>
+      <span onclick="goToPage(11)">Party Quests</span>
+    </div>
   </div>
+
+  <a href="wiki.html" class="toc-wiki-link">Explore the Game Wiki &rarr;</a>
+
   <div style="margin-top:2.5rem;text-align:center">
     <div class="author-text" style="pointer-events:auto">&#x2726; Author: RaidBoss9 &#x2726;</div>
   </div>
 </div>
 
 
+<!-- Page 1: Hero -->
 <div class="page" id="page-1" data-page="1">
-<!-- ── HERO ── -->
 <section class="hero" id="home">
   <div class="hero-bg"></div>
   <div class="hero-content">
@@ -2464,39 +2440,18 @@
 </section>
 </div>
 
-<div class="page chapter-cover" id="page-2" data-page="2">
-  
-    <div class="chapter-cover-bg" style="background:
-      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(25,80%,50%,0.04) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 60% at 20% 70%, hsla(25,60%,40%,0.03) 0%, transparent 60%),
-      linear-gradient(180deg, var(--bg-void) 0%, var(--bg-deep) 50%, var(--bg-void) 100%);
-    "></div>
-    <div class="chapter-cover-bg" style="
-      background-image:
-        linear-gradient(hsla(25,80%,50%,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, hsla(25,80%,50%,0.02) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
-    "></div>
-  <div class="chapter-cover-inner">
-    <div class="chapter-roman">I</div>
-    <div class="chapter-cover-num">Chapter I</div>
-    <h2 class="chapter-cover-title">Design Philosophy</h2>
-    <ul class="chapter-cover-topics">
-      <li onclick="goToPage(3)">Inkwell's Philosophy</li>
-      <li onclick="goToPage(3)">Modernised Classic</li>
-      <li onclick="goToPage(3)">Parallel Timeline</li>
-    </ul>
-    <button class="chapter-begin-btn" onclick="goToPage(3)">Begin Chapter &rarr;</button>
-  </div>
+<!-- Page 2: Vision (Chapter I) -->
+<div class="page chapter-content" id="page-2" data-page="2">
+<div class="chapter-bar">
+  <span class="chapter-bar-num">Chapter I</span>
+  <span class="chapter-bar-title">Design Philosophy</span>
 </div>
-
-<div class="page chapter-content" id="page-3" data-page="3">
-<!-- ── VISION ── -->
 <section id="vision">
   <div class="section-inner">
     <div class="section-label">Design Philosophy</div>
     <h2 class="section-title">What If The <em>Big Bang</em><br/>Never Happened?</h2>
+    <p class="section-desc">A parallel timeline where Nexon's Western development lead asks the fundamental question — and spends a decade building the answer.</p>
+
     <div class="vision-grid">
       <div class="vision-body">
         <p>
@@ -2550,36 +2505,12 @@
 </section>
 </div>
 
-<div class="page chapter-cover" id="page-4" data-page="4">
-  
-    <div class="chapter-cover-bg" style="background:
-      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(155,80%,50%,0.04) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 60% at 20% 70%, hsla(155,60%,40%,0.03) 0%, transparent 60%),
-      linear-gradient(180deg, var(--bg-void) 0%, var(--bg-deep) 50%, var(--bg-void) 100%);
-    "></div>
-    <div class="chapter-cover-bg" style="
-      background-image:
-        linear-gradient(hsla(155,80%,50%,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, hsla(155,80%,50%,0.02) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
-    "></div>
-  <div class="chapter-cover-inner">
-    <div class="chapter-roman">II</div>
-    <div class="chapter-cover-num">Chapter II</div>
-    <h2 class="chapter-cover-title">Datamined Intelligence</h2>
-    <ul class="chapter-cover-topics">
-      <li onclick="goToPage(5)">Game Scope</li>
-      <li onclick="goToPage(5)">Confirmed Present</li>
-      <li onclick="goToPage(5)">Confirmed Absent</li>
-      <li onclick="goToPage(5)">Classic vs Live Comparison</li>
-    </ul>
-    <button class="chapter-begin-btn" onclick="goToPage(5)">Begin Chapter &rarr;</button>
-  </div>
+<!-- Page 3: Datamined Intel (Chapter II) -->
+<div class="page chapter-content" id="page-3" data-page="3">
+<div class="chapter-bar">
+  <span class="chapter-bar-num">Chapter II</span>
+  <span class="chapter-bar-title">Datamined Intelligence</span>
 </div>
-
-<div class="page chapter-content" id="page-5" data-page="5">
-<!-- ── DATAMINED INTEL ── -->
 <section id="datamined">
   <div class="section-inner">
     <div class="section-label" style="color:#00ff88">Datamined Intelligence</div>
@@ -2779,35 +2710,12 @@
 </section>
 </div>
 
-<div class="page chapter-cover" id="page-6" data-page="6">
-  
-    <div class="chapter-cover-bg" style="background:
-      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(15,80%,50%,0.04) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 60% at 20% 70%, hsla(15,60%,40%,0.03) 0%, transparent 60%),
-      linear-gradient(180deg, var(--bg-void) 0%, var(--bg-deep) 50%, var(--bg-void) 100%);
-    "></div>
-    <div class="chapter-cover-bg" style="
-      background-image:
-        linear-gradient(hsla(15,80%,50%,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, hsla(15,80%,50%,0.02) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
-    "></div>
-  <div class="chapter-cover-inner">
-    <div class="chapter-roman">III</div>
-    <div class="chapter-cover-num">Chapter III</div>
-    <h2 class="chapter-cover-title">Combat Systems</h2>
-    <ul class="chapter-cover-topics">
-      <li onclick="goToPage(7)">Damage Formula</li>
-      <li onclick="goToPage(7)">Secondary Stats</li>
-      <li onclick="goToPage(7)">Weapon Multipliers</li>
-    </ul>
-    <button class="chapter-begin-btn" onclick="goToPage(7)">Begin Chapter &rarr;</button>
-  </div>
+<!-- Page 4: Mechanics (Chapter III) -->
+<div class="page chapter-content" id="page-4" data-page="4">
+<div class="chapter-bar">
+  <span class="chapter-bar-num">Chapter III</span>
+  <span class="chapter-bar-title">Combat Systems</span>
 </div>
-
-<div class="page chapter-content" id="page-7" data-page="7">
-<!-- ── MECHANICS ── -->
 <section id="mechanics">
   <div class="section-inner">
     <div class="section-label">Combat Systems</div>
@@ -2940,36 +2848,12 @@
 </section>
 </div>
 
-<div class="page chapter-cover" id="page-8" data-page="8">
-  
-    <div class="chapter-cover-bg" style="background:
-      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(270,80%,50%,0.04) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 60% at 20% 70%, hsla(270,60%,40%,0.03) 0%, transparent 60%),
-      linear-gradient(180deg, var(--bg-void) 0%, var(--bg-deep) 50%, var(--bg-void) 100%);
-    "></div>
-    <div class="chapter-cover-bg" style="
-      background-image:
-        linear-gradient(hsla(270,80%,50%,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, hsla(270,80%,50%,0.02) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
-    "></div>
-  <div class="chapter-cover-inner">
-    <div class="chapter-roman">IV</div>
-    <div class="chapter-cover-num">Chapter IV</div>
-    <h2 class="chapter-cover-title">Class Rebalancing</h2>
-    <ul class="chapter-cover-topics">
-      <li onclick="goToPage(9)">Warrior</li>
-      <li onclick="goToPage(9)">Magician</li>
-      <li onclick="goToPage(9)">Bowman</li>
-      <li onclick="goToPage(9)">Thief</li>
-    </ul>
-    <button class="chapter-begin-btn" onclick="goToPage(9)">Begin Chapter &rarr;</button>
-  </div>
+<!-- Page 5: Classes (Chapter IV) -->
+<div class="page chapter-content" id="page-5" data-page="5">
+<div class="chapter-bar">
+  <span class="chapter-bar-num">Chapter IV</span>
+  <span class="chapter-bar-title">Class Rebalancing</span>
 </div>
-
-<div class="page chapter-content" id="page-9" data-page="9">
-<!-- ── CLASSES ── -->
 <section id="classes">
   <div class="section-inner">
     <div class="section-label">Class Rebalancing</div>
@@ -3109,38 +2993,12 @@
 </section>
 </div>
 
-<div class="page chapter-cover" id="page-10" data-page="10">
-  
-    <div class="chapter-cover-bg" style="background:
-      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(40,80%,50%,0.04) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 60% at 20% 70%, hsla(40,60%,40%,0.03) 0%, transparent 60%),
-      linear-gradient(180deg, var(--bg-void) 0%, var(--bg-deep) 50%, var(--bg-void) 100%);
-    "></div>
-    <div class="chapter-cover-bg" style="
-      background-image:
-        linear-gradient(hsla(40,80%,50%,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, hsla(40,80%,50%,0.02) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
-    "></div>
-  <div class="chapter-cover-inner">
-    <div class="chapter-roman">V</div>
-    <div class="chapter-cover-num">Chapter V</div>
-    <h2 class="chapter-cover-title">Economic Architecture</h2>
-    <ul class="chapter-cover-topics">
-      <li onclick="goToPage(11)">Trade Tax</li>
-      <li onclick="goToPage(11)">NPC Economy</li>
-      <li onclick="goToPage(11)">Scroll System</li>
-      <li onclick="goToPage(11)">Monster HP & Drops</li>
-      <li onclick="goToPage(11)">Storage</li>
-      <li onclick="goToPage(11)">Monetisation</li>
-    </ul>
-    <button class="chapter-begin-btn" onclick="goToPage(11)">Begin Chapter &rarr;</button>
-  </div>
+<!-- Page 6: Economy (Chapter V) -->
+<div class="page chapter-content" id="page-6" data-page="6">
+<div class="chapter-bar">
+  <span class="chapter-bar-num">Chapter V</span>
+  <span class="chapter-bar-title">Economic Architecture</span>
 </div>
-
-<div class="page chapter-content" id="page-11" data-page="11">
-<!-- ── ECONOMY ── -->
 <section id="economy">
   <div class="section-inner">
     <div class="section-label">Economic Architecture</div>
@@ -3218,37 +3076,12 @@
 </section>
 </div>
 
-<div class="page chapter-cover" id="page-12" data-page="12">
-  
-    <div class="chapter-cover-bg" style="background:
-      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(45,80%,50%,0.04) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 60% at 20% 70%, hsla(45,60%,40%,0.03) 0%, transparent 60%),
-      linear-gradient(180deg, var(--bg-void) 0%, var(--bg-deep) 50%, var(--bg-void) 100%);
-    "></div>
-    <div class="chapter-cover-bg" style="
-      background-image:
-        linear-gradient(hsla(45,80%,50%,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, hsla(45,80%,50%,0.02) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
-    "></div>
-  <div class="chapter-cover-inner">
-    <div class="chapter-roman">VI</div>
-    <div class="chapter-cover-num">Chapter VI</div>
-    <h2 class="chapter-cover-title">Classic World Exclusives</h2>
-    <ul class="chapter-cover-topics">
-      <li onclick="goToPage(13)">Shallow Passage</li>
-      <li onclick="goToPage(13)">Deep Passage</li>
-      <li onclick="goToPage(13)">New Monsters</li>
-      <li onclick="goToPage(13)">Scroll Tiers</li>
-      <li onclick="goToPage(13)">Arcforger Crafting</li>
-    </ul>
-    <button class="chapter-begin-btn" onclick="goToPage(13)">Begin Chapter &rarr;</button>
-  </div>
+<!-- Page 7: New Content (Chapter VI) -->
+<div class="page chapter-content" id="page-7" data-page="7">
+<div class="chapter-bar">
+  <span class="chapter-bar-num">Chapter VI</span>
+  <span class="chapter-bar-title">Classic World Exclusives</span>
 </div>
-
-<div class="page chapter-content" id="page-13" data-page="13">
-<!-- ── NEW CONTENT ── -->
 <section id="newcontent">
   <div class="section-inner">
     <div class="section-label" style="color:var(--maple-gold)">Classic World Exclusives <span class="source-badge datamined">DATAMINED</span></div>
@@ -3407,37 +3240,12 @@
 </section>
 </div>
 
-<div class="page chapter-cover" id="page-14" data-page="14">
-  
-    <div class="chapter-cover-bg" style="background:
-      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(0,80%,50%,0.04) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 60% at 20% 70%, hsla(0,60%,40%,0.03) 0%, transparent 60%),
-      linear-gradient(180deg, var(--bg-void) 0%, var(--bg-deep) 50%, var(--bg-void) 100%);
-    "></div>
-    <div class="chapter-cover-bg" style="
-      background-image:
-        linear-gradient(hsla(0,80%,50%,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, hsla(0,80%,50%,0.02) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
-    "></div>
-  <div class="chapter-cover-inner">
-    <div class="chapter-roman">VII</div>
-    <div class="chapter-cover-num">Chapter VII</div>
-    <h2 class="chapter-cover-title">Systemic Overhaul</h2>
-    <ul class="chapter-cover-topics">
-      <li onclick="goToPage(15)">HP Washing Removed</li>
-      <li onclick="goToPage(15)">Statless Builds Dead</li>
-      <li onclick="goToPage(15)">Character Creation</li>
-      <li onclick="goToPage(15)">Anti-Leeching Rule</li>
-      <li onclick="goToPage(15)">Party XP Bonuses</li>
-    </ul>
-    <button class="chapter-begin-btn" onclick="goToPage(15)">Begin Chapter &rarr;</button>
-  </div>
+<!-- Page 8: Progression (Chapter VII) -->
+<div class="page chapter-content" id="page-8" data-page="8">
+<div class="chapter-bar">
+  <span class="chapter-bar-num">Chapter VII</span>
+  <span class="chapter-bar-title">Systemic Overhaul</span>
 </div>
-
-<div class="page chapter-content" id="page-15" data-page="15">
-<!-- ── PROGRESSION ── -->
 <section id="progression">
   <div class="section-inner">
     <div class="section-label">Systemic Overhaul</div>
@@ -3512,38 +3320,12 @@
 </section>
 </div>
 
-<div class="page chapter-cover" id="page-16" data-page="16">
-  
-    <div class="chapter-cover-bg" style="background:
-      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(30,80%,50%,0.04) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 60% at 20% 70%, hsla(30,60%,40%,0.03) 0%, transparent 60%),
-      linear-gradient(180deg, var(--bg-void) 0%, var(--bg-deep) 50%, var(--bg-void) 100%);
-    "></div>
-    <div class="chapter-cover-bg" style="
-      background-image:
-        linear-gradient(hsla(30,80%,50%,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, hsla(30,80%,50%,0.02) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
-    "></div>
-  <div class="chapter-cover-inner">
-    <div class="chapter-roman">VIII</div>
-    <div class="chapter-cover-num">Chapter VIII</div>
-    <h2 class="chapter-cover-title">Developer Insights</h2>
-    <ul class="chapter-cover-topics">
-      <li onclick="goToPage(17)">Origin</li>
-      <li onclick="goToPage(17)">Private Servers</li>
-      <li onclick="goToPage(17)">HP Washing</li>
-      <li onclick="goToPage(17)">Cubes & Gachapon</li>
-      <li onclick="goToPage(17)">Content Timeline</li>
-      <li onclick="goToPage(17)">New Classes</li>
-    </ul>
-    <button class="chapter-begin-btn" onclick="goToPage(17)">Begin Chapter &rarr;</button>
-  </div>
+<!-- Page 9: Interview (Chapter VIII) -->
+<div class="page chapter-content" id="page-9" data-page="9">
+<div class="chapter-bar">
+  <span class="chapter-bar-num">Chapter VIII</span>
+  <span class="chapter-bar-title">Developer Insights</span>
 </div>
-
-<div class="page chapter-content" id="page-17" data-page="17">
-<!-- ── INTERVIEW ── -->
 <section id="interview">
   <div class="section-inner">
     <div class="section-label">Developer Insights</div>
@@ -3622,34 +3404,12 @@
 </section>
 </div>
 
-<div class="page chapter-cover" id="page-18" data-page="18">
-  
-    <div class="chapter-cover-bg" style="background:
-      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(280,80%,50%,0.04) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 60% at 20% 70%, hsla(280,60%,40%,0.03) 0%, transparent 60%),
-      linear-gradient(180deg, var(--bg-void) 0%, var(--bg-deep) 50%, var(--bg-void) 100%);
-    "></div>
-    <div class="chapter-cover-bg" style="
-      background-image:
-        linear-gradient(hsla(280,80%,50%,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, hsla(280,80%,50%,0.02) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
-    "></div>
-  <div class="chapter-cover-inner">
-    <div class="chapter-roman">IX</div>
-    <div class="chapter-cover-num">Chapter IX</div>
-    <h2 class="chapter-cover-title">Community Telemetry</h2>
-    <ul class="chapter-cover-topics">
-      <li onclick="goToPage(19)">Sentiment Gauges</li>
-      <li onclick="goToPage(19)">Datamined Reality Check</li>
-    </ul>
-    <button class="chapter-begin-btn" onclick="goToPage(19)">Begin Chapter &rarr;</button>
-  </div>
+<!-- Page 10: Community (Chapter IX) -->
+<div class="page chapter-content" id="page-10" data-page="10">
+<div class="chapter-bar">
+  <span class="chapter-bar-num">Chapter IX</span>
+  <span class="chapter-bar-title">Community Telemetry</span>
 </div>
-
-<div class="page chapter-content" id="page-19" data-page="19">
-<!-- ── COMMUNITY ── -->
 <section id="community">
   <div class="section-inner">
     <div class="section-label">Community Telemetry</div>
@@ -3790,36 +3550,12 @@
 </section>
 </div>
 
-<div class="page chapter-cover" id="page-20" data-page="20">
-  
-    <div class="chapter-cover-bg" style="background:
-      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(140,80%,50%,0.04) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 60% at 20% 70%, hsla(140,60%,40%,0.03) 0%, transparent 60%),
-      linear-gradient(180deg, var(--bg-void) 0%, var(--bg-deep) 50%, var(--bg-void) 100%);
-    "></div>
-    <div class="chapter-cover-bg" style="
-      background-image:
-        linear-gradient(hsla(140,80%,50%,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, hsla(140,80%,50%,0.02) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
-    "></div>
-  <div class="chapter-cover-inner">
-    <div class="chapter-roman">X</div>
-    <div class="chapter-cover-num">Chapter X</div>
-    <h2 class="chapter-cover-title">World & Lore</h2>
-    <ul class="chapter-cover-topics">
-      <li onclick="goToPage(21)">Map Changes</li>
-      <li onclick="goToPage(21)">Hidden Streets</li>
-      <li onclick="goToPage(21)">Lore Framework</li>
-      <li onclick="goToPage(21)">Party Quests</li>
-    </ul>
-    <button class="chapter-begin-btn" onclick="goToPage(21)">Begin Chapter &rarr;</button>
-  </div>
+<!-- Page 11: World (Chapter X) -->
+<div class="page chapter-content" id="page-11" data-page="11">
+<div class="chapter-bar">
+  <span class="chapter-bar-num">Chapter X</span>
+  <span class="chapter-bar-title">World &amp; Lore</span>
 </div>
-
-<div class="page chapter-content" id="page-21" data-page="21">
-<!-- ── WORLD ── -->
 <section id="world">
   <div class="section-inner">
     <div class="section-label">World & Lore</div>
@@ -3911,8 +3647,8 @@
 </section>
 </div>
 
-<div class="page" id="page-22" data-page="22">
-<!-- ── FOOTER ── -->
+<!-- Page 12: Footer -->
+<div class="page" id="page-12" data-page="12">
 <footer>
   <div class="footer-inner">
     <div>
@@ -3971,7 +3707,7 @@
 <!-- ── PAGE NAVIGATION CONTROLS ── -->
 <button class="page-nav-btn prev" id="pagePrev" aria-label="Previous page">&#x2039;</button>
 <button class="page-nav-btn next" id="pageNext" aria-label="Next page">&#x203A;</button>
-<div class="page-indicator" id="pageIndicator">Page 1 of 23</div>
+<div class="page-indicator" id="pageIndicator">Page 1 of 13</div>
 
 <!-- ── ORIGINAL SCRIPTS (lightbox, gauges) ── -->
 <script>
@@ -4081,7 +3817,7 @@
 <script>
 (function() {
   // Page navigation system
-  const totalPages = 23;
+  const totalPages = 13;
   let currentPage = 0;
   let isTransitioning = false;
 
