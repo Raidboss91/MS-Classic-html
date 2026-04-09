@@ -7,7 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
   <style>
     :root {
       --maple-orange: #FF6600;
@@ -1749,63 +1748,6 @@
     .fade-up-delay-4 { animation-delay: 0.4s; }
 
     /* ══════════════════════════════════
-       BOOK PAGE-FLIP
-    ══════════════════════════════════ */
-    .book-page {
-        background: var(--bg-void);
-        overflow-y: auto;
-        padding: 0;
-    }
-    .book-page > section {
-        padding: 3rem 2rem;
-    }
-    .book-page > footer {
-        padding: 3rem 2rem;
-    }
-    .flip-nav {
-        position: fixed;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        border: 1px solid rgba(255,102,0,0.3);
-        background: rgba(10,10,18,0.7);
-        color: var(--maple-orange);
-        font-size: 1.2rem;
-        cursor: pointer;
-        z-index: 100;
-        backdrop-filter: blur(8px);
-        transition: all 0.2s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .flip-nav:hover {
-        background: rgba(255,102,0,0.15);
-        border-color: var(--maple-orange);
-        box-shadow: 0 0 20px rgba(255,102,0,0.3);
-    }
-    .flip-prev { left: 1.5rem; }
-    .flip-next { right: 1.5rem; }
-    .page-indicator {
-        position: fixed;
-        bottom: 2rem;
-        left: 50%;
-        transform: translateX(-50%);
-        font-family: 'Share Tech Mono', monospace;
-        font-size: 0.75rem;
-        letter-spacing: 0.15em;
-        color: var(--maple-orange);
-        background: rgba(10,10,18,0.8);
-        padding: 0.4rem 1.2rem;
-        border-radius: 20px;
-        border: 1px solid rgba(255,102,0,0.2);
-        z-index: 100;
-        backdrop-filter: blur(8px);
-    }
-
-    /* ══════════════════════════════════
        RESPONSIVE
     ══════════════════════════════════ */
     @media (max-width: 1024px) {
@@ -1843,7 +1785,7 @@
 
       /* ── NAV: hamburger + vertical dropdown ── */
       .hamburger-btn {
-        display: flex !important;
+        display: flex;
         flex-direction: column;
         justify-content: center;
         gap: 5px;
@@ -1995,27 +1937,6 @@
       .section-desc { font-size: 1rem; }
       .inkwell-header { flex-direction: column; text-align: center; }
       .qa-a { padding-left: 0; }
-
-      /* ── FLIP NAV MOBILE ── */
-      .flip-nav {
-        width: 40px;
-        height: 40px;
-        font-size: 0.9rem;
-      }
-      .flip-prev { left: 0.5rem; }
-      .flip-next { right: 0.5rem; }
-      #book-container {
-        padding-top: 80px !important;
-        align-items: flex-start !important;
-      }
-      .book-page > section {
-        padding: 1.5rem 1rem !important;
-      }
-      .page-indicator {
-        bottom: 1rem;
-        font-size: 0.65rem;
-        padding: 0.3rem 0.8rem;
-      }
     }
   </style>
 </head>
@@ -2030,22 +1951,28 @@
 <nav>
   <div class="nav-inner">
     <a href="#" class="nav-logo">Maple<span>Classic</span></a>
-    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation" style="display:none">
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation">
       <span></span><span></span><span></span>
     </button>
     <ul class="nav-links" id="navLinks">
+      <li><a href="#vision">Vision</a></li>
+      <li><a href="#datamined" style="color:#00ff88">Datamined</a></li>
+      <li><a href="#blueprint">Blueprint</a></li>
+      <li><a href="#mechanics">Mechanics</a></li>
+      <li><a href="#classes">Classes</a></li>
+      <li><a href="#economy">Economy</a></li>
+      <li><a href="#newcontent" style="color:var(--maple-gold)">New Content</a></li>
+      <li><a href="#progression">Progression</a></li>
+      <li><a href="#interview">Interview</a></li>
+      <li><a href="#community">Community</a></li>
+      <li><a href="#world">World</a></li>
       <li><a href="wiki.html" style="color:#00ff88">Wiki</a></li>
     </ul>
   </div>
 </nav>
 
-<div id="book-container" style="display:flex;justify-content:center;align-items:center;min-height:100vh;padding-top:110px;width:100%;">
-  <div id="book">
-
-    <!-- PAGE 0: Hero + Wiki Banner -->
-    <div class="book-page" data-density="hard">
 <!-- ── GAME WIKI BANNER ── -->
-<div style="padding: 1rem 2rem 0; background: var(--bg-void);">
+<div style="padding-top: 110px; background: var(--bg-void);">
   <a href="wiki.html" style="
     display: flex;
     align-items: center;
@@ -2072,7 +1999,7 @@
 </div>
 
 <!-- ── HERO ── -->
-<section class="hero" id="home" style="padding-top:1rem;min-height:auto;">
+<section class="hero" id="home">
   <div class="hero-bg"></div>
   <div class="hero-content">
     <div class="hero-text">
@@ -2098,10 +2025,8 @@
     </div>
   </div>
 </section>
-    </div><!-- /page 0 -->
 
-    <!-- PAGE 1: Vision -->
-    <div class="book-page" data-density="hard">
+<!-- ── VISION ── -->
 <section id="vision">
   <div class="section-inner">
     <div class="section-label">Design Philosophy</div>
@@ -2157,10 +2082,8 @@
     </div>
   </div>
 </section>
-    </div><!-- /page 1 -->
 
-    <!-- PAGE 2: Datamined Intel -->
-    <div class="book-page" data-density="hard">
+<!-- ── DATAMINED INTEL ── -->
 <section id="datamined">
   <div class="section-inner">
     <div class="section-label" style="color:#00ff88">Datamined Intelligence</div>
@@ -2358,10 +2281,8 @@
     </a>
   </div>
 </section>
-    </div><!-- /page 2 -->
 
-    <!-- PAGE 3: Mechanics -->
-    <div class="book-page" data-density="hard">
+<!-- ── MECHANICS ── -->
 <section id="mechanics">
   <div class="section-inner">
     <div class="section-label">Combat Systems</div>
@@ -2492,10 +2413,8 @@
     </div>
   </div>
 </section>
-    </div><!-- /page 3 -->
 
-    <!-- PAGE 4: Classes -->
-    <div class="book-page" data-density="hard">
+<!-- ── CLASSES ── -->
 <section id="classes">
   <div class="section-inner">
     <div class="section-label">Class Rebalancing</div>
@@ -2633,10 +2552,8 @@
     </div>
   </div>
 </section>
-    </div><!-- /page 4 -->
 
-    <!-- PAGE 5: Economy -->
-    <div class="book-page" data-density="hard">
+<!-- ── ECONOMY ── -->
 <section id="economy">
   <div class="section-inner">
     <div class="section-label">Economic Architecture</div>
@@ -2712,10 +2629,8 @@
     </div>
   </div>
 </section>
-    </div><!-- /page 5 -->
 
-    <!-- PAGE 6: New Content -->
-    <div class="book-page" data-density="hard">
+<!-- ── NEW CONTENT ── -->
 <section id="newcontent">
   <div class="section-inner">
     <div class="section-label" style="color:var(--maple-gold)">Classic World Exclusives <span class="source-badge datamined">DATAMINED</span></div>
@@ -2872,10 +2787,8 @@
     </div>
   </div>
 </section>
-    </div><!-- /page 6 -->
 
-    <!-- PAGE 7: Progression -->
-    <div class="book-page" data-density="hard">
+<!-- ── PROGRESSION ── -->
 <section id="progression">
   <div class="section-inner">
     <div class="section-label">Systemic Overhaul</div>
@@ -2948,10 +2861,8 @@
     </div>
   </div>
 </section>
-    </div><!-- /page 7 -->
 
-    <!-- PAGE 8: Interview -->
-    <div class="book-page" data-density="hard">
+<!-- ── INTERVIEW ── -->
 <section id="interview">
   <div class="section-inner">
     <div class="section-label">Developer Insights</div>
@@ -3028,10 +2939,8 @@
     </div>
   </div>
 </section>
-    </div><!-- /page 8 -->
 
-    <!-- PAGE 9: Community -->
-    <div class="book-page" data-density="hard">
+<!-- ── COMMUNITY ── -->
 <section id="community">
   <div class="section-inner">
     <div class="section-label">Community Telemetry</div>
@@ -3170,10 +3079,8 @@
     </div>
   </div>
 </section>
-    </div><!-- /page 9 -->
 
-    <!-- PAGE 10: World & Lore -->
-    <div class="book-page" data-density="hard">
+<!-- ── WORLD ── -->
 <section id="world">
   <div class="section-inner">
     <div class="section-label">World & Lore</div>
@@ -3263,10 +3170,8 @@
     </div>
   </div>
 </section>
-    </div><!-- /page 10 -->
 
-    <!-- PAGE 11: Footer -->
-    <div class="book-page" data-density="hard">
+<!-- ── FOOTER ── -->
 <footer>
   <div class="footer-inner">
     <div>
@@ -3310,15 +3215,6 @@
     <div class="source-note">Primary source: WZ Datamine (3,859 files, 416 MB) + Binary Analysis (v1.1.0.0, April 2026) · Cross-referenced with playtests, interviews & community · Blueprint: P-001-CW</div>
   </div>
 </footer>
-    </div><!-- /page 11 -->
-
-  </div><!-- /book -->
-</div><!-- /book-container -->
-
-<!-- ── FLIP NAVIGATION ── -->
-<button id="prev-btn" class="flip-nav flip-prev">&#x25C0;</button>
-<button id="next-btn" class="flip-nav flip-next">&#x25B6;</button>
-<div id="page-indicator" class="page-indicator">1 / 12</div>
 
 <!-- ── LIGHTBOX ── -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
@@ -3428,50 +3324,6 @@
     });
   });
 })();
-</script>
-
-<!-- ── STPAGEFLIP INIT ── -->
-<script>
-const isMobile = window.innerWidth <= 768;
-const pageFlip = new St.PageFlip(document.getElementById('book'), {
-    width: isMobile ? window.innerWidth - 20 : 1200,
-    height: isMobile ? window.innerHeight - 140 : 800,
-    size: 'stretch',
-    minWidth: 300,
-    maxWidth: 1400,
-    minHeight: 400,
-    maxHeight: 1000,
-    maxShadowOpacity: 0.4,
-    showCover: true,
-    mobileScrollSupport: false,
-    swipeDistance: 30,
-    useMouseEvents: true,
-    flippingTime: 600,
-    startPage: 0,
-    drawShadow: true,
-    autoSize: true,
-    usePortrait: true,
-});
-
-pageFlip.loadFromHTML(document.querySelectorAll('.book-page'));
-
-document.getElementById('prev-btn').addEventListener('click', () => pageFlip.flipPrev());
-document.getElementById('next-btn').addEventListener('click', () => pageFlip.flipNext());
-
-document.addEventListener('keydown', (e) => {
-    // Don't interfere with lightbox navigation
-    const lb = document.getElementById('lightbox');
-    if (lb && lb.classList.contains('open')) return;
-
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') pageFlip.flipNext();
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') pageFlip.flipPrev();
-});
-
-// Update page indicator
-pageFlip.on('flip', (e) => {
-    document.getElementById('page-indicator').textContent =
-        `${e.data + 1} / ${pageFlip.getPageCount()}`;
-});
 </script>
 </body>
 </html>
