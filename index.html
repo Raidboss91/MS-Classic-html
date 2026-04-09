@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
+
     :root {
       --maple-orange: #FF6600;
       --maple-orange-dim: #CC5200;
@@ -1938,66 +1939,502 @@
       .inkwell-header { flex-direction: column; text-align: center; }
       .qa-a { padding-left: 0; }
     }
+  
+
+    /* ══════════════════════════════════
+       PAGE SYSTEM
+    ══════════════════════════════════ */
+    html { overflow: hidden; height: 100%; }
+    body { overflow: hidden; height: 100%; }
+
+    .page {
+      position: fixed;
+      inset: 0;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background: var(--bg-void);
+      z-index: 1;
+      flex-direction: column;
+    }
+    .page.active {
+      display: flex;
+      opacity: 1;
+    }
+    .page.fade-out {
+      opacity: 0;
+    }
+    .page.fade-in {
+      opacity: 1;
+    }
+
+    /* Inside pages, sections should not have min-height */
+    .page section {
+      min-height: auto;
+      position: relative;
+    }
+    .page .hero {
+      min-height: auto;
+      padding-top: 80px;
+    }
+
+    /* ══════════════════════════════════
+       TABLE OF CONTENTS
+    ══════════════════════════════════ */
+    .toc-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 100px 2rem 4rem;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 30%, rgba(255,102,0,0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 80% 70%, rgba(255,208,96,0.03) 0%, transparent 60%),
+        var(--bg-void);
+    }
+    .toc-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .toc-logo {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 900;
+      color: var(--maple-orange);
+      text-shadow: var(--glow-orange);
+      margin-bottom: 0.3rem;
+    }
+    .toc-logo span { color: var(--maple-gold); }
+    .toc-subtitle {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-top: 0.5rem;
+    }
+    .toc-wiki-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.5rem;
+      background: rgba(0,255,136,0.06);
+      border: 1px solid rgba(0,255,136,0.25);
+      border-radius: 4px;
+      text-decoration: none;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.78rem;
+      color: #00ff88;
+      letter-spacing: 0.04em;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .toc-wiki-link:hover {
+      border-color: rgba(0,255,136,0.6);
+      box-shadow: 0 4px 20px rgba(0,255,136,0.15);
+    }
+    .toc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem 3rem;
+      max-width: 1000px;
+      width: 100%;
+    }
+    .toc-chapter {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 6px;
+      padding: 1.4rem 1.6rem;
+      cursor: pointer;
+      transition: border-color 0.25s, background 0.25s, transform 0.2s;
+    }
+    .toc-chapter:hover {
+      border-color: var(--border-orange);
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+    }
+    .toc-chapter-num {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+    .toc-chapter-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.6rem;
+      cursor: pointer;
+    }
+    .toc-chapter-title:hover { color: var(--maple-orange); }
+    .toc-subtopics {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .toc-subtopics li {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      padding: 0.15rem 0;
+      transition: color 0.2s;
+    }
+    .toc-subtopics li:hover { color: var(--maple-orange); }
+    .toc-subtopics li::before {
+      content: '\25B8 ';
+      color: var(--maple-orange);
+      opacity: 0.5;
+    }
+
+    /* ══════════════════════════════════
+       CHAPTER COVERS
+    ══════════════════════════════════ */
+    .chapter-cover {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      position: relative;
+      min-height: 100vh;
+    }
+    .chapter-cover-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .chapter-cover-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+    }
+    .chapter-roman {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(5rem, 12vw, 10rem);
+      font-weight: 900;
+      color: rgba(255,255,255,0.03);
+      line-height: 1;
+      margin-bottom: -1rem;
+      user-select: none;
+    }
+    .chapter-cover-num {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 1rem;
+    }
+    .chapter-cover-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.2;
+      margin-bottom: 2rem;
+    }
+    .chapter-cover-topics {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-bottom: 2.5rem;
+    }
+    .chapter-cover-topics li {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 0.4rem 0;
+      transition: color 0.2s;
+    }
+    .chapter-cover-topics li:hover { color: var(--maple-orange); }
+    .chapter-cover-topics li::before {
+      content: '\25B8 ';
+      color: var(--maple-orange);
+      opacity: 0.6;
+    }
+    .chapter-begin-btn {
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.85rem 2.5rem;
+      background: transparent;
+      color: var(--maple-orange);
+      border: 1px solid var(--border-orange);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      display: inline-block;
+    }
+    .chapter-begin-btn:hover {
+      background: rgba(255,102,0,0.1);
+      border-color: var(--maple-orange);
+      color: var(--maple-gold);
+    }
+
+    /* ══════════════════════════════════
+       PAGE NAVIGATION CONTROLS
+    ══════════════════════════════════ */
+    .page-nav-btn {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 500;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255,102,0,0.12);
+      border: 1px solid var(--border-orange);
+      color: var(--maple-orange);
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s, opacity 0.3s;
+      opacity: 0.6;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .page-nav-btn:hover {
+      background: rgba(255,102,0,0.25);
+      border-color: var(--maple-orange);
+      opacity: 1;
+    }
+    .page-nav-btn.prev { left: 1rem; }
+    .page-nav-btn.next { right: 1rem; }
+
+    .page-toc-btn {
+      position: fixed;
+      top: 14px;
+      right: 80px;
+      z-index: 1001;
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.45rem 1rem;
+      background: rgba(255,102,0,0.1);
+      border: 1px solid var(--border-orange);
+      border-radius: 3px;
+      color: var(--maple-orange);
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .page-toc-btn:hover {
+      background: rgba(255,102,0,0.2);
+      border-color: var(--maple-orange);
+    }
+
+    .page-indicator {
+      position: fixed;
+      bottom: 1.2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 500;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+      background: rgba(5,5,10,0.8);
+      padding: 0.35rem 1rem;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    /* ══════════════════════════════════
+       PAGE SYSTEM RESPONSIVE
+    ══════════════════════════════════ */
+    @media (max-width: 768px) {
+      .toc-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      .page-nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+      }
+      .page-nav-btn.prev { left: 0.5rem; }
+      .page-nav-btn.next { right: 0.5rem; }
+      .toc-page {
+        padding: 80px 1.2rem 3rem;
+      }
+      .chapter-cover {
+        padding: 3rem 1.2rem;
+      }
+      .chapter-roman {
+        font-size: clamp(3rem, 15vw, 6rem);
+      }
+      .page-toc-btn {
+        right: 60px;
+        font-size: 0.58rem;
+        padding: 0.4rem 0.7rem;
+      }
+      .page-indicator {
+        font-size: 0.55rem;
+        bottom: 0.8rem;
+      }
+    }
+
   </style>
 </head>
 <body>
 
-<!-- ── AUTHOR BANNER ── -->
-<div class="author-banner">
-  <span class="author-text">✦ Author: RaidBoss9 ✦</span>
-</div>
-
-<!-- ── NAVIGATION ── -->
+<!-- ── NAVIGATION (simplified) ── -->
 <nav>
   <div class="nav-inner">
-    <a href="#" class="nav-logo">Maple<span>Classic</span></a>
-    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation">
-      <span></span><span></span><span></span>
-    </button>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#vision">Vision</a></li>
-      <li><a href="#datamined" style="color:#00ff88">Datamined</a></li>
-      <li><a href="#blueprint">Blueprint</a></li>
-      <li><a href="#mechanics">Mechanics</a></li>
-      <li><a href="#classes">Classes</a></li>
-      <li><a href="#economy">Economy</a></li>
-      <li><a href="#newcontent" style="color:var(--maple-gold)">New Content</a></li>
-      <li><a href="#progression">Progression</a></li>
-      <li><a href="#interview">Interview</a></li>
-      <li><a href="#community">Community</a></li>
-      <li><a href="#world">World</a></li>
-      <li><a href="wiki.html" style="color:#00ff88">Wiki</a></li>
-    </ul>
+    <a href="javascript:void(0)" class="nav-logo" onclick="goToPage(0)">Maple<span>Classic</span></a>
+    <div style="display:flex;align-items:center;gap:0.8rem">
+      <a href="wiki.html" style="font-family:'Cinzel',serif;font-size:0.7rem;font-weight:600;color:#00ff88;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 0.8rem;border-radius:3px;transition:background 0.2s;" onmouseover="this.style.background='rgba(0,255,136,0.08)'" onmouseout="this.style.background='none'">Wiki</a>
+      <button class="page-toc-btn" id="pageTocBtn">Contents</button>
+    </div>
   </div>
 </nav>
 
-<!-- ── GAME WIKI BANNER ── -->
-<div style="padding-top: 110px; background: var(--bg-void);">
-  <a href="wiki.html" style="
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0.85rem 2rem;
-    background: linear-gradient(135deg, rgba(0,255,136,0.06) 0%, rgba(0,180,100,0.03) 50%, transparent 100%);
-    border: 1px solid rgba(0,255,136,0.25);
-    border-radius: 6px;
-    text-decoration: none;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.85rem;
-    color: #00ff88;
-    letter-spacing: 0.04em;
-    transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
-  " onmouseover="this.style.borderColor='rgba(0,255,136,0.6)';this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 20px rgba(0,255,136,0.15)';"
-     onmouseout="this.style.borderColor='rgba(0,255,136,0.25)';this.style.transform='translateY(0)';this.style.boxShadow='none';">
-    <span style="font-size: 1.2rem;">&#x1F4D6;</span>
-    <span>Explore the Full Game Wiki &mdash; <strong>85</strong> Monsters, <strong>969</strong> Equipment, <strong>208</strong> Scrolls, <strong>93</strong> Skills, <strong>174</strong> Quests, <strong>188</strong> NPCs, <strong>342</strong> Recipes</span>
-    <span style="font-size: 1.1rem;">&rarr;</span>
-  </a>
+<!-- ── PAGES ── -->
+
+<div class="page toc-page" id="page-0" data-page="0">
+  <div class="toc-header">
+    <div class="toc-logo">Maple<span>Classic</span></div>
+    <div style="font-family:'Cinzel',serif;font-size:clamp(1rem,2vw,1.4rem);color:var(--text-secondary);font-weight:600;margin-top:0.3rem">The Parallel Blueprint</div>
+    <div class="toc-subtitle">Datamined WZ Metadata + Developer Interviews + Community Analysis</div>
+    <a href="wiki.html" class="toc-wiki-link">
+      <span>&#x1F4D6;</span>
+      <span>Explore the Full Game Wiki &mdash; 85 Monsters, 969 Equipment, 208 Scrolls &rarr;</span>
+    </a>
+  </div>
+  <div class="toc-grid">
+      <div class="toc-chapter" onclick="goToPage(2)">
+        <div class="toc-chapter-num">Chapter I</div>
+        <div class="toc-chapter-title" onclick="event.stopPropagation(); goToPage(3)">Design Philosophy</div>
+        <ul class="toc-subtopics">
+        <li onclick="goToPage(3)">Inkwell's Philosophy</li>
+        <li onclick="goToPage(3)">Modernised Classic</li>
+        <li onclick="goToPage(3)">Parallel Timeline</li>
+        </ul>
+      </div>
+      <div class="toc-chapter" onclick="goToPage(4)">
+        <div class="toc-chapter-num">Chapter II</div>
+        <div class="toc-chapter-title" onclick="event.stopPropagation(); goToPage(5)">Datamined Intelligence</div>
+        <ul class="toc-subtopics">
+        <li onclick="goToPage(5)">Game Scope</li>
+        <li onclick="goToPage(5)">Confirmed Present</li>
+        <li onclick="goToPage(5)">Confirmed Absent</li>
+        <li onclick="goToPage(5)">Classic vs Live Comparison</li>
+        </ul>
+      </div>
+      <div class="toc-chapter" onclick="goToPage(6)">
+        <div class="toc-chapter-num">Chapter III</div>
+        <div class="toc-chapter-title" onclick="event.stopPropagation(); goToPage(7)">Combat Systems</div>
+        <ul class="toc-subtopics">
+        <li onclick="goToPage(7)">Damage Formula</li>
+        <li onclick="goToPage(7)">Secondary Stats</li>
+        <li onclick="goToPage(7)">Weapon Multipliers</li>
+        </ul>
+      </div>
+      <div class="toc-chapter" onclick="goToPage(8)">
+        <div class="toc-chapter-num">Chapter IV</div>
+        <div class="toc-chapter-title" onclick="event.stopPropagation(); goToPage(9)">Class Rebalancing</div>
+        <ul class="toc-subtopics">
+        <li onclick="goToPage(9)">Warrior</li>
+        <li onclick="goToPage(9)">Magician</li>
+        <li onclick="goToPage(9)">Bowman</li>
+        <li onclick="goToPage(9)">Thief</li>
+        </ul>
+      </div>
+      <div class="toc-chapter" onclick="goToPage(10)">
+        <div class="toc-chapter-num">Chapter V</div>
+        <div class="toc-chapter-title" onclick="event.stopPropagation(); goToPage(11)">Economic Architecture</div>
+        <ul class="toc-subtopics">
+        <li onclick="goToPage(11)">Trade Tax</li>
+        <li onclick="goToPage(11)">NPC Economy</li>
+        <li onclick="goToPage(11)">Scroll System</li>
+        <li onclick="goToPage(11)">Monster HP & Drops</li>
+        <li onclick="goToPage(11)">Storage</li>
+        <li onclick="goToPage(11)">Monetisation</li>
+        </ul>
+      </div>
+      <div class="toc-chapter" onclick="goToPage(12)">
+        <div class="toc-chapter-num">Chapter VI</div>
+        <div class="toc-chapter-title" onclick="event.stopPropagation(); goToPage(13)">Classic World Exclusives</div>
+        <ul class="toc-subtopics">
+        <li onclick="goToPage(13)">Shallow Passage</li>
+        <li onclick="goToPage(13)">Deep Passage</li>
+        <li onclick="goToPage(13)">New Monsters</li>
+        <li onclick="goToPage(13)">Scroll Tiers</li>
+        <li onclick="goToPage(13)">Arcforger Crafting</li>
+        </ul>
+      </div>
+      <div class="toc-chapter" onclick="goToPage(14)">
+        <div class="toc-chapter-num">Chapter VII</div>
+        <div class="toc-chapter-title" onclick="event.stopPropagation(); goToPage(15)">Systemic Overhaul</div>
+        <ul class="toc-subtopics">
+        <li onclick="goToPage(15)">HP Washing Removed</li>
+        <li onclick="goToPage(15)">Statless Builds Dead</li>
+        <li onclick="goToPage(15)">Character Creation</li>
+        <li onclick="goToPage(15)">Anti-Leeching Rule</li>
+        <li onclick="goToPage(15)">Party XP Bonuses</li>
+        </ul>
+      </div>
+      <div class="toc-chapter" onclick="goToPage(16)">
+        <div class="toc-chapter-num">Chapter VIII</div>
+        <div class="toc-chapter-title" onclick="event.stopPropagation(); goToPage(17)">Developer Insights</div>
+        <ul class="toc-subtopics">
+        <li onclick="goToPage(17)">Origin</li>
+        <li onclick="goToPage(17)">Private Servers</li>
+        <li onclick="goToPage(17)">HP Washing</li>
+        <li onclick="goToPage(17)">Cubes & Gachapon</li>
+        <li onclick="goToPage(17)">Content Timeline</li>
+        <li onclick="goToPage(17)">New Classes</li>
+        </ul>
+      </div>
+      <div class="toc-chapter" onclick="goToPage(18)">
+        <div class="toc-chapter-num">Chapter IX</div>
+        <div class="toc-chapter-title" onclick="event.stopPropagation(); goToPage(19)">Community Telemetry</div>
+        <ul class="toc-subtopics">
+        <li onclick="goToPage(19)">Sentiment Gauges</li>
+        <li onclick="goToPage(19)">Datamined Reality Check</li>
+        </ul>
+      </div>
+      <div class="toc-chapter" onclick="goToPage(20)">
+        <div class="toc-chapter-num">Chapter X</div>
+        <div class="toc-chapter-title" onclick="event.stopPropagation(); goToPage(21)">World & Lore</div>
+        <ul class="toc-subtopics">
+        <li onclick="goToPage(21)">Map Changes</li>
+        <li onclick="goToPage(21)">Hidden Streets</li>
+        <li onclick="goToPage(21)">Lore Framework</li>
+        <li onclick="goToPage(21)">Party Quests</li>
+        </ul>
+      </div>
+  </div>
+  <div style="margin-top:2.5rem;text-align:center">
+    <div class="author-text" style="pointer-events:auto">&#x2726; Author: RaidBoss9 &#x2726;</div>
+  </div>
 </div>
 
+
+<div class="page" id="page-1" data-page="1">
 <!-- ── HERO ── -->
 <section class="hero" id="home">
   <div class="hero-bg"></div>
@@ -2025,7 +2462,36 @@
     </div>
   </div>
 </section>
+</div>
 
+<div class="page chapter-cover" id="page-2" data-page="2">
+  
+    <div class="chapter-cover-bg" style="background:
+      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(25,80%,50%,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 70%, hsla(25,60%,40%,0.03) 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg-void) 0%, var(--bg-deep) 50%, var(--bg-void) 100%);
+    "></div>
+    <div class="chapter-cover-bg" style="
+      background-image:
+        linear-gradient(hsla(25,80%,50%,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, hsla(25,80%,50%,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+    "></div>
+  <div class="chapter-cover-inner">
+    <div class="chapter-roman">I</div>
+    <div class="chapter-cover-num">Chapter I</div>
+    <h2 class="chapter-cover-title">Design Philosophy</h2>
+    <ul class="chapter-cover-topics">
+      <li onclick="goToPage(3)">Inkwell's Philosophy</li>
+      <li onclick="goToPage(3)">Modernised Classic</li>
+      <li onclick="goToPage(3)">Parallel Timeline</li>
+    </ul>
+    <button class="chapter-begin-btn" onclick="goToPage(3)">Begin Chapter &rarr;</button>
+  </div>
+</div>
+
+<div class="page chapter-content" id="page-3" data-page="3">
 <!-- ── VISION ── -->
 <section id="vision">
   <div class="section-inner">
@@ -2082,7 +2548,37 @@
     </div>
   </div>
 </section>
+</div>
 
+<div class="page chapter-cover" id="page-4" data-page="4">
+  
+    <div class="chapter-cover-bg" style="background:
+      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(155,80%,50%,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 70%, hsla(155,60%,40%,0.03) 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg-void) 0%, var(--bg-deep) 50%, var(--bg-void) 100%);
+    "></div>
+    <div class="chapter-cover-bg" style="
+      background-image:
+        linear-gradient(hsla(155,80%,50%,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, hsla(155,80%,50%,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+    "></div>
+  <div class="chapter-cover-inner">
+    <div class="chapter-roman">II</div>
+    <div class="chapter-cover-num">Chapter II</div>
+    <h2 class="chapter-cover-title">Datamined Intelligence</h2>
+    <ul class="chapter-cover-topics">
+      <li onclick="goToPage(5)">Game Scope</li>
+      <li onclick="goToPage(5)">Confirmed Present</li>
+      <li onclick="goToPage(5)">Confirmed Absent</li>
+      <li onclick="goToPage(5)">Classic vs Live Comparison</li>
+    </ul>
+    <button class="chapter-begin-btn" onclick="goToPage(5)">Begin Chapter &rarr;</button>
+  </div>
+</div>
+
+<div class="page chapter-content" id="page-5" data-page="5">
 <!-- ── DATAMINED INTEL ── -->
 <section id="datamined">
   <div class="section-inner">
@@ -2281,7 +2777,36 @@
     </a>
   </div>
 </section>
+</div>
 
+<div class="page chapter-cover" id="page-6" data-page="6">
+  
+    <div class="chapter-cover-bg" style="background:
+      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(15,80%,50%,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 70%, hsla(15,60%,40%,0.03) 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg-void) 0%, var(--bg-deep) 50%, var(--bg-void) 100%);
+    "></div>
+    <div class="chapter-cover-bg" style="
+      background-image:
+        linear-gradient(hsla(15,80%,50%,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, hsla(15,80%,50%,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+    "></div>
+  <div class="chapter-cover-inner">
+    <div class="chapter-roman">III</div>
+    <div class="chapter-cover-num">Chapter III</div>
+    <h2 class="chapter-cover-title">Combat Systems</h2>
+    <ul class="chapter-cover-topics">
+      <li onclick="goToPage(7)">Damage Formula</li>
+      <li onclick="goToPage(7)">Secondary Stats</li>
+      <li onclick="goToPage(7)">Weapon Multipliers</li>
+    </ul>
+    <button class="chapter-begin-btn" onclick="goToPage(7)">Begin Chapter &rarr;</button>
+  </div>
+</div>
+
+<div class="page chapter-content" id="page-7" data-page="7">
 <!-- ── MECHANICS ── -->
 <section id="mechanics">
   <div class="section-inner">
@@ -2413,7 +2938,37 @@
     </div>
   </div>
 </section>
+</div>
 
+<div class="page chapter-cover" id="page-8" data-page="8">
+  
+    <div class="chapter-cover-bg" style="background:
+      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(270,80%,50%,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 70%, hsla(270,60%,40%,0.03) 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg-void) 0%, var(--bg-deep) 50%, var(--bg-void) 100%);
+    "></div>
+    <div class="chapter-cover-bg" style="
+      background-image:
+        linear-gradient(hsla(270,80%,50%,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, hsla(270,80%,50%,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+    "></div>
+  <div class="chapter-cover-inner">
+    <div class="chapter-roman">IV</div>
+    <div class="chapter-cover-num">Chapter IV</div>
+    <h2 class="chapter-cover-title">Class Rebalancing</h2>
+    <ul class="chapter-cover-topics">
+      <li onclick="goToPage(9)">Warrior</li>
+      <li onclick="goToPage(9)">Magician</li>
+      <li onclick="goToPage(9)">Bowman</li>
+      <li onclick="goToPage(9)">Thief</li>
+    </ul>
+    <button class="chapter-begin-btn" onclick="goToPage(9)">Begin Chapter &rarr;</button>
+  </div>
+</div>
+
+<div class="page chapter-content" id="page-9" data-page="9">
 <!-- ── CLASSES ── -->
 <section id="classes">
   <div class="section-inner">
@@ -2552,7 +3107,39 @@
     </div>
   </div>
 </section>
+</div>
 
+<div class="page chapter-cover" id="page-10" data-page="10">
+  
+    <div class="chapter-cover-bg" style="background:
+      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(40,80%,50%,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 70%, hsla(40,60%,40%,0.03) 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg-void) 0%, var(--bg-deep) 50%, var(--bg-void) 100%);
+    "></div>
+    <div class="chapter-cover-bg" style="
+      background-image:
+        linear-gradient(hsla(40,80%,50%,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, hsla(40,80%,50%,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+    "></div>
+  <div class="chapter-cover-inner">
+    <div class="chapter-roman">V</div>
+    <div class="chapter-cover-num">Chapter V</div>
+    <h2 class="chapter-cover-title">Economic Architecture</h2>
+    <ul class="chapter-cover-topics">
+      <li onclick="goToPage(11)">Trade Tax</li>
+      <li onclick="goToPage(11)">NPC Economy</li>
+      <li onclick="goToPage(11)">Scroll System</li>
+      <li onclick="goToPage(11)">Monster HP & Drops</li>
+      <li onclick="goToPage(11)">Storage</li>
+      <li onclick="goToPage(11)">Monetisation</li>
+    </ul>
+    <button class="chapter-begin-btn" onclick="goToPage(11)">Begin Chapter &rarr;</button>
+  </div>
+</div>
+
+<div class="page chapter-content" id="page-11" data-page="11">
 <!-- ── ECONOMY ── -->
 <section id="economy">
   <div class="section-inner">
@@ -2629,7 +3216,38 @@
     </div>
   </div>
 </section>
+</div>
 
+<div class="page chapter-cover" id="page-12" data-page="12">
+  
+    <div class="chapter-cover-bg" style="background:
+      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(45,80%,50%,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 70%, hsla(45,60%,40%,0.03) 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg-void) 0%, var(--bg-deep) 50%, var(--bg-void) 100%);
+    "></div>
+    <div class="chapter-cover-bg" style="
+      background-image:
+        linear-gradient(hsla(45,80%,50%,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, hsla(45,80%,50%,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+    "></div>
+  <div class="chapter-cover-inner">
+    <div class="chapter-roman">VI</div>
+    <div class="chapter-cover-num">Chapter VI</div>
+    <h2 class="chapter-cover-title">Classic World Exclusives</h2>
+    <ul class="chapter-cover-topics">
+      <li onclick="goToPage(13)">Shallow Passage</li>
+      <li onclick="goToPage(13)">Deep Passage</li>
+      <li onclick="goToPage(13)">New Monsters</li>
+      <li onclick="goToPage(13)">Scroll Tiers</li>
+      <li onclick="goToPage(13)">Arcforger Crafting</li>
+    </ul>
+    <button class="chapter-begin-btn" onclick="goToPage(13)">Begin Chapter &rarr;</button>
+  </div>
+</div>
+
+<div class="page chapter-content" id="page-13" data-page="13">
 <!-- ── NEW CONTENT ── -->
 <section id="newcontent">
   <div class="section-inner">
@@ -2787,7 +3405,38 @@
     </div>
   </div>
 </section>
+</div>
 
+<div class="page chapter-cover" id="page-14" data-page="14">
+  
+    <div class="chapter-cover-bg" style="background:
+      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(0,80%,50%,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 70%, hsla(0,60%,40%,0.03) 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg-void) 0%, var(--bg-deep) 50%, var(--bg-void) 100%);
+    "></div>
+    <div class="chapter-cover-bg" style="
+      background-image:
+        linear-gradient(hsla(0,80%,50%,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, hsla(0,80%,50%,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+    "></div>
+  <div class="chapter-cover-inner">
+    <div class="chapter-roman">VII</div>
+    <div class="chapter-cover-num">Chapter VII</div>
+    <h2 class="chapter-cover-title">Systemic Overhaul</h2>
+    <ul class="chapter-cover-topics">
+      <li onclick="goToPage(15)">HP Washing Removed</li>
+      <li onclick="goToPage(15)">Statless Builds Dead</li>
+      <li onclick="goToPage(15)">Character Creation</li>
+      <li onclick="goToPage(15)">Anti-Leeching Rule</li>
+      <li onclick="goToPage(15)">Party XP Bonuses</li>
+    </ul>
+    <button class="chapter-begin-btn" onclick="goToPage(15)">Begin Chapter &rarr;</button>
+  </div>
+</div>
+
+<div class="page chapter-content" id="page-15" data-page="15">
 <!-- ── PROGRESSION ── -->
 <section id="progression">
   <div class="section-inner">
@@ -2861,7 +3510,39 @@
     </div>
   </div>
 </section>
+</div>
 
+<div class="page chapter-cover" id="page-16" data-page="16">
+  
+    <div class="chapter-cover-bg" style="background:
+      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(30,80%,50%,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 70%, hsla(30,60%,40%,0.03) 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg-void) 0%, var(--bg-deep) 50%, var(--bg-void) 100%);
+    "></div>
+    <div class="chapter-cover-bg" style="
+      background-image:
+        linear-gradient(hsla(30,80%,50%,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, hsla(30,80%,50%,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+    "></div>
+  <div class="chapter-cover-inner">
+    <div class="chapter-roman">VIII</div>
+    <div class="chapter-cover-num">Chapter VIII</div>
+    <h2 class="chapter-cover-title">Developer Insights</h2>
+    <ul class="chapter-cover-topics">
+      <li onclick="goToPage(17)">Origin</li>
+      <li onclick="goToPage(17)">Private Servers</li>
+      <li onclick="goToPage(17)">HP Washing</li>
+      <li onclick="goToPage(17)">Cubes & Gachapon</li>
+      <li onclick="goToPage(17)">Content Timeline</li>
+      <li onclick="goToPage(17)">New Classes</li>
+    </ul>
+    <button class="chapter-begin-btn" onclick="goToPage(17)">Begin Chapter &rarr;</button>
+  </div>
+</div>
+
+<div class="page chapter-content" id="page-17" data-page="17">
 <!-- ── INTERVIEW ── -->
 <section id="interview">
   <div class="section-inner">
@@ -2939,7 +3620,35 @@
     </div>
   </div>
 </section>
+</div>
 
+<div class="page chapter-cover" id="page-18" data-page="18">
+  
+    <div class="chapter-cover-bg" style="background:
+      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(280,80%,50%,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 70%, hsla(280,60%,40%,0.03) 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg-void) 0%, var(--bg-deep) 50%, var(--bg-void) 100%);
+    "></div>
+    <div class="chapter-cover-bg" style="
+      background-image:
+        linear-gradient(hsla(280,80%,50%,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, hsla(280,80%,50%,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+    "></div>
+  <div class="chapter-cover-inner">
+    <div class="chapter-roman">IX</div>
+    <div class="chapter-cover-num">Chapter IX</div>
+    <h2 class="chapter-cover-title">Community Telemetry</h2>
+    <ul class="chapter-cover-topics">
+      <li onclick="goToPage(19)">Sentiment Gauges</li>
+      <li onclick="goToPage(19)">Datamined Reality Check</li>
+    </ul>
+    <button class="chapter-begin-btn" onclick="goToPage(19)">Begin Chapter &rarr;</button>
+  </div>
+</div>
+
+<div class="page chapter-content" id="page-19" data-page="19">
 <!-- ── COMMUNITY ── -->
 <section id="community">
   <div class="section-inner">
@@ -3079,7 +3788,37 @@
     </div>
   </div>
 </section>
+</div>
 
+<div class="page chapter-cover" id="page-20" data-page="20">
+  
+    <div class="chapter-cover-bg" style="background:
+      radial-gradient(ellipse 70% 50% at 50% 40%, hsla(140,80%,50%,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 70%, hsla(140,60%,40%,0.03) 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg-void) 0%, var(--bg-deep) 50%, var(--bg-void) 100%);
+    "></div>
+    <div class="chapter-cover-bg" style="
+      background-image:
+        linear-gradient(hsla(140,80%,50%,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, hsla(140,80%,50%,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+    "></div>
+  <div class="chapter-cover-inner">
+    <div class="chapter-roman">X</div>
+    <div class="chapter-cover-num">Chapter X</div>
+    <h2 class="chapter-cover-title">World & Lore</h2>
+    <ul class="chapter-cover-topics">
+      <li onclick="goToPage(21)">Map Changes</li>
+      <li onclick="goToPage(21)">Hidden Streets</li>
+      <li onclick="goToPage(21)">Lore Framework</li>
+      <li onclick="goToPage(21)">Party Quests</li>
+    </ul>
+    <button class="chapter-begin-btn" onclick="goToPage(21)">Begin Chapter &rarr;</button>
+  </div>
+</div>
+
+<div class="page chapter-content" id="page-21" data-page="21">
 <!-- ── WORLD ── -->
 <section id="world">
   <div class="section-inner">
@@ -3170,7 +3909,9 @@
     </div>
   </div>
 </section>
+</div>
 
+<div class="page" id="page-22" data-page="22">
 <!-- ── FOOTER ── -->
 <footer>
   <div class="footer-inner">
@@ -3215,7 +3956,10 @@
     <div class="source-note">Primary source: WZ Datamine (3,859 files, 416 MB) + Binary Analysis (v1.1.0.0, April 2026) · Cross-referenced with playtests, interviews & community · Blueprint: P-001-CW</div>
   </div>
 </footer>
+</div>
 
+
+<!-- ── LIGHTBOX ── -->
 <!-- ── LIGHTBOX ── -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
@@ -3224,6 +3968,12 @@
   <button class="lightbox-nav next" onclick="event.stopPropagation(); changeLightbox(1)">›</button>
 </div>
 
+<!-- ── PAGE NAVIGATION CONTROLS ── -->
+<button class="page-nav-btn prev" id="pagePrev" aria-label="Previous page">&#x2039;</button>
+<button class="page-nav-btn next" id="pageNext" aria-label="Next page">&#x203A;</button>
+<div class="page-indicator" id="pageIndicator">Page 1 of 23</div>
+
+<!-- ── ORIGINAL SCRIPTS (lightbox, gauges) ── -->
 <script>
   const slides = [
     { src: './assets/image1.png', alt: 'Engineering the Parallel MapleStory Timeline' },
@@ -3325,5 +4075,169 @@
   });
 })();
 </script>
+
+<!-- ── PAGE NAVIGATION SCRIPT ── -->
+
+<script>
+(function() {
+  // Page navigation system
+  const totalPages = 23;
+  let currentPage = 0;
+  let isTransitioning = false;
+
+  function getAllPages() {
+    const pages = [];
+    for (let i = 0; i < totalPages; i++) {
+      const el = document.getElementById('page-' + i);
+      if (el) pages.push(el);
+    }
+    return pages;
+  }
+
+  // Initialize: show page 0
+  function init() {
+    const pages = getAllPages();
+    pages.forEach((p, i) => {
+      if (i === 0) {
+        p.style.display = 'flex';
+        p.classList.add('active');
+      } else {
+        p.style.display = 'none';
+        p.classList.remove('active');
+      }
+    });
+    updateIndicator();
+    updateArrows();
+  }
+
+  window.goToPage = function(n) {
+    if (n < 0 || n >= totalPages || n === currentPage || isTransitioning) return;
+    isTransitioning = true;
+
+    const pages = getAllPages();
+    const oldPage = pages[currentPage];
+    const newPage = pages[n];
+
+    // Fade out current
+    oldPage.style.transition = 'opacity 0.35s ease';
+    oldPage.style.opacity = '0';
+
+    setTimeout(function() {
+      oldPage.style.display = 'none';
+      oldPage.classList.remove('active');
+      oldPage.style.opacity = '';
+
+      // Show new page
+      newPage.style.opacity = '0';
+      newPage.style.display = 'flex';
+      newPage.scrollTop = 0;
+
+      // Force reflow
+      void newPage.offsetHeight;
+
+      newPage.style.transition = 'opacity 0.35s ease';
+      newPage.style.opacity = '1';
+      newPage.classList.add('active');
+
+      currentPage = n;
+      updateIndicator();
+      updateArrows();
+
+      // Re-trigger gauge animations if on community page
+      triggerGaugeAnimations(newPage);
+
+      setTimeout(function() {
+        isTransitioning = false;
+      }, 350);
+    }, 350);
+  };
+
+  function triggerGaugeAnimations(page) {
+    const fills = page.querySelectorAll('.gauge-fill');
+    fills.forEach(function(fill) {
+      if (fill.dataset.width) {
+        fill.style.width = '0%';
+        setTimeout(function() {
+          fill.style.width = fill.dataset.width;
+        }, 100);
+      }
+    });
+  }
+
+  function updateIndicator() {
+    const ind = document.getElementById('pageIndicator');
+    if (ind) ind.textContent = 'Page ' + (currentPage + 1) + ' of ' + totalPages;
+  }
+
+  function updateArrows() {
+    const prev = document.getElementById('pagePrev');
+    const next = document.getElementById('pageNext');
+    if (prev) prev.style.opacity = currentPage === 0 ? '0.2' : '';
+    if (next) next.style.opacity = currentPage === totalPages - 1 ? '0.2' : '';
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', function(e) {
+    // Don't navigate if lightbox is open
+    const lb = document.getElementById('lightbox');
+    if (lb && lb.classList.contains('open')) return;
+
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      goToPage(currentPage - 1);
+    }
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      goToPage(currentPage + 1);
+    }
+  });
+
+  // Touch/swipe navigation
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchEndX = 0;
+  let touchEndY = 0;
+
+  document.addEventListener('touchstart', function(e) {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+  }, { passive: true });
+
+  document.addEventListener('touchend', function(e) {
+    touchEndX = e.changedTouches[0].screenX;
+    touchEndY = e.changedTouches[0].screenY;
+    handleSwipe();
+  }, { passive: true });
+
+  function handleSwipe() {
+    const dx = touchEndX - touchStartX;
+    const dy = touchEndY - touchStartY;
+    // Only trigger if horizontal swipe is dominant and > 50px
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+      if (dx > 0) {
+        goToPage(currentPage - 1);
+      } else {
+        goToPage(currentPage + 1);
+      }
+    }
+  }
+
+  // Prev/Next button handlers
+  document.getElementById('pagePrev').addEventListener('click', function() {
+    goToPage(currentPage - 1);
+  });
+  document.getElementById('pageNext').addEventListener('click', function() {
+    goToPage(currentPage + 1);
+  });
+  document.getElementById('pageTocBtn').addEventListener('click', function() {
+    goToPage(0);
+  });
+
+  // Initialize on load
+  init();
+})();
+</script>
+
+
 </body>
 </html>
