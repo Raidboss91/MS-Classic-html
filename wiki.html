@@ -568,7 +568,7 @@ const TAG_CFG = {
     title: 'Equipment',
     headers: ['Category','Sub-Cat','Name','Stats'],
     headerClasses: ['','','',''],
-    row: (e) => `<tr><td>${esc(e.category)}</td><td>${esc(e.sub_category)}</td><td>${esc(e.name)}</td><td class="truncate-lg" title="${esc(e.stats)}">${trunc(e.stats, 80)}</td></tr>`
+    row: (e) => `<tr><td>${esc(e.category)}</td><td>${esc(e.sub_category)}</td><td>${esc(e.name)}</td><td class=\"desc-cell\" onclick=\"this.classList.toggle('expanded')\"><div class=\"desc-short\">${trunc(e.stats, 80)}</div><div class=\"desc-full\">${esc(e.stats)}</div></td></tr>`
   },
   scrolls: {
     title: 'Scrolls',
@@ -584,13 +584,13 @@ const TAG_CFG = {
     title: 'NPCs',
     headers: ['ID','Name','Functions'],
     headerClasses: ['num','',''],
-    row: (n) => `<tr><td class="num">${n.id}</td><td>${esc(n.name)}</td><td class="truncate-lg" title="${esc(n.functions)}">${trunc(n.functions, 90)}</td></tr>`
+    row: (n) => `<tr><td class="num">${n.id}</td><td>${esc(n.name)}</td><td class=\"desc-cell\" onclick=\"this.classList.toggle('expanded')\"><div class=\"desc-short\">${trunc(n.functions, 90)}</div><div class=\"desc-full\">${esc(n.functions)}</div></td></tr>`
   },
   crafting: {
     title: 'Crafting',
     headers: ['Discipline','Result','Qty','Craft Lv','Meso Cost','Craft EXP','Ingredients'],
     headerClasses: ['','','num','num','num','num',''],
-    row: (r) => `<tr><td>${esc(r.discipline)}</td><td>${esc(r.result_item_name)}</td><td class="num">${r.result_count}</td><td class="num">${r.craft_level}</td><td class="num">${fmt(r.meso_cost)}</td><td class="num">${fmt(r.craft_exp)}</td><td class="truncate-lg" title="${esc(r.ingredients)}">${trunc(r.ingredients, 80)}</td></tr>`
+    row: (r) => `<tr><td>${esc(r.discipline)}</td><td>${esc(r.result_item_name)}</td><td class="num">${r.result_count}</td><td class="num">${r.craft_level}</td><td class="num">${fmt(r.meso_cost)}</td><td class="num">${fmt(r.craft_exp)}</td><td class=\"desc-cell\" onclick=\"this.classList.toggle('expanded')\"><div class=\"desc-short\">${trunc(r.ingredients, 80)}</div><div class=\"desc-full\">${esc(r.ingredients)}</div></td></tr>`
   },
   cashshop: {
     title: 'Cash Shop',
@@ -605,7 +605,7 @@ const TAG_CFG = {
     title: 'Items',
     headers: ['Category','Name','Description'],
     headerClasses: ['','',''],
-    row: (i) => `<tr><td>${esc(i.sub_category)}</td><td>${esc(i.name)}</td><td class="truncate-lg" title="${esc(i.description)}">${trunc(i.description, 80)}</td></tr>`
+    row: (i) => `<tr><td>${esc(i.sub_category)}</td><td>${esc(i.name)}</td><td class=\"desc-cell\" onclick=\"this.classList.toggle('expanded')\"><div class=\"desc-short\">${trunc(i.description, 80)}</div><div class=\"desc-full\">${esc(i.description)}</div></td></tr>`
   }
 };
 
@@ -892,7 +892,7 @@ function renderSkills() {
         html._tableOpen = true;
       }
       const s = item.data;
-      html += `<tr><td>${esc(s.name)}</td><td class="desc-cell" onclick="this.classList.toggle('expanded')"><div class="desc-short">${trunc(s.description, 80)}</div><div class="desc-full">${esc(s.description)}</div></td><td class="num">${s.max_level}</td><td class="truncate" title="${esc(s.lv1_stats)}">${trunc(s.lv1_stats, 60)}</td><td class="truncate" title="${esc(s.max_stats)}">${trunc(s.max_stats, 60)}</td></tr>`;
+      html += `<tr><td>${esc(s.name)}</td><td class="desc-cell" onclick="this.classList.toggle('expanded')"><div class="desc-short">${trunc(s.description, 80)}</div><div class="desc-full">${esc(s.description)}</div></td><td class="num">${s.max_level}</td><td class=\"desc-cell\" onclick=\"this.classList.toggle('expanded')\"><div class=\"desc-short\">${trunc(s.lv1_stats, 60)}</div><div class=\"desc-full\">${esc(s.lv1_stats)}</div></td><td class=\"desc-cell\" onclick=\"this.classList.toggle('expanded')\"><div class=\"desc-short\">${trunc(s.max_stats, 60)}</div><div class=\"desc-full\">${esc(s.max_stats)}</div></td></tr>`;
       shown++;
     }
     skillIdx++;
@@ -923,7 +923,7 @@ function renderSkills() {
         tableOpen = true;
       }
       const s = item.data;
-      html += `<tr><td>${esc(s.name)}</td><td class="desc-cell" onclick="this.classList.toggle('expanded')"><div class="desc-short">${trunc(s.description, 80)}</div><div class="desc-full">${esc(s.description)}</div></td><td class="num">${s.max_level}</td><td class="truncate" title="${esc(s.lv1_stats)}">${trunc(s.lv1_stats, 60)}</td><td class="truncate" title="${esc(s.max_stats)}">${trunc(s.max_stats, 60)}</td></tr>`;
+      html += `<tr><td>${esc(s.name)}</td><td class="desc-cell" onclick="this.classList.toggle('expanded')"><div class="desc-short">${trunc(s.description, 80)}</div><div class="desc-full">${esc(s.description)}</div></td><td class="num">${s.max_level}</td><td class=\"desc-cell\" onclick=\"this.classList.toggle('expanded')\"><div class=\"desc-short\">${trunc(s.lv1_stats, 60)}</div><div class=\"desc-full\">${esc(s.lv1_stats)}</div></td><td class=\"desc-cell\" onclick=\"this.classList.toggle('expanded')\"><div class=\"desc-short\">${trunc(s.max_stats, 60)}</div><div class=\"desc-full\">${esc(s.max_stats)}</div></td></tr>`;
     }
     skillIdx++;
   }
