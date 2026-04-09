@@ -892,7 +892,7 @@ function renderSkills() {
         html._tableOpen = true;
       }
       const s = item.data;
-      html += `<tr><td>${esc(s.name)}</td><td class="truncate-lg" title="${esc(s.description)}">${trunc(s.description, 80)}</td><td class="num">${s.max_level}</td><td class="truncate" title="${esc(s.lv1_stats)}">${trunc(s.lv1_stats, 60)}</td><td class="truncate" title="${esc(s.max_stats)}">${trunc(s.max_stats, 60)}</td></tr>`;
+      html += `<tr><td>${esc(s.name)}</td><td class="desc-cell" onclick="this.classList.toggle('expanded')"><div class="desc-short">${trunc(s.description, 80)}</div><div class="desc-full">${esc(s.description)}</div></td><td class="num">${s.max_level}</td><td class="truncate" title="${esc(s.lv1_stats)}">${trunc(s.lv1_stats, 60)}</td><td class="truncate" title="${esc(s.max_stats)}">${trunc(s.max_stats, 60)}</td></tr>`;
       shown++;
     }
     skillIdx++;
@@ -923,7 +923,7 @@ function renderSkills() {
         tableOpen = true;
       }
       const s = item.data;
-      html += `<tr><td>${esc(s.name)}</td><td class="truncate-lg" title="${esc(s.description)}">${trunc(s.description, 80)}</td><td class="num">${s.max_level}</td><td class="truncate" title="${esc(s.lv1_stats)}">${trunc(s.lv1_stats, 60)}</td><td class="truncate" title="${esc(s.max_stats)}">${trunc(s.max_stats, 60)}</td></tr>`;
+      html += `<tr><td>${esc(s.name)}</td><td class="desc-cell" onclick="this.classList.toggle('expanded')"><div class="desc-short">${trunc(s.description, 80)}</div><div class="desc-full">${esc(s.description)}</div></td><td class="num">${s.max_level}</td><td class="truncate" title="${esc(s.lv1_stats)}">${trunc(s.lv1_stats, 60)}</td><td class="truncate" title="${esc(s.max_stats)}">${trunc(s.max_stats, 60)}</td></tr>`;
     }
     skillIdx++;
   }
