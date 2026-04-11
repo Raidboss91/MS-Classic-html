@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Lore — MapleStory Classic World</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -116,9 +116,11 @@
     .lore-selection {
       padding-top: 120px;
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
+      padding-bottom: 3rem;
     }
 
     .lore-header {
@@ -263,7 +265,11 @@
     .player-screen {
       display: none;
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      height: 100dvh;
       z-index: 2000;
       background: #000;
       flex-direction: column;
@@ -567,22 +573,248 @@
     }
 
     /* ══ RESPONSIVE ══ */
+
+    /* Tablet */
+    @media (max-width: 960px) {
+      .story-grid {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+      }
+      .scene-viewport {
+        max-width: 600px;
+        max-height: 50vh;
+        max-height: 50dvh;
+      }
+    }
+
+    /* Mobile */
     @media (max-width: 768px) {
+      .nav-links { display: none; }
+
+      .lore-selection {
+        padding-top: 90px;
+        padding-bottom: 2rem;
+      }
+      .lore-header {
+        margin-bottom: 2rem;
+        padding: 0 1rem;
+      }
+      .lore-subtitle {
+        font-size: 0.92rem;
+      }
       .story-grid {
         grid-template-columns: 1fr;
         padding: 0 1rem;
+        max-width: 100%;
       }
+      .story-card-play {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+        width: 56px;
+        height: 56px;
+      }
+      .story-card-overlay {
+        padding: 1rem;
+      }
+      .story-card-title {
+        font-size: 1.05rem;
+      }
+      .story-card-desc {
+        font-size: 0.82rem;
+      }
+
+      /* Player fullscreen on mobile */
+      .player-screen {
+        overflow: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .player-screen.active {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-top: 3.5rem;
+        padding-bottom: 5rem;
+        gap: 0;
+      }
+
+      .player-back {
+        top: 0.6rem;
+        left: 0.8rem;
+        padding: 0.5rem 0.7rem;
+        font-size: 0.65rem;
+        z-index: 30;
+      }
+
+      .scene-title-bar {
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: none;
+        padding: 0.5rem 1rem;
+        flex-shrink: 0;
+      }
+      .scene-title-label {
+        font-size: 0.52rem;
+      }
+      .scene-title-name {
+        font-size: 0.75rem;
+      }
+
       .scene-viewport {
-        max-height: 45vh;
+        max-width: 100%;
+        max-height: 40vh;
+        max-height: 40dvh;
+        aspect-ratio: auto;
+        width: 100%;
+        flex-shrink: 0;
+      }
+      .scene-viewport::after {
+        box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
+      }
+
+      .subtitle-area {
+        max-width: 100%;
+        padding: 0.8rem 1.2rem;
+        min-height: 60px;
+        flex-shrink: 1;
+        flex-grow: 1;
+        overflow-y: auto;
       }
       .subtitle-text {
-        font-size: 1rem;
+        font-size: 0.88rem;
+        line-height: 1.6;
+        max-height: none;
+      }
+
+      .player-controls {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        transform: none;
+        justify-content: center;
+        padding: 0.8rem 1rem;
+        padding-bottom: calc(0.8rem + env(safe-area-inset-bottom, 0px));
+        background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 70%, transparent 100%);
+        gap: 1rem;
+        z-index: 25;
+      }
+
+      .play-pause-btn {
+        width: 48px;
+        height: 48px;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .scene-dot {
+        width: 10px;
+        height: 10px;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .player-intro {
+        padding: 2rem 1.5rem;
+        padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+      }
+      .intro-title {
+        font-size: clamp(1.3rem, 5vw, 2rem);
         padding: 0 1rem;
       }
-      .player-controls {
-        bottom: 1.2rem;
+      .intro-play-btn {
+        width: 72px;
+        height: 72px;
+        -webkit-tap-highlight-color: transparent;
       }
-      .nav-links { display: none; }
+
+      .player-end {
+        padding: 2rem 1.5rem;
+        padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+      }
+      .end-title {
+        font-size: 1.2rem;
+      }
+      .end-btn {
+        padding: 0.7rem 1.8rem;
+        font-size: 0.7rem;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .scene-blackout {
+        z-index: 15;
+      }
+    }
+
+    /* Small phones (SE, mini, 375px and below) */
+    @media (max-width: 400px) {
+      .scene-viewport {
+        max-height: 35vh;
+        max-height: 35dvh;
+      }
+      .subtitle-text {
+        font-size: 0.82rem;
+      }
+      .scene-title-name {
+        font-size: 0.68rem;
+      }
+      .intro-title {
+        font-size: 1.2rem;
+      }
+      .story-card-play {
+        width: 48px;
+        height: 48px;
+      }
+    }
+
+    /* Landscape mobile */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .player-screen.active {
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding-top: 2.5rem;
+        padding-bottom: 3rem;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+      }
+      .scene-title-bar {
+        position: absolute;
+        top: 0.4rem;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0;
+      }
+      .scene-viewport {
+        max-height: 70vh;
+        max-height: 70dvh;
+        max-width: 45%;
+        flex-shrink: 0;
+      }
+      .subtitle-area {
+        max-width: 50%;
+        padding: 0.5rem 1rem;
+        align-self: center;
+      }
+      .subtitle-text {
+        font-size: 0.78rem;
+        line-height: 1.5;
+      }
+      .player-controls {
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        transform: none;
+        padding: 0.4rem 1rem;
+        background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%);
+      }
+    }
+
+    /* Safe area for notched devices */
+    @supports (padding: env(safe-area-inset-bottom)) {
+      .player-controls {
+        padding-bottom: calc(0.8rem + env(safe-area-inset-bottom, 0px));
+      }
     }
   </style>
 </head>
@@ -735,11 +967,28 @@
     return lines.join(' ');
   }
 
+  // ── Lock/unlock body scroll ──
+  function lockScroll() {
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+    document.body.style.top = '-' + window.scrollY + 'px';
+  }
+  function unlockScroll() {
+    const scrollY = document.body.style.top;
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.width = '';
+    document.body.style.top = '';
+    window.scrollTo(0, parseInt(scrollY || '0') * -1);
+  }
+
   // ── Open player for a story ──
   function openPlayer(storyKey) {
     currentStory = STORIES[storyKey];
     if (!currentStory) return;
 
+    lockScroll();
     selectionEl.style.display = 'none';
     playerEl.classList.add('active');
     playerIntro.classList.remove('hidden');
@@ -780,6 +1029,7 @@
     playerEl.classList.remove('active');
     selectionEl.style.display = '';
     currentStory = null;
+    unlockScroll();
   }
 
   // ── Start playing from scene 0 ──
@@ -830,10 +1080,18 @@
       sceneAudio.removeAttribute('src');
     }
     sceneAudio = new Audio(scene.audio);
+    sceneAudio.setAttribute('playsinline', '');
     sceneAudio.addEventListener('ended', onSceneEnded);
 
-    // Start
-    sceneAudio.play();
+    // Start (handle mobile autoplay promise)
+    var playPromise = sceneAudio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(function() {
+        // Autoplay blocked — wait for user tap
+        isPlaying = false;
+        updatePlayPauseIcon();
+      });
+    }
     isPlaying = true;
     updatePlayPauseIcon();
   }
