@@ -274,18 +274,21 @@
       background: #000;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
     }
     .player-screen.active {
       display: flex;
     }
 
-    /* Back button */
-    .player-back {
-      position: absolute;
-      top: 1.2rem;
-      left: 1.5rem;
+    /* Top bar — back + title side by side, never overlapping */
+    .player-top-bar {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0.8rem 1.2rem;
+      flex-shrink: 0;
       z-index: 10;
+    }
+    .player-back {
       font-family: 'Cinzel', serif;
       font-size: 0.7rem;
       font-weight: 600;
@@ -298,22 +301,20 @@
       padding: 0.4rem 0.8rem;
       cursor: pointer;
       transition: color 0.2s, border-color 0.2s;
+      flex-shrink: 0;
+      -webkit-tap-highlight-color: transparent;
     }
     .player-back:hover {
       color: var(--text-primary);
       border-color: rgba(255,255,255,0.2);
     }
 
-    /* Scene title */
     .scene-title-bar {
-      position: absolute;
-      top: 1.2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
+      flex: 1;
       text-align: center;
       opacity: 0;
       transition: opacity 0.8s;
+      padding-right: 3rem; /* balance back button width */
     }
     .scene-title-bar.visible { opacity: 1; }
     .scene-title-label {
@@ -331,13 +332,26 @@
       letter-spacing: 0.08em;
     }
 
+    /* Main content area — grows to fill between top bar and controls */
+    .player-content {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+      overflow: hidden;
+    }
+
     /* Scene image container */
     .scene-viewport {
       position: relative;
       width: 100%;
-      max-width: 800px;
-      aspect-ratio: 1/1;
-      max-height: 60vh;
+      max-width: 700px;
+      flex: 1 1 auto;
+      min-height: 0;
+      max-height: 55vh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -362,7 +376,7 @@
       position: absolute;
       inset: 0;
       pointer-events: none;
-      box-shadow: inset 0 0 100px rgba(0,0,0,0.6);
+      box-shadow: inset 0 0 80px rgba(0,0,0,0.5);
       border-radius: 4px;
     }
 
@@ -371,11 +385,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.6rem;
+      gap: 0.7rem;
       padding: 0.5rem 1rem;
       opacity: 0;
       transition: opacity 0.8s ease;
       flex-shrink: 0;
+      flex-wrap: wrap;
     }
     .scene-sprites.visible {
       opacity: 1;
@@ -383,22 +398,22 @@
     .sprite-chip {
       display: flex;
       align-items: center;
-      gap: 0.35rem;
+      gap: 0.4rem;
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,208,96,0.15);
       border-radius: 4px;
-      padding: 0.2rem 0.5rem 0.2rem 0.25rem;
+      padding: 0.25rem 0.6rem 0.25rem 0.3rem;
     }
     .sprite-chip img {
-      width: 32px;
-      height: 32px;
+      width: 48px;
+      height: 48px;
       object-fit: contain;
       image-rendering: pixelated;
       filter: drop-shadow(0 0 3px rgba(255,208,96,0.3));
     }
     .sprite-chip span {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 0.55rem;
+      font-size: 0.6rem;
       letter-spacing: 0.06em;
       color: var(--maple-gold);
       white-space: nowrap;
@@ -408,13 +423,14 @@
     .subtitle-area {
       width: 100%;
       max-width: 700px;
-      min-height: 80px;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
-      padding: 1.2rem 2rem;
+      padding: 0.8rem 2rem;
       text-align: center;
-      position: relative;
+      flex-shrink: 0;
+      max-height: 120px;
+      overflow-y: auto;
     }
     .subtitle-text {
       font-family: 'Crimson Text', Georgia, serif;
@@ -424,28 +440,26 @@
       opacity: 0;
       transition: opacity 0.8s ease;
       text-shadow: 0 2px 8px rgba(0,0,0,0.8);
-      max-height: 120px;
-      overflow-y: auto;
     }
     .subtitle-text.visible {
       opacity: 1;
     }
 
-    /* Controls bar */
+    /* Controls bar — in flow, at bottom */
     .player-controls {
-      position: absolute;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
+      width: 100%;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 1.5rem;
+      padding: 0.8rem 1rem;
+      flex-shrink: 0;
       z-index: 10;
     }
 
     .play-pause-btn {
-      width: 44px;
-      height: 44px;
+      width: 2.75rem;
+      height: 2.75rem;
       border-radius: 50%;
       background: rgba(255,102,0,0.15);
       border: 1px solid rgba(255,102,0,0.35);
@@ -454,6 +468,7 @@
       justify-content: center;
       cursor: pointer;
       transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+      -webkit-tap-highlight-color: transparent;
     }
     .play-pause-btn:hover {
       background: rgba(255,102,0,0.3);
@@ -461,8 +476,8 @@
       box-shadow: 0 0 20px rgba(255,102,0,0.3);
     }
     .play-pause-btn svg {
-      width: 18px;
-      height: 18px;
+      width: 1.1rem;
+      height: 1.1rem;
       fill: var(--maple-orange);
     }
 
@@ -473,13 +488,14 @@
       align-items: center;
     }
     .scene-dot {
-      width: 8px;
-      height: 8px;
+      width: 0.55rem;
+      height: 0.55rem;
       border-radius: 50%;
       background: rgba(255,255,255,0.12);
       border: 1px solid rgba(255,255,255,0.08);
       transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
       cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
     }
     .scene-dot.active {
       background: var(--maple-orange);
@@ -504,6 +520,7 @@
       gap: 1.5rem;
       opacity: 1;
       transition: opacity 0.8s;
+      padding: 2rem;
     }
     .player-intro.hidden {
       opacity: 0;
@@ -526,8 +543,8 @@
       max-width: 400px;
     }
     .intro-play-btn {
-      width: 80px;
-      height: 80px;
+      width: 5rem;
+      height: 5rem;
       border-radius: 50%;
       background: rgba(255,102,0,0.2);
       border: 2px solid var(--maple-orange);
@@ -538,6 +555,7 @@
       transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
       box-shadow: 0 0 40px rgba(255,102,0,0.3);
       animation: pulse-play 2s ease-in-out infinite;
+      -webkit-tap-highlight-color: transparent;
     }
     .intro-play-btn:hover {
       background: rgba(255,102,0,0.4);
@@ -545,10 +563,10 @@
       box-shadow: 0 0 60px rgba(255,102,0,0.5);
     }
     .intro-play-btn svg {
-      width: 32px;
-      height: 32px;
+      width: 2rem;
+      height: 2rem;
       fill: var(--maple-orange);
-      margin-left: 4px;
+      margin-left: 0.25rem;
     }
     @keyframes pulse-play {
       0%, 100% { box-shadow: 0 0 40px rgba(255,102,0,0.3); }
@@ -580,6 +598,7 @@
       align-items: center;
       justify-content: center;
       gap: 1.5rem;
+      padding: 2rem;
     }
     .player-end.active {
       display: flex;
@@ -604,6 +623,7 @@
       padding: 0.6rem 1.5rem;
       cursor: pointer;
       transition: background 0.2s, border-color 0.2s;
+      -webkit-tap-highlight-color: transparent;
     }
     .end-btn:hover {
       background: rgba(255,102,0,0.25);
@@ -617,11 +637,6 @@
       .story-grid {
         grid-template-columns: 1fr;
         max-width: 500px;
-      }
-      .scene-viewport {
-        max-width: 600px;
-        max-height: 50vh;
-        max-height: 50dvh;
       }
     }
 
@@ -648,8 +663,8 @@
       .story-card-play {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1);
-        width: 56px;
-        height: 56px;
+        width: 3.5rem;
+        height: 3.5rem;
       }
       .story-card-overlay {
         padding: 1rem;
@@ -661,136 +676,91 @@
         font-size: 0.82rem;
       }
 
-      /* Player fullscreen on mobile */
-      .player-screen {
-        overflow: hidden;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+      /* Player top bar */
+      .player-top-bar {
+        padding: 0.5rem 0.8rem;
       }
-      .player-screen.active {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        padding-top: 3.5rem;
-        padding-bottom: 5rem;
-        gap: 0;
-      }
-
       .player-back {
-        top: 0.6rem;
-        left: 0.8rem;
-        padding: 0.5rem 0.7rem;
-        font-size: 0.65rem;
-        z-index: 30;
+        padding: 0.4rem 0.6rem;
+        font-size: 0.6rem;
       }
-
       .scene-title-bar {
-        position: relative;
-        top: auto;
-        left: auto;
-        transform: none;
-        padding: 0.5rem 1rem;
-        flex-shrink: 0;
+        padding-right: 2.5rem;
       }
       .scene-title-label {
-        font-size: 0.52rem;
+        font-size: 0.5rem;
       }
       .scene-title-name {
-        font-size: 0.75rem;
+        font-size: 0.72rem;
       }
 
+      /* Scene viewport */
       .scene-viewport {
         max-width: 100%;
-        width: 100%;
-        height: 40vh;
-        height: 40dvh;
-        aspect-ratio: auto;
-        flex-shrink: 0;
+        max-height: none;
+        flex: 1 1 auto;
       }
       .scene-viewport::after {
         box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
       }
 
+      /* Sprites */
       .scene-sprites {
-        gap: 0.4rem;
-        padding: 0.3rem 0.8rem;
-        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.4rem 0.8rem;
       }
       .sprite-chip img {
-        width: 26px;
-        height: 26px;
+        width: 36px;
+        height: 36px;
       }
       .sprite-chip span {
-        font-size: 0.5rem;
+        font-size: 0.52rem;
       }
       .sprite-chip {
-        padding: 0.15rem 0.4rem 0.15rem 0.2rem;
+        padding: 0.2rem 0.45rem 0.2rem 0.2rem;
       }
 
+      /* Subtitles */
       .subtitle-area {
-        max-width: 100%;
-        padding: 0.8rem 1.2rem;
-        min-height: 60px;
-        flex-shrink: 1;
-        flex-grow: 1;
-        overflow-y: auto;
+        padding: 0.6rem 1rem;
+        max-height: 100px;
       }
       .subtitle-text {
-        font-size: 0.88rem;
+        font-size: 0.85rem;
         line-height: 1.6;
-        max-height: none;
       }
 
+      /* Controls */
       .player-controls {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        transform: none;
-        justify-content: center;
-        padding: 0.8rem 1rem;
-        padding-bottom: calc(0.8rem + env(safe-area-inset-bottom, 0px));
-        background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 70%, transparent 100%);
+        padding: 0.6rem 1rem;
+        padding-bottom: calc(0.6rem + env(safe-area-inset-bottom, 0px));
         gap: 1rem;
-        z-index: 25;
       }
-
       .play-pause-btn {
-        width: 48px;
-        height: 48px;
-        -webkit-tap-highlight-color: transparent;
+        width: 3rem;
+        height: 3rem;
       }
       .scene-dot {
-        width: 10px;
-        height: 10px;
-        -webkit-tap-highlight-color: transparent;
+        width: 0.6rem;
+        height: 0.6rem;
       }
 
-      .player-intro {
-        padding: 2rem 1.5rem;
-        padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
-      }
+      /* Intro overlay */
       .intro-title {
         font-size: clamp(1.3rem, 5vw, 2rem);
-        padding: 0 1rem;
       }
       .intro-play-btn {
-        width: 72px;
-        height: 72px;
-        -webkit-tap-highlight-color: transparent;
+        width: 4.5rem;
+        height: 4.5rem;
       }
 
-      .player-end {
-        padding: 2rem 1.5rem;
-        padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
-      }
+      /* End screen */
       .end-title {
         font-size: 1.2rem;
       }
       .end-btn {
         padding: 0.7rem 1.8rem;
         font-size: 0.7rem;
-        -webkit-tap-highlight-color: transparent;
       }
 
       .scene-blackout {
@@ -800,74 +770,53 @@
 
     /* Small phones (SE, mini, 375px and below) */
     @media (max-width: 400px) {
-      .scene-viewport {
-        height: 35vh;
-        height: 35dvh;
-      }
       .subtitle-text {
-        font-size: 0.82rem;
+        font-size: 0.8rem;
       }
       .scene-title-name {
-        font-size: 0.68rem;
+        font-size: 0.65rem;
       }
-      .intro-title {
-        font-size: 1.2rem;
-      }
-      .story-card-play {
-        width: 48px;
-        height: 48px;
+      .sprite-chip img {
+        width: 30px;
+        height: 30px;
       }
     }
 
     /* Landscape mobile */
     @media (max-height: 500px) and (orientation: landscape) {
-      .player-screen.active {
-        flex-direction: row;
-        flex-wrap: wrap;
-        padding-top: 2.5rem;
-        padding-bottom: 3rem;
-        align-items: center;
-        justify-content: center;
-        gap: 0;
+      .player-top-bar {
+        padding: 0.3rem 0.8rem;
       }
-      .scene-title-bar {
-        position: absolute;
-        top: 0.4rem;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 0;
+      .player-content {
+        flex-direction: row;
       }
       .scene-viewport {
-        height: 70vh;
-        height: 70dvh;
-        max-width: 45%;
-        flex-shrink: 0;
+        max-width: 50%;
       }
       .subtitle-area {
-        max-width: 50%;
+        max-width: 45%;
+        max-height: none;
         padding: 0.5rem 1rem;
-        align-self: center;
+        flex: 1;
       }
       .subtitle-text {
         font-size: 0.78rem;
         line-height: 1.5;
       }
-      .player-controls {
-        width: 100%;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        transform: none;
-        padding: 0.4rem 1rem;
-        background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%);
+      .scene-sprites {
+        position: absolute;
+        bottom: 3rem;
+        right: 0.5rem;
+        flex-direction: column;
+        padding: 0.3rem;
+        gap: 0.3rem;
       }
-    }
-
-    /* Safe area for notched devices */
-    @supports (padding: env(safe-area-inset-bottom)) {
+      .sprite-chip span { display: none; }
+      .sprite-chip img { width: 32px; height: 32px; }
+      .sprite-chip { padding: 0.15rem; }
       .player-controls {
-        padding-bottom: calc(0.8rem + env(safe-area-inset-bottom, 0px));
+        padding: 0.4rem 1rem;
+        padding-bottom: calc(0.4rem + env(safe-area-inset-bottom, 0px));
       }
     }
   </style>
@@ -915,24 +864,26 @@
 
 <!-- ══ CINEMATIC PLAYER ══ -->
 <div class="player-screen" id="playerScreen">
-  <button class="player-back" id="playerBack">Back</button>
 
-  <div class="scene-title-bar" id="sceneTitleBar">
-    <div class="scene-title-label" id="sceneTitleLabel">Scene 1</div>
-    <div class="scene-title-name" id="sceneTitleName">The Warding</div>
+  <div class="player-top-bar">
+    <button class="player-back" id="playerBack">Back</button>
+    <div class="scene-title-bar" id="sceneTitleBar">
+      <div class="scene-title-label" id="sceneTitleLabel">Scene 1</div>
+      <div class="scene-title-name" id="sceneTitleName">The Warding</div>
+    </div>
   </div>
 
-  <div class="scene-viewport" id="sceneViewport">
-    <!-- scene images injected dynamically -->
+  <div class="player-content">
+    <div class="scene-viewport" id="sceneViewport">
+      <!-- scene images injected dynamically -->
+    </div>
+
+    <div class="scene-sprites" id="sceneSprites"></div>
+
+    <div class="subtitle-area">
+      <div class="subtitle-text" id="subtitleText"></div>
+    </div>
   </div>
-
-  <div class="scene-sprites" id="sceneSprites"></div>
-
-  <div class="subtitle-area">
-    <div class="subtitle-text" id="subtitleText"></div>
-  </div>
-
-  <div class="scene-blackout" id="sceneBlackout"></div>
 
   <div class="player-controls">
     <div class="play-pause-btn" id="playPauseBtn">
@@ -941,6 +892,8 @@
     </div>
     <div class="scene-dots" id="sceneDots"></div>
   </div>
+
+  <div class="scene-blackout" id="sceneBlackout"></div>
 
   <!-- Intro overlay -->
   <div class="player-intro" id="playerIntro">
