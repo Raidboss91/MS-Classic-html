@@ -366,6 +366,44 @@
       border-radius: 4px;
     }
 
+    /* NPC sprite bar */
+    .scene-sprites {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.5rem 1rem;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      flex-shrink: 0;
+    }
+    .scene-sprites.visible {
+      opacity: 1;
+    }
+    .sprite-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,208,96,0.15);
+      border-radius: 4px;
+      padding: 0.2rem 0.5rem 0.2rem 0.25rem;
+    }
+    .sprite-chip img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      image-rendering: pixelated;
+      filter: drop-shadow(0 0 3px rgba(255,208,96,0.3));
+    }
+    .sprite-chip span {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.06em;
+      color: var(--maple-gold);
+      white-space: nowrap;
+    }
+
     /* Subtitle area */
     .subtitle-area {
       width: 100%;
@@ -673,6 +711,22 @@
         box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
       }
 
+      .scene-sprites {
+        gap: 0.4rem;
+        padding: 0.3rem 0.8rem;
+        flex-wrap: wrap;
+      }
+      .sprite-chip img {
+        width: 26px;
+        height: 26px;
+      }
+      .sprite-chip span {
+        font-size: 0.5rem;
+      }
+      .sprite-chip {
+        padding: 0.15rem 0.4rem 0.15rem 0.2rem;
+      }
+
       .subtitle-area {
         max-width: 100%;
         padding: 0.8rem 1.2rem;
@@ -872,6 +926,8 @@
     <!-- scene images injected dynamically -->
   </div>
 
+  <div class="scene-sprites" id="sceneSprites"></div>
+
   <div class="subtitle-area">
     <div class="subtitle-text" id="subtitleText"></div>
   </div>
@@ -912,14 +968,15 @@
     manji_cluster: {
       title: 'The Seal That Held',
       region: 'Sleepywood',
+      sprites: 'lore/manji_cluster/sprites/',
       scenes: [
-        { num: 1, name: 'The Warding',            image: 'lore/manji_cluster/images/scene1.png', audio: 'lore/manji_cluster/audio/scene1.mp3', srt: 'lore/manji_cluster/subtitles/scene1_the_warding.srt' },
-        { num: 2, name: 'The Blade Remembers',     image: 'lore/manji_cluster/images/scene2.png', audio: 'lore/manji_cluster/audio/scene2.mp3', srt: 'lore/manji_cluster/subtitles/scene2_the_blade_remembers.srt' },
-        { num: 3, name: 'The Apprentice Descends',  image: 'lore/manji_cluster/images/scene3.png', audio: 'lore/manji_cluster/audio/scene3.mp3', srt: 'lore/manji_cluster/subtitles/scene3_the_apprentice_descends.srt' },
-        { num: 4, name: 'Letters from Below',       image: 'lore/manji_cluster/images/scene4.png', audio: 'lore/manji_cluster/audio/scene4.mp3', srt: 'lore/manji_cluster/subtitles/scene4_letters_from_below.srt' },
-        { num: 5, name: 'The Stranger at the Gate', image: 'lore/manji_cluster/images/scene5.png', audio: 'lore/manji_cluster/audio/scene5.mp3', srt: 'lore/manji_cluster/subtitles/scene5_the_stranger_at_the_gate.srt' },
-        { num: 6, name: 'The Tomb Awakens',         image: 'lore/manji_cluster/images/scene6.png', audio: 'lore/manji_cluster/audio/scene6.mp3', srt: 'lore/manji_cluster/subtitles/scene6_the_tomb_awakens.srt' },
-        { num: 7, name: 'The Spirit\'s Offer',      image: 'lore/manji_cluster/images/scene7.png', audio: 'lore/manji_cluster/audio/scene7.mp3', srt: 'lore/manji_cluster/subtitles/scene7_the_spirits_offer.srt' },
+        { num: 1, name: 'The Warding',            image: 'lore/manji_cluster/images/scene1.png', audio: 'lore/manji_cluster/audio/scene1.mp3', srt: 'lore/manji_cluster/subtitles/scene1_the_warding.srt', npcs: [{file:'Chrishrama_hq.png', name:'Chrishrama'}] },
+        { num: 2, name: 'The Blade Remembers',     image: 'lore/manji_cluster/images/scene2.png', audio: 'lore/manji_cluster/audio/scene2.mp3', srt: 'lore/manji_cluster/subtitles/scene2_the_blade_remembers.srt', npcs: [{file:'Chun_Ji_hq.png', name:'Chun Ji'}, {file:'Manji_hq.png', name:'Manji'}] },
+        { num: 3, name: 'The Apprentice Descends',  image: 'lore/manji_cluster/images/scene3.png', audio: 'lore/manji_cluster/audio/scene3.mp3', srt: 'lore/manji_cluster/subtitles/scene3_the_apprentice_descends.srt', npcs: [{file:'Manji_hq.png', name:'Manji'}, {file:'Mu_Young_hq.png', name:'Mu Young'}] },
+        { num: 4, name: 'Letters from Below',       image: 'lore/manji_cluster/images/scene4.png', audio: 'lore/manji_cluster/audio/scene4.mp3', srt: 'lore/manji_cluster/subtitles/scene4_letters_from_below.srt', npcs: [{file:'Mu_Young_hq.png', name:'Mu Young'}] },
+        { num: 5, name: 'The Stranger at the Gate', image: 'lore/manji_cluster/images/scene5.png', audio: 'lore/manji_cluster/audio/scene5.mp3', srt: 'lore/manji_cluster/subtitles/scene5_the_stranger_at_the_gate.srt', npcs: [{file:'Suspicious_Man_hq.png', name:'Suspicious Man'}] },
+        { num: 6, name: 'The Tomb Awakens',         image: 'lore/manji_cluster/images/scene6.png', audio: 'lore/manji_cluster/audio/scene6.mp3', srt: 'lore/manji_cluster/subtitles/scene6_the_tomb_awakens.srt', npcs: [{file:'Jr_Balrog_hq.png', name:'Jr. Balrog'}, {file:'Mu_Young_hq.png', name:'Mu Young'}] },
+        { num: 7, name: 'The Spirit\'s Offer',      image: 'lore/manji_cluster/images/scene7.png', audio: 'lore/manji_cluster/audio/scene7.mp3', srt: 'lore/manji_cluster/subtitles/scene7_the_spirits_offer.srt', npcs: [{file:'Tristans_Spirit_hq.png', name:'Tristan\'s Spirit'}] },
       ]
     }
   };
@@ -938,6 +995,7 @@
   const iconPause      = document.getElementById('iconPause');
   const sceneDots      = document.getElementById('sceneDots');
   const sceneViewport  = document.getElementById('sceneViewport');
+  const sceneSprites   = document.getElementById('sceneSprites');
   const subtitleText   = document.getElementById('subtitleText');
   const sceneTitleBar  = document.getElementById('sceneTitleBar');
   const sceneTitleLabel= document.getElementById('sceneTitleLabel');
@@ -1069,6 +1127,20 @@
     const currentImg = sceneViewport.querySelector(`[data-scene-idx="${idx}"]`);
     if (currentImg) currentImg.classList.add('visible');
 
+    // Show NPC sprites for this scene
+    sceneSprites.innerHTML = '';
+    if (scene.npcs && scene.npcs.length) {
+      scene.npcs.forEach(function(npc) {
+        var chip = document.createElement('div');
+        chip.className = 'sprite-chip';
+        chip.innerHTML = '<img src="' + currentStory.sprites + npc.file + '" alt="' + npc.name + '"><span>' + npc.name + '</span>';
+        sceneSprites.appendChild(chip);
+      });
+      sceneSprites.classList.add('visible');
+    } else {
+      sceneSprites.classList.remove('visible');
+    }
+
     // Load subtitle text and show immediately
     const fullText = await fetchSubtitleText(scene.srt);
     subtitleText.textContent = fullText;
@@ -1106,6 +1178,7 @@
     isPlaying = false;
     updatePlayPauseIcon();
     subtitleText.classList.remove('visible');
+    sceneSprites.classList.remove('visible');
     sceneTitleBar.classList.remove('visible');
   }
 
@@ -1114,8 +1187,9 @@
     if (transitioning) return;
     transitioning = true;
 
-    // Clear subtitle
+    // Clear subtitle and sprites
     subtitleText.classList.remove('visible');
+    sceneSprites.classList.remove('visible');
     sceneTitleBar.classList.remove('visible');
 
     // Fade to black
