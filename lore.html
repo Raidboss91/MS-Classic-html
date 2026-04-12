@@ -112,6 +112,149 @@
       background: rgba(255,102,0,0.1);
     }
 
+    /* Hamburger button */
+    .hamburger-btn {
+      display: block;
+      background: none;
+      border: 1px solid rgba(255,102,0,0.25);
+      border-radius: 3px;
+      padding: 0.4rem 0.55rem;
+      cursor: pointer;
+      color: var(--maple-orange);
+      font-size: 1.2rem;
+      line-height: 1;
+      transition: background 0.2s, border-color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .hamburger-btn:hover {
+      background: rgba(255,102,0,0.1);
+      border-color: var(--maple-orange);
+    }
+
+    /* Story drawer (slide-out panel) */
+    .story-drawer-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 1100;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .story-drawer-overlay.open {
+      display: block;
+      opacity: 1;
+    }
+    .story-drawer {
+      position: fixed;
+      top: 0;
+      right: -340px;
+      width: 320px;
+      max-width: 85vw;
+      height: 100%;
+      height: 100dvh;
+      z-index: 1200;
+      background: var(--bg-deep);
+      border-left: 1px solid var(--border-orange);
+      overflow-y: auto;
+      transition: right 0.3s ease;
+      padding: 1.5rem 1.2rem;
+    }
+    .story-drawer.open {
+      right: 0;
+    }
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.2rem;
+    }
+    .drawer-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--maple-gold);
+      letter-spacing: 0.08em;
+    }
+    .drawer-close {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 1.4rem;
+      cursor: pointer;
+      padding: 0.2rem 0.4rem;
+      line-height: 1;
+      transition: color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .drawer-close:hover { color: var(--text-primary); }
+
+    .drawer-section {
+      margin-bottom: 1rem;
+    }
+    .drawer-section-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--maple-orange);
+      margin-bottom: 0.5rem;
+    }
+    .drawer-story {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.45rem 0.5rem;
+      border-radius: 4px;
+      cursor: default;
+      transition: background 0.15s;
+    }
+    .drawer-story.playable {
+      cursor: pointer;
+    }
+    .drawer-story.playable:hover {
+      background: rgba(255,102,0,0.08);
+    }
+    .drawer-status {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .drawer-status.done { background: #4CAF50; box-shadow: 0 0 6px rgba(76,175,80,0.4); }
+    .drawer-status.in_progress { background: var(--maple-orange); box-shadow: 0 0 6px rgba(255,102,0,0.4); }
+    .drawer-status.planned { background: var(--text-dim); }
+    .drawer-story-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .drawer-story-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .drawer-story.planned .drawer-story-title {
+      color: var(--text-dim);
+    }
+    .drawer-story-region {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.5rem;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+    }
+    .drawer-story-scenes {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.52rem;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+      flex-shrink: 0;
+    }
+
     /* ══ SELECTION SCREEN ══ */
     .lore-selection {
       padding-top: 120px;
@@ -832,8 +975,19 @@
       <a href="wiki.html">Wiki</a>
       <a href="lore.html" class="active">Lore</a>
     </div>
+    <button class="hamburger-btn" id="hamburgerBtn" aria-label="Story index">&#9776;</button>
   </div>
 </nav>
+
+<!-- Story drawer -->
+<div class="story-drawer-overlay" id="drawerOverlay"></div>
+<div class="story-drawer" id="storyDrawer">
+  <div class="drawer-header">
+    <div class="drawer-title">All Stories</div>
+    <button class="drawer-close" id="drawerClose">&times;</button>
+  </div>
+  <div id="drawerContent"></div>
+</div>
 
 <!-- ══ LORE SELECTION ══ -->
 <div class="lore-selection" id="loreSelection">
@@ -1275,6 +1429,85 @@
       jumpToScene(Math.max(currentSceneIdx - 1, 0));
     }
   });
+
+  // ── Story Drawer ──
+  const ALL_STORIES = [
+    { key: 'manji_cluster', title: 'The Balrog Seal', region: 'Sleepywood', scenes: 7, status: 'done' },
+    { key: 'kerning_city', title: 'Kerning City Underworld', region: 'Kerning City', scenes: 6, status: 'done' },
+    { key: 'mushroom_castle', title: 'Mushroom Castle', region: 'Mushroom Castle', scenes: 7, status: 'in_progress' },
+    { key: 'master_mage', title: 'Master: Grendel the Really Old', region: 'Ellinia / El Nath', scenes: 6, status: 'in_progress' },
+    { key: 'black_mage_shadow', title: "The Black Mage's Shadow", region: 'Victoria Island', scenes: 7, status: 'planned' },
+    { key: 'ellin_forest', title: 'Ellin Forest', region: 'Ellin Forest', scenes: 6, status: 'planned' },
+    { key: 'job_instructors', title: 'The Job Instructors', region: 'All Victoria Island', scenes: 5, status: 'planned' },
+    { key: 'perion_warriors', title: 'Warriors of Perion', region: 'Perion', scenes: 5, status: 'planned' },
+    { key: 'master_warrior', title: 'Master: Dances with Balrog', region: 'Perion / El Nath', scenes: 4, status: 'planned' },
+    { key: 'master_archer', title: 'Master: Athena Pierce', region: 'Henesys / El Nath', scenes: 5, status: 'planned' },
+    { key: 'master_thief', title: 'Master: Dark Lord', region: 'Kerning City / El Nath', scenes: 4, status: 'planned' },
+    { key: 'dual_blade', title: 'The Dual Blade Vendetta', region: 'Kerning City', scenes: 4, status: 'planned' },
+    { key: 'maya_illness', title: "Maya's Illness", region: 'Henesys', scenes: 3, status: 'planned' },
+    { key: 'don_giovanni_icarus', title: 'Don Giovanni & Icarus', region: 'Kerning City', scenes: 3, status: 'planned' },
+    { key: 'drake_hunters', title: 'Drake Hunters', region: 'Sleepywood', scenes: 3, status: 'planned' },
+    { key: 'excavation_association', title: 'Excavation Association', region: 'Perion', scenes: 3, status: 'planned' },
+    { key: 'john_fisherman', title: 'John the Fisherman', region: 'Lith Harbor', scenes: 3, status: 'planned' },
+    { key: 'arwen_glass_shoes', title: 'Arwen and the Glass Shoes', region: 'Ellinia', scenes: 2, status: 'planned' },
+    { key: 'jane_alchemist', title: 'Jane the Alchemist', region: 'Lith Harbor', scenes: 2, status: 'planned' },
+    { key: 'shumi_lost_things', title: "Shumi's Lost Things", region: 'Kerning City', scenes: 2, status: 'planned' },
+    { key: 'hersha_herbalist', title: 'Hersha the Herbalist', region: 'Ellinia', scenes: 2, status: 'planned' },
+  ];
+
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const drawerOverlay = document.getElementById('drawerOverlay');
+  const storyDrawer = document.getElementById('storyDrawer');
+  const drawerClose = document.getElementById('drawerClose');
+  const drawerContent = document.getElementById('drawerContent');
+
+  function buildDrawer() {
+    const groups = { done: [], in_progress: [], planned: [] };
+    ALL_STORIES.forEach(s => groups[s.status].push(s));
+
+    const labels = { done: 'Complete', in_progress: 'In Progress', planned: 'Planned' };
+    let html = '';
+
+    ['done', 'in_progress', 'planned'].forEach(status => {
+      if (!groups[status].length) return;
+      html += '<div class="drawer-section"><div class="drawer-section-label">' + labels[status] + ' (' + groups[status].length + ')</div>';
+      groups[status].forEach(s => {
+        const playable = STORIES[s.key] ? ' playable' : '';
+        html += '<div class="drawer-story ' + s.status + playable + '" data-story-key="' + s.key + '">';
+        html += '<div class="drawer-status ' + s.status + '"></div>';
+        html += '<div class="drawer-story-info"><div class="drawer-story-title">' + s.title + '</div>';
+        html += '<div class="drawer-story-region">' + s.region + '</div></div>';
+        html += '<div class="drawer-story-scenes">' + s.scenes + 's</div>';
+        html += '</div>';
+      });
+      html += '</div>';
+    });
+
+    drawerContent.innerHTML = html;
+
+    // Bind clicks on playable stories
+    drawerContent.querySelectorAll('.drawer-story.playable').forEach(el => {
+      el.addEventListener('click', () => {
+        closeDrawer();
+        openPlayer(el.dataset.storyKey);
+      });
+    });
+  }
+
+  function openDrawer() {
+    drawerOverlay.classList.add('open');
+    storyDrawer.classList.add('open');
+  }
+  function closeDrawer() {
+    drawerOverlay.classList.remove('open');
+    storyDrawer.classList.remove('open');
+  }
+
+  hamburgerBtn.addEventListener('click', openDrawer);
+  drawerOverlay.addEventListener('click', closeDrawer);
+  drawerClose.addEventListener('click', closeDrawer);
+
+  buildDrawer();
 
 })();
 </script>
